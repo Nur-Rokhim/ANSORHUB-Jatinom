@@ -1,0 +1,9 @@
+# OS generated files
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store
+
+# Temporary / scratch files
+*.tmp
+*.log
+

@@ -1,0 +1,1905 @@
+<?php
+require_once __DIR__ . '/config.php';
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAHABAT Jatinom - Sistem Administrasi GP Ansor Ranting Jatinom</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ansor: {
+              DEFAULT: '#006837',
+              dark: '#004d28',
+              light: '#00875a',
+              soft: '#e8f5e9'
+            },
+            gold: {
+              DEFAULT: '#ffc72c',
+              dark: '#d4a017',
+              soft: '#fff9e6'
+            },
+            banser: '#c02626'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Amiri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-100 min-h-screen flex flex-col font-sans antialiased text-slate-800">
+
+  <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF ==================== -->
+  <div id="modal-login-portal" class="login-backdrop hidden">
+    <div class="login-card max-w-xl w-full p-6 sm:p-8 space-y-6 relative overflow-hidden">
+      <!-- Tombol Tutup Modal Login -->
+      <button id="btn-close-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition z-20" title="Tutup Login">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+
+      <!-- Ornamen Pojok Emas -->
+      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-gold/30 to-transparent rounded-bl-full pointer-events-none"></div>
+
+      <!-- Header Login -->
+      <div class="text-center space-y-2">
+        <div class="w-20 h-20 mx-auto p-2 bg-emerald-950/5 rounded-2xl border border-gold/40 shadow-inner flex items-center justify-center">
+          <div id="login-logo-container" class="w-full h-full flex items-center justify-center">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-0.5 rounded-full">
+            Gerakan Pemuda Ansor
+          </span>
+          <h2 class="text-2xl font-black text-slate-800 tracking-tight mt-1.5">
+            PORTAL SAHABAT JATINOM
+          </h2>
+          <p class="text-xs text-slate-500 font-medium">
+            Pimpinan Ranting Desa Jatinom &bull; Kec. Kanigoro, Kab. Blitar
+          </p>
+        </div>
+      </div>
+
+      <!-- Pilihan 2 Metode Login: 1-Click Role atau Form PIN -->
+      <div class="space-y-4">
+        <!-- 1-Click Role Selection -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-users-gear text-gold"></i>
+              Pilih Cepat Akun Pengurus:
+            </span>
+            <span class="text-[10px] text-slate-400">Khusus Pengurus Ranting</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="grid-login-roles">
+            <!-- Injected via JavaScript (Super Admin, Ketua, Sekretaris, Kasatkorkel, MDS, Siber) -->
+          </div>
+        </div>
+
+        <div class="relative flex items-center justify-center">
+          <div class="border-t border-slate-200 w-full"></div>
+          <span class="bg-white px-3 text-[11px] text-slate-400 font-medium uppercase absolute">Atau Masuk dengan PIN</span>
+        </div>
+
+        <!-- Form Manual Username & PIN -->
+        <form id="form-login-manual" class="space-y-3 text-xs">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Username / Akun Pengurus:</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i class="fa-solid fa-user"></i>
+              </span>
+              <input type="text" id="login-username" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium" placeholder="superadmin / ketua / sekretaris..." required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">PIN / Kata Sandi:</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <i class="fa-solid fa-lock"></i>
+              </span>
+              <input type="password" id="login-pin" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-mono text-center tracking-widest text-sm" placeholder="••••" required>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-1">Default PIN Super Admin: <code class="font-bold text-ansor">1934</code> | Pengurus: <code class="font-bold text-ansor">1234</code></p>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <button type="submit" class="flex-1 py-2.5 bg-ansor hover:bg-ansor-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-md transition">
+              <i class="fa-solid fa-right-to-bracket text-gold"></i>
+              <span>Masuk ke Dashboard</span>
+            </button>
+            <button type="button" id="btn-login-tamu" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition" title="Buka sebagai publik/tamu">
+              Akses Tamu
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center pt-2 border-t border-slate-100">
+        <p class="text-[11px] text-slate-400">
+          Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SIDEBAR BACKDROP (MOBILE) ==================== -->
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity"></div>
+
+  <!-- ==================== APLIKASI SIDEBAR (LEFT-HAND NAVIGATION) ==================== -->
+  <aside id="app-sidebar" class="app-sidebar sidebar-desktop-fixed flex flex-col justify-between h-screen text-white select-none">
+    
+    <!-- Bagian Atas: Logo & Identitas Organisasi -->
+    <div>
+      <div class="p-4 border-b border-emerald-800/60 relative">
+        <div class="flex items-center gap-3">
+          <div id="sidebar-logo-container" class="w-11 h-11 bg-white/10 rounded-xl p-1 border border-gold/40 shadow-inner flex items-center justify-center shrink-0">
+            <!-- Injected via JS -->
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-1.5">
+              <span class="text-sm font-black tracking-wide text-white truncate">SAHABAT JATINOM</span>
+              <span class="text-[9px] font-black bg-gold text-slate-950 px-1 py-0.2 rounded shadow">v2.3</span>
+            </div>
+            <p class="text-[11px] text-emerald-200 font-semibold truncate">PR GP ANSOR JATINOM</p>
+            <p class="text-[9.5px] text-emerald-300/70 truncate">Kanigoro, Kab. Blitar</p>
+          </div>
+        </div>
+
+        <!-- Tombol Tutup di Layar HP -->
+        <button id="btn-close-sidebar" class="lg:hidden absolute top-4 right-3 text-emerald-200 hover:text-white p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Kartu Akun Pengurus Aktif di Sidebar -->
+      <div class="px-3 py-2.5 mx-3 my-2.5 rounded-xl bg-black/30 border border-white/10 flex items-center justify-between cursor-pointer hover:bg-black/45 transition" id="sidebar-user-card" title="Klik untuk ganti user atau login">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-7 h-7 rounded-lg bg-gold text-slate-900 font-black flex items-center justify-center text-xs shadow shrink-0">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div class="min-w-0 text-left">
+            <div id="sidebar-user-role" class="text-xs font-black text-gold truncate">Super Admin</div>
+            <div id="sidebar-user-nama" class="text-[10.5px] text-emerald-100 truncate">M. Zainal Arifin</div>
+          </div>
+        </div>
+        <i class="fa-solid fa-repeat text-emerald-300 text-xs"></i>
+      </div>
+
+      <!-- Menu Navigasi Utama (URUTAN STRICT SESUAI PERMINTAAN USER):
+           1. Warta Ansor
+           2. E-Surat
+           3. E-Kader
+           4. Agenda
+           5. Profil Ranting
+           6. Pengaturan
+      -->
+      <div class="px-3 pt-1 pb-1">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300/60 px-2 block mb-1.5">
+          Menu Utama Ranting
+        </span>
+      </div>
+
+      <nav class="px-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-290px)] scrollbar-none" id="sidebar-nav">
+        <!-- 1. Warta Ansor -->
+        <a data-tab="tab-warta" class="sidebar-nav-item active">
+          <span class="icon-box text-cyan-400">
+            <i class="fa-solid fa-newspaper"></i>
+          </span>
+          <span class="flex-1">1. Warta Ansor</span>
+          <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded-full font-bold">Kabar</span>
+        </a>
+
+        <!-- 2. E-Surat -->
+        <a data-tab="tab-surat" class="sidebar-nav-item">
+          <span class="icon-box text-amber-400">
+            <i class="fa-solid fa-envelope-open-text"></i>
+          </span>
+          <span class="flex-1">2. E-Surat</span>
+          <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">9 Tpl</span>
+        </a>
+
+        <!-- 3. E-Kader -->
+        <a data-tab="tab-kader" class="sidebar-nav-item">
+          <span class="icon-box text-emerald-300">
+            <i class="fa-solid fa-id-card-clip"></i>
+          </span>
+          <span class="flex-1">3. E-Kader</span>
+          <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full font-bold">Data</span>
+        </a>
+
+        <!-- 4. Agenda -->
+        <a data-tab="tab-agenda" class="sidebar-nav-item">
+          <span class="icon-box text-gold">
+            <i class="fa-solid fa-calendar-days"></i>
+          </span>
+          <span class="flex-1">4. Agenda</span>
+          <span class="text-[10px] bg-gold/20 text-gold px-1.5 py-0.5 rounded-full font-bold">MDS</span>
+        </a>
+
+        <!-- 5. Profil Ranting -->
+        <a data-tab="tab-profil" class="sidebar-nav-item">
+          <span class="icon-box text-amber-300">
+            <i class="fa-solid fa-landmark"></i>
+          </span>
+          <span class="flex-1">5. Profil Ranting</span>
+          <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">TTD/Stempel</span>
+        </a>
+
+        <!-- 6. Pengaturan -->
+        <a data-tab="tab-pengaturan" class="sidebar-nav-item">
+          <span class="icon-box text-purple-300">
+            <i class="fa-solid fa-gears"></i>
+          </span>
+          <span class="flex-1">6. Pengaturan</span>
+          <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-full font-bold">6 User</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Bagian Bawah Sidebar: XAMPP Indicator & Utility -->
+    <div class="p-3 border-t border-emerald-800/60 bg-black/25 space-y-2">
+      <!-- Status XAMPP MySQL Indicator -->
+      <div id="sidebar-xampp-pill" class="flex items-center justify-between px-3 py-1.5 bg-emerald-950/70 border border-emerald-700/50 rounded-lg text-[10.5px]">
+        <div class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full <?= $db_connected ? 'bg-emerald-400' : 'bg-amber-400' ?> animate-pulse"></span>
+          <span class="font-medium text-emerald-200"><?= $db_connected ? 'XAMPP MySQL Terhubung' : 'Mode Offline (LocalStorage)' ?></span>
+        </div>
+        <span class="font-mono text-[9px] text-gold font-bold"><?= $db_connected ? 'DB: db_sahabat' : 'LOKAL' ?></span>
+      </div>
+
+      <div class="flex items-center justify-between text-[11px] text-emerald-200/80 px-1">
+        <button id="sidebar-btn-backup" class="hover:text-gold flex items-center gap-1 transition">
+          <i class="fa-solid fa-database text-xs text-gold"></i>
+          <span>Backup</span>
+        </button>
+        <button id="sidebar-btn-login" class="hover:text-gold flex items-center gap-1 transition">
+          <i class="fa-solid fa-right-from-bracket text-xs text-gold"></i>
+          <span>Ganti Akun</span>
+        </button>
+      </div>
+
+      <p class="text-[9.5px] text-center text-emerald-300/60 pt-0.5 font-serif">
+        Khidmah Aswaja An-Nahdliyyah &bull; PR Jatinom
+      </p>
+    </div>
+
+  </aside>
+
+  <!-- ==================== MAIN CONTENT LAYOUT WRAPPER ==================== -->
+  <div class="main-content-layout min-h-screen flex flex-col">
+
+    <!-- Top Header Bar (Desktop & Mobile) -->
+    <header class="glass-header text-white sticky top-0 z-30 shadow-md border-b-2 border-gold">
+      <div class="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+        
+        <!-- Kiri: Tombol Hamburger Mobile + Judul Halaman Aktif -->
+        <div class="flex items-center gap-3">
+          <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition focus:outline-none" aria-label="Buka Menu Sidebar">
+            <i class="fa-solid fa-bars text-lg text-gold"></i>
+          </button>
+          
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="page-active-title" class="text-base sm:text-lg font-black tracking-tight text-white">1. Warta Ansor</span>
+              <span class="hidden sm:inline-block text-[11px] bg-gold/20 border border-gold/40 text-gold px-2 py-0.5 rounded-full font-bold">
+                PR GP Ansor Jatinom
+              </span>
+            </div>
+            <p class="text-[11px] text-emerald-200 hidden sm:block">Kecamatan Kanigoro &bull; Kabupaten Blitar</p>
+          </div>
+        </div>
+
+        <!-- Kanan: Profil User Aktif + Notifikasi + Ganti Akun -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          
+          <!-- Sesi Pengguna Aktif (User Pill) -->
+          <div id="badge-active-user-container" class="flex items-center gap-2 px-3 py-1 bg-black/25 rounded-xl border border-white/20 backdrop-blur-sm cursor-pointer hover:bg-black/35 transition" title="Klik untuk ganti user">
+            <div class="w-7 h-7 rounded-full bg-gold text-slate-900 font-extrabold flex items-center justify-center text-xs shadow-sm">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="text-left text-[11px] leading-tight">
+              <div id="header-user-role" class="font-extrabold text-gold">Super Admin</div>
+              <div id="header-user-nama" class="text-emerald-100 max-w-[110px] sm:max-w-[140px] truncate">M. Zainal Arifin</div>
+            </div>
+          </div>
+
+          <!-- Notification Bell -->
+          <div class="relative">
+            <button id="btn-toggle-notifikasi" class="relative p-2 text-xs font-semibold rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition" title="Pusat Notifikasi">
+              <i class="fa-solid fa-bell text-gold text-sm"></i>
+              <span id="badge-notifikasi-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow">0</span>
+            </button>
+
+            <!-- Dropdown Notifikasi -->
+            <div id="dropdown-notifikasi" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 text-slate-800 z-50 overflow-hidden text-xs">
+              <div class="p-3 bg-emerald-900 text-white flex items-center justify-between border-b border-emerald-800">
+                <span class="font-bold flex items-center gap-1.5">
+                  <i class="fa-solid fa-bell text-gold"></i> Notifikasi & Pengingat
+                </span>
+                <button id="btn-mark-all-read" class="text-[11px] text-emerald-200 hover:text-white hover:underline">
+                  Tandai Dibaca
+                </button>
+              </div>
+              <div id="list-notifikasi-container" class="max-h-72 overflow-y-auto divide-y divide-slate-100">
+                <!-- Injected via JavaScript -->
+              </div>
+              <div class="p-2 bg-slate-50 text-center border-t border-slate-100">
+                <span class="text-[10px] text-slate-500">Notifikasi sinkron dengan agenda & aktivitas sistem</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tombol Buka Login / Ganti Akun -->
+          <button id="btn-buka-login" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gold hover:bg-amber-400 text-slate-900 flex items-center gap-1.5 transition shadow" title="Ganti Akun Pengurus / Login">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            <span class="hidden sm:inline">Ganti Akun</span>
+          </button>
+
+          <button id="btn-open-backup" class="px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center gap-1 transition" title="Backup / Restore">
+            <i class="fa-solid fa-database text-gold"></i>
+            <span class="hidden md:inline">Backup</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
+
+      <!-- ==================== 1. TAB: WARTA ANSOR ==================== -->
+      <section id="tab-warta" class="tab-pane active fade-in-tab space-y-6">
+        
+        <!-- Banner Warta Ansor -->
+        <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-2xl shadow-md p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+          <div class="relative z-10 space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-black uppercase tracking-wider">
+              <i class="fa-solid fa-bullhorn"></i> Media & Publikasi Resmi Ranting
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight">WARTA & KABAR GP ANSOR JATINOM</h2>
+            <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
+              Pusat siaran warta kegiatan, maklumat resmi organisasi, pengamanan Banser, rutinan amaliyah MDS Rijalul Ansor, serta opini Aswaja Desa Jatinom, Kec. Kanigoro, Kab. Blitar.
+            </p>
+          </div>
+          <button id="btn-buka-form-berita" class="px-5 py-3 bg-gold hover:bg-amber-400 text-slate-900 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg transition shrink-0 relative z-10">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span>Tulis / Update Warta</span>
+          </button>
+        </div>
+
+        <!-- Form Tambah / Update Berita (Collapsible) -->
+        <div id="container-form-berita" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-file-circle-plus text-ansor"></i>
+              <span id="form-berita-title">Formulir Tulis Warta Ranting Baru</span>
+            </h3>
+            <button id="btn-tutup-form-berita" class="text-slate-400 hover:text-slate-600">
+              <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+          </div>
+
+          <form id="form-berita" class="space-y-3.5 text-xs">
+            <input type="hidden" id="berita-id" value="">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-2">
+                <label class="block font-medium text-slate-700 mb-1">Judul Warta / Informasi *</label>
+                <input type="text" id="berita-judul" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-semibold" placeholder="Contoh: Apel Akbar Banser Satkorkel Jatinom..." required>
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Kategori Warta</label>
+                <select id="berita-kategori" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium">
+                  <option value="Ansor">Warta Ansor</option>
+                  <option value="Banser">Giat Banser</option>
+                  <option value="Rijalul Ansor">MDS Rijalul Ansor</option>
+                  <option value="Pengumuman">Pengumuman Resmi</option>
+                  <option value="Opini Aswaja">Opini / Tausiyah</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Tanggal Rilis</label>
+                <input type="date" id="berita-tanggal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" required>
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Penulis / Redaksi</label>
+                <input type="text" id="berita-penulis" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" value="Biro Media Siber Jatinom">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">URL Gambar / Sampul</label>
+                <input type="url" id="berita-gambar" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="https://... (opsional)">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Ringkasan Warta (1-2 Kalimat) *</label>
+              <input type="text" id="berita-ringkasan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Ringkasan singkat yang tampil pada kartu warta..." required>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Isi Lengkap Warta / Artikel *</label>
+              <textarea id="berita-isi" rows="6" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white leading-relaxed font-serif text-sm" placeholder="Tuliskan berita lengkap di sini..." required></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+              <button type="button" id="btn-batal-berita" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-bold hover:bg-slate-50 transition">
+                Batal
+              </button>
+              <button type="submit" id="btn-submit-berita" class="px-6 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-2 shadow transition">
+                <i class="fa-solid fa-paper-plane text-gold"></i>
+                <span>Publikasikan Warta</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Toolbar Filter & Search Warta Ansor -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto scrollbar-none">
+            <span class="text-xs font-bold text-slate-500 mr-1 shrink-0">Kategori:</span>
+            <button data-cat="semua" class="btn-filter-berita active px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-ansor-dark border border-emerald-200">Semua</button>
+            <button data-cat="Ansor" class="btn-filter-berita px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Ansor</button>
+            <button data-cat="Banser" class="btn-filter-berita px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Banser</button>
+            <button data-cat="Rijalul Ansor" class="btn-filter-berita px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">MDS RA</button>
+          </div>
+
+          <div class="w-full sm:w-64 relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="search-berita" class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-ansor focus:bg-white" placeholder="Cari warta...">
+          </div>
+        </div>
+
+        <!-- Grid Kartu Warta Ansor -->
+        <div id="container-berita-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Injected via JavaScript -->
+        </div>
+      </section>
+
+      <!-- ==================== 2. TAB: E-SURAT ==================== -->
+      <section id="tab-surat" class="tab-pane hidden fade-in-tab space-y-6">
+        
+        <!-- Banner Ringkasan Tab E-Surat -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-file-pen text-ansor"></i>
+              <span>Generator Surat Resmi GP Ansor Ranting Jatinom</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Format nomor baku: <code class="bg-slate-100 px-2 py-0.5 rounded text-ansor-dark font-mono font-semibold">[No]/PR-XII-11-07-02/[Jenis]-[Sifat]/[Bulan]/[Tahun]</code>
+            </p>
+          </div>
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <button id="btn-scroll-arsip" class="w-full md:w-auto px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-ansor-dark border border-emerald-200 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition">
+              <i class="fa-solid fa-folder-open"></i>
+              <span>Lihat Arsip Surat</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grid: Form Generator & Setting Kop -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Form Pembuatan Surat (Kolom Kiri 8 col) -->
+          <div class="lg:col-span-8 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6">
+            <h3 class="text-base font-bold text-slate-800 border-b pb-3 mb-5 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
+                Formulir Generator Surat
+              </span>
+              <span class="text-xs font-normal text-slate-400">Pilih template untuk auto-fill formulir</span>
+            </h3>
+
+            <form id="form-buat-surat" class="space-y-5">
+              
+              <!-- Pilihan 9 Template Surat Ready to Use -->
+              <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  1. Pilih Jenis Surat Resmi (9 Kode Peraturan Organisasi):
+                </label>
+                <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-2" id="template-selector-container">
+                  <button type="button" data-tpl="SU" class="tpl-btn active px-2.5 py-2 rounded-xl border-2 border-ansor bg-emerald-50 text-ansor font-bold text-xs flex flex-col items-center justify-center transition shadow-sm">
+                    <span class="text-sm font-extrabold">SU</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Undangan</span>
+                  </button>
+                  <button type="button" data-tpl="SR" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SR</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Rutin</span>
+                  </button>
+                  <button type="button" data-tpl="SK" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SK</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Keputusan</span>
+                  </button>
+                  <button type="button" data-tpl="SM" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SM</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Mandat</span>
+                  </button>
+                  <button type="button" data-tpl="ST" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">ST</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Tugas</span>
+                  </button>
+                  <button type="button" data-tpl="SI" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SI</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Instruksi</span>
+                  </button>
+                  <button type="button" data-tpl="SE" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SE</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Edaran</span>
+                  </button>
+                  <button type="button" data-tpl="Not" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">Not</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Notulensi</span>
+                  </button>
+                  <button type="button" data-tpl="SRU" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
+                    <span class="text-sm font-extrabold">SRU</span>
+                    <span class="text-[10px] font-medium truncate w-full text-center">Rekomendasi</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Penomoran Surat Otomatis GP Ansor Jatinom -->
+              <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  2. Pengaturan Nomor Surat Resmi:
+                </label>
+
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                  <div>
+                    <span class="text-[11px] font-medium text-slate-500">Nomor Urut</span>
+                    <input type="text" id="input-no-urut" class="w-full mt-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-ansor focus:border-ansor" value="001">
+                  </div>
+                  <div>
+                    <span class="text-[11px] font-medium text-slate-500">Kode Wilayah</span>
+                    <input type="text" id="input-kode-wilayah" class="w-full mt-1 px-3 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-600" value="PR-XII-11-07-02" readonly>
+                  </div>
+                  <div>
+                    <span class="text-[11px] font-medium text-slate-500">Sifat Surat</span>
+                    <select id="input-sifat-surat" class="w-full mt-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-ansor focus:border-ansor">
+                      <option value="01">01 : Internal</option>
+                      <option value="02">02 : External</option>
+                    </select>
+                  </div>
+                  <div>
+                    <span class="text-[11px] font-medium text-slate-500">Bulan Romawi / Thn</span>
+                    <div class="flex gap-1 mt-1">
+                      <input type="text" id="input-bulan-romawi" class="w-1/2 px-2 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-center" value="XI" readonly>
+                      <input type="text" id="input-tahun-surat" class="w-1/2 px-2 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-center" value="2026" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hasil Nomor Surat Ter-generate -->
+                <div class="p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-lg flex items-center justify-between">
+                  <span class="text-xs text-slate-600 font-medium">Nomor Surat Tercetak:</span>
+                  <span id="display-nomor-surat" class="text-xs sm:text-sm font-mono font-bold text-ansor">
+                    001/PR-XII-11-07-02/SU-01/XI/2026
+                  </span>
+                </div>
+              </div>
+
+              <!-- Metadata & Data Tujuan Surat -->
+              <div class="space-y-3">
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  3. Detail & Tujuan Surat:
+                </label>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Tanggal Surat (Masehi)</label>
+                    <input type="date" id="input-tgl-surat" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-ansor focus:bg-white">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Tanggal Hijriah (Otomatis)</label>
+                    <input type="text" id="input-tgl-hijriah" class="w-full px-3 py-2 bg-slate-100 border border-slate-300 rounded-lg text-xs font-medium text-slate-700 font-serif">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Lampiran</label>
+                    <input type="text" id="input-lampiran" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-ansor focus:bg-white" value="-">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium text-slate-600 mb-1">Perihal / Hal Surat *</label>
+                    <input type="text" id="input-perihal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Undangan Rutinan MDS Rijalul Ansor" required>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">Tujuan / Kepada Yth. *</label>
+                  <textarea id="input-tujuan" rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Yth. Sahabat Seluruh Pengurus dan Anggota&#10;Di - Jatinom" required></textarea>
+                </div>
+              </div>
+
+              <!-- Isi Surat & Variabel Kegiatan -->
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    4. Isi Surat & Redaksi:
+                  </label>
+                  <button type="button" id="btn-load-template-content" class="text-[11px] font-semibold text-ansor hover:underline flex items-center gap-1">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    Reset ke Teks Template Standar
+                  </button>
+                </div>
+
+                <!-- Bagian Variabel Tanggal / Waktu / Tempat -->
+                <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-200/80 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                  <div>
+                    <span class="text-[11px] font-medium text-amber-900">Hari & Tanggal Kegiatan:</span>
+                    <input type="text" id="var-hari-tanggal" class="w-full mt-1 px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs" placeholder="Ahad Pon, 15 Nov 2026">
+                  </div>
+                  <div>
+                    <span class="text-[11px] font-medium text-amber-900">Waktu / Jam:</span>
+                    <input type="text" id="var-waktu" class="w-full mt-1 px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs" placeholder="19.30 WIB - Selesai">
+                  </div>
+                  <div>
+                    <span class="text-[11px] font-medium text-amber-900">Tempat / Lokasi:</span>
+                    <input type="text" id="var-tempat" class="w-full mt-1 px-2.5 py-1.5 bg-white border border-amber-300 rounded-lg text-xs" placeholder="Musholla Baitur Muttaqin">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">Editor Redaksi Surat (HTML Support):</label>
+                  <textarea id="input-isi-surat" rows="8" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-serif leading-relaxed focus:ring-2 focus:ring-ansor focus:bg-white"></textarea>
+                </div>
+              </div>
+
+              <!-- Tombol Aksi Surat -->
+              <div class="flex flex-col sm:flex-row items-center gap-3 pt-3 border-t">
+                <button type="button" id="btn-preview-surat" class="w-full sm:flex-1 py-3 bg-ansor hover:bg-ansor-dark text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+                  <i class="fa-solid fa-eye text-gold"></i>
+                  <span>Pratinjau & Cetak Surat (PDF)</span>
+                </button>
+                <button type="button" id="btn-simpan-arsip" class="w-full sm:w-auto px-5 py-3 bg-emerald-50 hover:bg-emerald-100 text-ansor-dark border border-emerald-300 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  <span>Simpan ke Arsip</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- Kolom Kanan: Pengaturan Kop, Penandatangan & Stempel (4 col) -->
+          <div class="lg:col-span-4 space-y-5">
+            
+            <!-- Card Pengaturan Kop Surat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b pb-2">
+                <i class="fa-solid fa-heading text-ansor"></i>
+                Pengaturan Kop Surat
+              </h4>
+
+              <div class="space-y-3 text-xs">
+                <div>
+                  <label class="text-[11px] font-medium text-slate-500">Kop Badan Otonom / Lembaga:</label>
+                  <select id="setting-kop-lembaga" class="w-full mt-1 px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor">
+                    <option value="ansor">Pimpinan Ranting GP Ansor Jatinom</option>
+                    <option value="banser">Satkorkel BANSER Jatinom</option>
+                    <option value="rijalul">MDS Rijalul Ansor Jatinom</option>
+                    <option value="siber">Badan Siber Ansor Jatinom</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="text-[11px] font-medium text-slate-500">Alamat Sekretariat pada Kop:</label>
+                  <textarea id="setting-alamat-kop" rows="2" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-[11px]">Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com</textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Penandatangan Surat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b pb-2">
+                <i class="fa-solid fa-signature text-ansor"></i>
+                Penandatangan Surat
+              </h4>
+
+              <div class="space-y-3 text-xs">
+                <div>
+                  <label class="text-[11px] font-medium text-slate-500">Pihak 1 (Kiri - Sekretaris / Pengurus):</label>
+                  <input type="text" id="setting-ttd1-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="AHMAD NUR SHOLIHIN">
+                  <input type="text" id="setting-ttd1-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Sekretaris">
+                  <input type="text" id="setting-ttd1-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.002">
+                </div>
+
+                <div class="border-t pt-2">
+                  <label class="text-[11px] font-medium text-slate-500">Pihak 2 (Kanan - Ketua / Komandan):</label>
+                  <input type="text" id="setting-ttd2-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="MUHAMMAD ZAINAL ARIFIN">
+                  <input type="text" id="setting-ttd2-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Ketua Pimpinan Ranting">
+                  <input type="text" id="setting-ttd2-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.001">
+                </div>
+
+                <div class="pt-2 border-t flex items-center justify-between">
+                  <label class="text-xs font-semibold text-slate-700">Tampilkan TTD & Stempel:</label>
+                  <input type="checkbox" id="check-tampilkan-stempel" class="w-4 h-4 text-ansor rounded focus:ring-ansor" checked>
+                </div>
+                <p class="text-[10px] text-slate-400">
+                  Stempel dan TTD diambil dari tab <strong class="text-slate-600">Profil Ranting</strong> secara otomatis.
+                </p>
+              </div>
+            </div>
+
+            <!-- Petunjuk Format Nomor Surat Resmi Ansor -->
+            <div class="bg-emerald-50/70 rounded-2xl border border-emerald-200 p-4 space-y-2">
+              <h5 class="text-xs font-bold text-ansor-dark flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-info"></i>
+                Aturan Kode PO Persuratan GP Ansor:
+              </h5>
+              <div class="text-[11px] text-slate-600 space-y-1">
+                <p><strong>01</strong>: Surat Internal (ke struktur jajaran/anggota)</p>
+                <p><strong>02</strong>: Surat Eksternal (ke instansi pemerintah/luar)</p>
+                <p><strong>PR-XII-11-07-02</strong>: Kode Wilayah PW Jatim (XII), PC Blitar (11), PAC Kanigoro (07), PR Jatinom (02).</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Tabel Rekapitulasi Arsip Surat Masuk & Keluar -->
+        <div id="section-arsip" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-box-archive text-ansor"></i>
+                <span>Buku Registrasi & Arsip Persuratan</span>
+              </h3>
+              <p class="text-xs text-slate-500">Daftar rekapitulasi surat keluar dan surat masuk Ranting Jatinom</p>
+            </div>
+            
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <select id="filter-tipe-arsip" class="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium">
+                <option value="semua">Semua Tipe (Masuk & Keluar)</option>
+                <option value="Keluar">Hanya Surat Keluar</option>
+                <option value="Masuk">Hanya Surat Masuk</option>
+              </select>
+              <button id="btn-tambah-arsip-manual" class="px-3 py-1.5 bg-ansor hover:bg-ansor-dark text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-plus"></i>
+                <span>Catat Surat Masuk</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabel Arsip -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 uppercase tracking-wider text-[11px] border-b">
+                <tr>
+                  <th class="py-3 px-3">No</th>
+                  <th class="py-3 px-3">Nomor Surat</th>
+                  <th class="py-3 px-3">Jenis / Sifat</th>
+                  <th class="py-3 px-3">Tgl Surat</th>
+                  <th class="py-3 px-3">Perihal & Tujuan</th>
+                  <th class="py-3 px-3">Tipe</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-arsip-surat" class="divide-y divide-slate-100">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== 3. TAB: E-KADER ==================== -->
+      <section id="tab-kader" class="tab-pane hidden fade-in-tab space-y-6">
+        
+        <!-- Statistik Kader Ringkasan -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-ansor flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">Total Anggota</span>
+              <h3 id="stat-total-kader" class="text-2xl font-black text-slate-800">0</h3>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-ansor-dark flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">GP Ansor</span>
+              <h3 id="stat-total-ansor" class="text-2xl font-black text-emerald-800">0</h3>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-100 text-red-700 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">Satkorkel BANSER</span>
+              <h3 id="stat-total-banser" class="text-2xl font-black text-red-700">0</h3>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-book-quran"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">MDS Rijalul Ansor</span>
+              <h3 id="stat-total-rijalul" class="text-2xl font-black text-blue-800">0</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Input Kader Baru (Collapsible) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+          <div class="p-5 border-b flex items-center justify-between cursor-pointer select-none bg-slate-50/50" id="btn-toggle-form-kader">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-user-plus text-ansor"></i>
+              <span>Formulir Pendataan Anggota Baru / Registrasi Ulang</span>
+            </h3>
+            <span class="text-xs text-ansor font-semibold flex items-center gap-1">
+              <span id="text-toggle-kader">Tutup Form</span>
+              <i id="icon-toggle-kader" class="fa-solid fa-chevron-up"></i>
+            </span>
+          </div>
+
+          <div id="container-form-kader" class="p-6">
+            <form id="form-kader" class="space-y-4 text-xs">
+              <input type="hidden" id="kader-id" value="">
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Nama Lengkap *</label>
+                  <input type="text" id="kader-nama" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium" placeholder="Nama lengkap sesuai KTP" required>
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
+                  <input type="text" id="kader-nik" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-mono" placeholder="16 digit NIK">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">NIA (Nomor Induk Anggota)</label>
+                  <input type="text" id="kader-nia" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-mono" placeholder="Contoh: 11.07.02.001">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Tempat Lahir</label>
+                  <input type="text" id="kader-tempat-lahir" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Blitar">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Tanggal Lahir</label>
+                  <input type="date" id="kader-tgl-lahir" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">No. WhatsApp / HP Aktif *</label>
+                  <input type="text" id="kader-wa" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="08xxxxxxxxxx" required>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Alamat Domisili (RT/RW / Dusun) *</label>
+                <input type="text" id="kader-alamat" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: RT 02 / RW 01 Dsn. Jatinom Krajan" required>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Badan Otonom / Lembaga Diikuti:</label>
+                  <div class="space-y-1.5 pt-1">
+                    <label class="inline-flex items-center gap-2 mr-3">
+                      <input type="checkbox" name="kader-lembaga" value="Ansor" class="rounded text-ansor focus:ring-ansor" checked>
+                      <span>Ansor</span>
+                    </label>
+                    <label class="inline-flex items-center gap-2 mr-3">
+                      <input type="checkbox" name="kader-lembaga" value="Banser" class="rounded text-red-600 focus:ring-red-600">
+                      <span>Banser</span>
+                    </label>
+                    <label class="inline-flex items-center gap-2">
+                      <input type="checkbox" name="kader-lembaga" value="Rijalul Ansor" class="rounded text-blue-600 focus:ring-blue-600">
+                      <span>Rijalul Ansor</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Jenjang Kaderisasi Terakhir:</label>
+                  <select id="kader-kaderisasi" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+                    <option value="Belum Kaderisasi">Belum Kaderisasi Formal</option>
+                    <option value="PKD">PKD (Pelatihan Kepemimpinan Dasar)</option>
+                    <option value="PKL">PKL (Pelatihan Kepemimpinan Lanjutan)</option>
+                    <option value="PKN">PKN (Pelatihan Kepemimpinan Nasional)</option>
+                    <option value="DIKLATSAR">DIKLATSAR (Banser)</option>
+                    <option value="SUSBALAN">SUSBALAN (Banser Lanjutan)</option>
+                    <option value="SUSBANPIM">SUSBANPIM (Banser Pimpinan)</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Jabatan / Amanah Organisasi:</label>
+                  <input type="text" id="kader-jabatan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Anggota / Pengurus / Danru..." value="Anggota">
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-2 pt-2 border-t">
+                <button type="button" id="btn-reset-form-kader" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-bold hover:bg-slate-50 transition">
+                  Reset
+                </button>
+                <button type="submit" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-2 shadow transition">
+                  <i class="fa-solid fa-floppy-disk text-gold"></i>
+                  <span>Simpan Data Anggota</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Tabel Basis Data Anggota & Filter -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-address-book text-ansor"></i>
+                <span>Basis Data Keanggotaan Ranting Jatinom</span>
+              </h3>
+              <p class="text-xs text-slate-500">Pencarian, filtering multi-banom, dan ekspor data</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+              <button id="btn-export-kader-csv" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                <i class="fa-solid fa-file-excel text-gold"></i>
+                <span>Ekspor ke CSV / Excel</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Toolbar Search & Filter Lembaga -->
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-2">
+            <div class="sm:col-span-4 relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input type="text" id="search-kader" class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Cari nama, NIK, atau NIA...">
+            </div>
+
+            <div class="sm:col-span-4">
+              <select id="filter-kader-lembaga" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-ansor focus:bg-white">
+                <option value="semua">Semua Lembaga / Banom</option>
+                <option value="Ansor">Hanya GP Ansor</option>
+                <option value="Banser">Hanya BANSER</option>
+                <option value="Rijalul Ansor">Hanya MDS Rijalul Ansor</option>
+              </select>
+            </div>
+
+            <div class="sm:col-span-4">
+              <select id="filter-kader-kaderisasi" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:ring-2 focus:ring-ansor focus:bg-white">
+                <option value="semua">Semua Status Kaderisasi</option>
+                <option value="PKD">PKD (Ansor)</option>
+                <option value="DIKLATSAR">DIKLATSAR (Banser)</option>
+                <option value="SUSBALAN">SUSBALAN (Banser Lanjutan)</option>
+                <option value="Belum Kaderisasi">Belum Kaderisasi</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel Kader -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 uppercase tracking-wider text-[11px] border-b">
+                <tr>
+                  <th class="py-3 px-3">No</th>
+                  <th class="py-3 px-3">Nama & NIA</th>
+                  <th class="py-3 px-3">Badan Otonom</th>
+                  <th class="py-3 px-3">Kaderisasi</th>
+                  <th class="py-3 px-3">Alamat</th>
+                  <th class="py-3 px-3">No. WhatsApp</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-kader" class="divide-y divide-slate-100">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== 4. TAB: AGENDA ==================== -->
+      <section id="tab-agenda" class="tab-pane hidden fade-in-tab space-y-6">
+        
+        <!-- Banner Kalender Kegiatan -->
+        <div class="bg-gradient-to-r from-emerald-800 to-ansor text-white rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="text-xs bg-gold text-slate-900 px-2 py-0.5 rounded font-bold uppercase tracking-wider">MDS Rijalul Ansor & Banser</span>
+            <h2 class="text-xl font-bold mt-1.5">KALENDER AGENDA & RUTINAN JATINOM</h2>
+            <p class="text-xs sm:text-sm text-emerald-100 mt-0.5">
+              Jadwal rutin Selapanan, Diba'an, Yasin-Tahlil, apel Banser, dan pertemuan ranting
+            </p>
+          </div>
+          <button id="btn-tambah-agenda-baru" class="px-4 py-2.5 bg-gold hover:bg-amber-400 text-slate-900 rounded-xl font-bold text-xs flex items-center gap-2 shadow transition shrink-0">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <span>Tambah Jadwal Agenda</span>
+          </button>
+        </div>
+
+        <!-- Form Tambah Agenda (Collapsible) -->
+        <div id="container-form-agenda" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-calendar-plus text-ansor"></i>
+              <span id="form-agenda-title">Formulir Tambah Agenda Ranting Baru</span>
+            </h3>
+            <button id="btn-tutup-form-agenda" class="text-slate-400 hover:text-slate-600">
+              <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+          </div>
+
+          <form id="form-agenda" class="space-y-3.5 text-xs">
+            <input type="hidden" id="agenda-id" value="">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="md:col-span-2">
+                <label class="block font-medium text-slate-700 mb-1">Judul / Nama Agenda Kegiatan *</label>
+                <input type="text" id="agenda-judul" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-semibold" placeholder="Contoh: Rutinan Selapanan Malam Ahad Pon..." required>
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Kategori Agenda</label>
+                <select id="agenda-kategori" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium">
+                  <option value="Rijalul Ansor">MDS Rijalul Ansor (Rutinan)</option>
+                  <option value="Banser">Satkorkel BANSER (PAM / Apel)</option>
+                  <option value="Ansor">Pimpinan Ranting Ansor (Pleno/Rapat)</option>
+                  <option value="Umum">Kegiatan Umum NU / Desa</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Tanggal Pelaksanaan *</label>
+                <input type="date" id="agenda-tanggal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" required>
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Waktu / Jam Pelaksanaan</label>
+                <input type="text" id="agenda-waktu" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: 19.30 WIB (Ba'da Isya)" required>
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Tuan Rumah / Shohibul Bait</label>
+                <input type="text" id="agenda-tuan-rumah" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Sahabat Subhan Mubarok">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Tempat / Lokasi *</label>
+              <input type="text" id="agenda-tempat" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Musholla Baitur Muttaqin RT 02 / RW 01 Dsn. Krajan" required>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Keterangan / Rincian Acara</label>
+              <textarea id="agenda-keterangan" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Catatan pakaian/seragam, amaliyah yang dibaca, susunan acara..."></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+              <button type="button" id="btn-batal-agenda" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-bold hover:bg-slate-50 transition">
+                Batal
+              </button>
+              <button type="submit" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-2 shadow transition">
+                <i class="fa-solid fa-floppy-disk text-gold"></i>
+                <span>Simpan Agenda</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Filter & Search Agenda -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto scrollbar-none">
+            <span class="text-xs font-bold text-slate-500 mr-1 shrink-0">Kategori:</span>
+            <button data-cat="semua" class="btn-filter-agenda active px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-ansor-dark border border-emerald-200">Semua</button>
+            <button data-cat="Rijalul Ansor" class="btn-filter-agenda px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">MDS Rijalul Ansor</button>
+            <button data-cat="Banser" class="btn-filter-agenda px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Banser</button>
+            <button data-cat="Ansor" class="btn-filter-agenda px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Ansor</button>
+          </div>
+
+          <div class="w-full sm:w-64 relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="search-agenda" class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-ansor focus:bg-white" placeholder="Cari agenda...">
+          </div>
+        </div>
+
+        <!-- Grid Kartu Agenda -->
+        <div id="container-agenda-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <!-- Injected via JavaScript -->
+        </div>
+
+      </section>
+
+      <!-- ==================== 5. TAB: PROFIL RANTING (NAMA-NAMA PENGURUS + UPLOAD TTD & STEMPEL) ==================== -->
+      <section id="tab-profil" class="tab-pane hidden fade-in-tab space-y-6">
+        
+        <!-- Header Banner Profil Ranting Jatinom -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left relative overflow-hidden">
+          <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-emerald-50 rounded-full pointer-events-none"></div>
+
+          <div class="w-24 h-24 sm:w-28 sm:h-28 bg-emerald-50 rounded-2xl p-2 border border-emerald-200 flex items-center justify-center shrink-0 shadow-inner">
+            <div id="profil-big-logo" class="w-full h-full flex items-center justify-center">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+
+          <div class="space-y-1.5 flex-1 relative z-10">
+            <span class="text-xs font-extrabold text-ansor bg-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider">
+              Profil Resmi Pimpinan Ranting
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-800">
+              GERAKAN PEMUDA ANSOR DESA JATINOM
+            </h2>
+            <p class="text-xs sm:text-sm font-semibold text-slate-600">
+              Kecamatan Kanigoro, Kabupaten Blitar, Jawa Timur
+            </p>
+            <p class="text-xs text-slate-500 leading-relaxed max-w-3xl pt-1">
+              Organisasi kepemudaan kemasyarakatan di bawah naungan Pengurus Ranting Nahdlatul Ulama Desa Jatinom. Mengemban amanah kaderisasi kepemudaan, tradisi keagamaan Ahlussunnah Wal Jama'ah An-Nahdliyyah, serta bela negara bersama Satkorkel Banser & MDS Rijalul Ansor.
+            </p>
+          </div>
+        </div>
+
+        <!-- ==================== FITUR UTAMA 1: DAFTAR NAMA-NAMA PENGURUS LENGKAP ==================== -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-5">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-users-viewfinder text-ansor text-lg"></i>
+                <span>Daftar Lengkap Susunan Nama-Nama Pengurus Ranting</span>
+              </h3>
+              <p class="text-xs text-slate-500">
+                Pimpinan Ranting GP Ansor, Satkorkel BANSER, MDS Rijalul Ansor, Dewan Penasehat, & Biro
+              </p>
+            </div>
+            
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button id="btn-tambah-pengurus" class="px-4 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                <i class="fa-solid fa-user-plus text-gold"></i>
+                <span>Tambah / Edit Pengurus</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Toolbar Filter Pengurus by Banom -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto scrollbar-none" id="filter-pengurus-bar">
+              <button data-banom="semua" class="btn-filter-pengurus active px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-ansor-dark border border-emerald-200">Semua (21)</button>
+              <button data-banom="Ansor" class="btn-filter-pengurus px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">GP Ansor</button>
+              <button data-banom="Banser" class="btn-filter-pengurus px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">BANSER</button>
+              <button data-banom="Rijalul Ansor" class="btn-filter-pengurus px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">MDS Rijalul Ansor</button>
+              <button data-banom="Penasehat" class="btn-filter-pengurus px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Penasehat NU</button>
+              <button data-banom="Biro" class="btn-filter-pengurus px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200">Biro & Siber</button>
+            </div>
+
+            <div class="w-full sm:w-64 relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input type="text" id="search-pengurus" class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-ansor focus:bg-white" placeholder="Cari nama atau jabatan...">
+            </div>
+          </div>
+
+          <!-- Tabel Interaktif Nama-Nama Pengurus -->
+          <div class="overflow-x-auto border border-slate-100 rounded-xl">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 uppercase tracking-wider text-[11px] border-b">
+                <tr>
+                  <th class="py-3 px-3 w-10">No</th>
+                  <th class="py-3 px-3">Jabatan Resmi</th>
+                  <th class="py-3 px-3">Nama Lengkap Pengurus</th>
+                  <th class="py-3 px-3">Badan Otonom</th>
+                  <th class="py-3 px-3">NIA (No. Induk)</th>
+                  <th class="py-3 px-3">Kontak / WA</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-pengurus" class="divide-y divide-slate-100">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ==================== FITUR UTAMA 2: UPLOAD & PREVIEW TANDA TANGAN & STEMPEL ==================== -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-6">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-4">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-stamp text-ansor text-lg"></i>
+                <span>Upload & Tanda Tangan serta Stempel Resmi 3 Pilar Ranting</span>
+              </h3>
+              <p class="text-xs text-slate-500">
+                Unggah file stempel dan tanda tangan PNG transparan untuk digunakan otomatis pada surat resmi dan sertifikat
+              </p>
+            </div>
+            <span class="text-xs bg-emerald-100 text-ansor-dark px-3 py-1 rounded-full font-bold flex items-center gap-1">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i>
+              Otomatis Masuk Cetak E-Surat
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+            
+            <!-- Box 1: GP Ansor (TTD Ketua, TTD Sekretaris, Stempel Ansor) -->
+            <div class="p-5 bg-emerald-50/50 rounded-2xl border-2 border-emerald-200 space-y-4 shadow-sm">
+              <div class="flex items-center gap-2 border-b border-emerald-200 pb-2.5">
+                <div class="w-8 h-8 rounded-xl bg-ansor text-white flex items-center justify-center text-sm shadow">
+                  <i class="fa-solid fa-pen-nib text-gold"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-ansor-dark text-xs uppercase tracking-wide">1. Pimpinan Ranting GP Ansor</h4>
+                  <p class="text-[10px] text-slate-500">Ketua, Sekretaris, & Stempel Ranting</p>
+                </div>
+              </div>
+
+              <!-- TTD Ketua -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Ketua (M. Zainal Arifin):</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-emerald-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-ketua">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-ketua" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-emerald-100 file:text-ansor file:font-bold hover:file:bg-emerald-200 cursor-pointer">
+              </div>
+
+              <!-- TTD Sekretaris -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Sekretaris (Ahmad Nur Sholihin):</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-emerald-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-sekretaris">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-sekretaris" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-emerald-100 file:text-ansor file:font-bold hover:file:bg-emerald-200 cursor-pointer">
+              </div>
+
+              <!-- Stempel Ansor -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Stempel Resmi GP Ansor Jatinom:</label>
+                <div class="h-20 bg-white rounded-xl border border-dashed border-emerald-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-stempel-ansor">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-stempel-ansor" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-emerald-100 file:text-ansor file:font-bold hover:file:bg-emerald-200 cursor-pointer">
+              </div>
+            </div>
+
+            <!-- Box 2: BANSER (TTD Kasatkorkel, Stempel Banser) -->
+            <div class="p-5 bg-red-50/50 rounded-2xl border-2 border-red-200 space-y-4 shadow-sm">
+              <div class="flex items-center gap-2 border-b border-red-200 pb-2.5">
+                <div class="w-8 h-8 rounded-xl bg-banser text-white flex items-center justify-center text-sm shadow">
+                  <i class="fa-solid fa-shield-halved text-gold"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-red-800 text-xs uppercase tracking-wide">2. Satkorkel BANSER Jatinom</h4>
+                  <p class="text-[10px] text-slate-500">Kasatkorkel & Stempel Satkorkel</p>
+                </div>
+              </div>
+
+              <!-- TTD Kasatkorkel -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Kasatkorkel (Subhan M.):</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-red-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-kasatkorkel">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-kasatkorkel" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-red-100 file:text-red-700 file:font-bold hover:file:bg-red-200 cursor-pointer">
+              </div>
+
+              <!-- Stempel Banser -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Stempel Satkorkel BANSER Jatinom:</label>
+                <div class="h-20 bg-white rounded-xl border border-dashed border-red-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-stempel-banser">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-stempel-banser" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-red-100 file:text-red-700 file:font-bold hover:file:bg-red-200 cursor-pointer">
+              </div>
+
+              <div class="p-2.5 bg-red-100/60 rounded-xl text-[10.5px] text-red-900 leading-tight">
+                Digunakan otomatis pada Surat Tugas Pengamanan (ST), Surat Mandat (SM), dan Apel Banser.
+              </div>
+            </div>
+
+            <!-- Box 3: MDS Rijalul Ansor (TTD Ketua MDS, Stempel MDS) -->
+            <div class="p-5 bg-blue-50/50 rounded-2xl border-2 border-blue-200 space-y-4 shadow-sm">
+              <div class="flex items-center gap-2 border-b border-blue-200 pb-2.5">
+                <div class="w-8 h-8 rounded-xl bg-blue-900 text-gold flex items-center justify-center text-sm shadow">
+                  <i class="fa-solid fa-book-quran"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-blue-900 text-xs uppercase tracking-wide">3. MDS Rijalul Ansor</h4>
+                  <p class="text-[10px] text-slate-500">Ketua Majelis & Stempel MDS RA</p>
+                </div>
+              </div>
+
+              <!-- TTD Ketua MDS -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Ketua MDS (Gus Fahmi):</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-blue-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-mds">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-mds" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-800 file:font-bold hover:file:bg-blue-200 cursor-pointer">
+              </div>
+
+              <!-- Stempel MDS -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Stempel MDS Rijalul Ansor Jatinom:</label>
+                <div class="h-20 bg-white rounded-xl border border-dashed border-blue-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-stempel-mds">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-stempel-mds" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-800 file:font-bold hover:file:bg-blue-200 cursor-pointer">
+              </div>
+
+              <div class="p-2.5 bg-blue-100/60 rounded-xl text-[10.5px] text-blue-900 leading-tight">
+                Digunakan otomatis pada Surat Undangan Rutinan (SU), Diba'an, dan jadwal Selapanan ranting.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Visi & Misi Card -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-3">
+            <div class="flex items-center gap-3 border-b pb-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-ansor flex items-center justify-center text-lg">
+                <i class="fa-solid fa-eye"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-800">Visi Ranting</h3>
+                <p class="text-xs text-slate-500">Arah gerakan dan cita-cita organisasi</p>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-serif italic bg-slate-50 p-4 rounded-xl border border-slate-200">
+              "Terwujudnya pemuda Desa Jatinom yang berkarakter islami Ahlussunnah Wal Jama'ah An-Nahdliyyah, berdaya guna secara intelektual dan ekonomi, militan dalam membentengi Ulama, serta teguh mengawal keutuhan Negara Kesatuan Republik Indonesia."
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-3">
+            <div class="flex items-center gap-3 border-b pb-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-slate-800">Misi Utama</h3>
+                <p class="text-xs text-slate-500">Langkah strategis khidmah jam'iyyah</p>
+              </div>
+            </div>
+            <ul class="text-xs text-slate-700 space-y-2 list-disc list-inside leading-relaxed">
+              <li><strong>Pengkaderan Terstruktur:</strong> Melaksanakan kaderisasi formal (PKD Ansor & Diklatsar Banser) secara berkesinambungan bagi pemuda desa.</li>
+              <li><strong>Tradisi & Amaliyah:</strong> Mengistiqomahkan majelis dzikir, shalawat Diba', dan tahlil melalui MDS Rijalul Ansor di seluruh dusun Desa Jatinom.</li>
+              <li><strong>Satu Komando:</strong> Meningkatkan disiplin dan kesiapsiagaan Satkorkel Banser dalam tanggap sosial, bencana, dan marwah ulama.</li>
+              <li><strong>Digitalisasi & Kemandirian:</strong> Menerapkan administrasi modern dan menumbuhkan kemandirian ekonomi kader ranting.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 4 Identitas & Lambang Resmi di Ranting Jatinom -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-6">
+          <div class="border-b pb-3">
+            <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-shapes text-gold"></i>
+              <span>4 Identitas & Lambang Resmi di Ranting Jatinom</span>
+            </h3>
+            <p class="text-xs text-slate-500">Makna dan filosofi lambang yang digunakan pada surat dan kegiatan organisasi</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Logo 1: GP Ansor -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center flex flex-col items-center">
+              <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-ansor">
+                <!-- Rendered via JS -->
+              </div>
+              <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Gerakan Pemuda Ansor</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Segitiga hijau bintang sembilan melambangkan ketauhidan, keberanian, dan pengawalan Aswaja An-Nahdliyyah.
+              </p>
+            </div>
+
+            <!-- Logo 2: Banser -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center flex flex-col items-center">
+              <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-banser">
+                <!-- Rendered via JS -->
+              </div>
+              <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">BANSER Satkorkel</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Perisai merah bernafaskan semboyan <em>Nahnu Ansharullah</em> siap siaga membela Agama, Bangsa, dan Negeri.
+              </p>
+            </div>
+
+            <!-- Logo 3: MDS Rijalul Ansor -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center flex flex-col items-center">
+              <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-rijalul">
+                <!-- Rendered via JS -->
+              </div>
+              <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">MDS Rijalul Ansor</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Benteng spiritual dan wadah pelestarian shalawat Diba', tahlil, serta kajian kitab kuning karya Masyayikh NU.
+              </p>
+            </div>
+
+            <!-- Logo 4: Badan Siber Jatinom -->
+            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center flex flex-col items-center">
+              <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-siber">
+                <!-- Rendered via JS -->
+              </div>
+              <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Badan Siber Ranting</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Mengawal ruang digital, tata kelola data keanggotaan modern, dan menangkal hoaks di wilayah Desa Jatinom.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== 6. TAB: PENGATURAN (PENGATURAN 6 USER & IDENTITAS) ==================== -->
+      <section id="tab-pengaturan" class="tab-pane hidden fade-in-tab space-y-6">
+        
+        <!-- Banner Pengaturan Tab 6 -->
+        <div class="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white rounded-2xl shadow-md p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="text-xs bg-gold text-slate-900 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Manajemen Akses & Konfigurasi</span>
+            <h2 class="text-xl font-bold mt-1.5">PENGATURAN USER & IDENTITAS RANTING</h2>
+            <p class="text-xs sm:text-sm text-emerald-100/90 mt-1 max-w-2xl">
+              Kelola 6 akun pengurus resmi (Super Admin, Ketua Ansor, Sekretaris, Kasatkorkel, Ketua MDS Rijalul Ansor, dan Ketua Siber Ansor), hak akses, PIN sandi, serta logo ranting.
+            </p>
+          </div>
+          <button id="btn-tambah-user-baru" class="px-4 py-2.5 bg-gold hover:bg-amber-400 text-slate-900 rounded-xl font-bold text-xs flex items-center gap-2 shadow transition shrink-0">
+            <i class="fa-solid fa-user-shield"></i>
+            <span>Pengaturan Akun</span>
+          </button>
+        </div>
+
+        <!-- 6 KARTU USER ROLES RESMI GP ANSOR JATINOM -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-users text-ansor"></i>
+              <span>Daftar 6 Akun Pengurus Ranting Terdaftar:</span>
+            </h3>
+            <span class="text-xs text-slate-500">Klik "Masuk Akun" untuk beralih peran kerja</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="container-user-cards">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Form Identitas & Kontak Sekretariat -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2 border-b pb-3">
+            <i class="fa-solid fa-building text-ansor"></i>
+            <span>Informasi Sekretariat Ranting Jatinom</span>
+          </h3>
+
+          <form id="form-settings-umum" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Nama Pimpinan Ranting:</label>
+                <input type="text" id="set-nama-ranting" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="PIMPINAN RANTING DESA JATINOM">
+              </div>
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Nomor WhatsApp Official:</label>
+                <input type="text" id="set-wa-official" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" value="081234567890">
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Alamat Sekretariat Lengkap:</label>
+              <textarea id="set-alamat-sekretariat" rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg leading-relaxed">Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com</textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+              <button type="submit" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-1.5 shadow transition">
+                <i class="fa-solid fa-floppy-disk text-gold"></i>
+                <span>Simpan Pengaturan</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="app-footer" class="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t-2 border-gold">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-center md:text-left">
+          <p class="font-extrabold text-white text-sm">
+            SAHABAT JATINOM <span class="text-gold font-normal">v2.3</span>
+          </p>
+          <p class="text-[11px] text-slate-400 mt-0.5">
+            Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor
+          </p>
+          <p class="text-[10px] text-slate-500 mt-0.5">
+            Pimpinan Ranting Desa Jatinom &bull; Kec. Kanigoro &bull; Kab. Blitar
+          </p>
+        </div>
+
+        <div class="flex items-center gap-4 text-center md:text-right">
+          <div>
+            <span class="block text-[11px] text-emerald-400 font-bold">Khidmah Aswaja An-Nahdliyyah</span>
+            <span class="text-[10px] text-slate-500">&copy; 2026 GP Ansor Ranting Jatinom. Satu Komando.</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ==================== MODAL: FORM TAMBAH / EDIT PENGURUS ==================== -->
+  <div id="modal-pengurus" class="modal-backdrop hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-user-pen text-ansor"></i>
+          <span id="modal-pengurus-title">Form Data Pengurus Ranting</span>
+        </h3>
+        <button id="btn-close-modal-pengurus" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form id="form-modal-pengurus" class="space-y-3 text-xs">
+        <input type="hidden" id="edit-pengurus-id" value="">
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Badan Otonom / Lembaga *</label>
+          <select id="edit-pengurus-lembaga" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-medium focus:ring-2 focus:ring-ansor">
+            <option value="Ansor">Pimpinan Ranting GP Ansor</option>
+            <option value="Banser">Satkorkel BANSER</option>
+            <option value="Rijalul Ansor">MDS Rijalul Ansor</option>
+            <option value="Penasehat">Dewan Penasehat PR NU</option>
+            <option value="Biro">Biro & Badan Siber</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Jabatan Resmi *</label>
+          <input type="text" id="edit-pengurus-jabatan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor" placeholder="Contoh: Ketua PR GP Ansor Jatinom" required>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Nama Lengkap Pengurus *</label>
+          <input type="text" id="edit-pengurus-nama" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-bold focus:ring-2 focus:ring-ansor" placeholder="Nama Lengkap" required>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">NIA (No. Induk Anggota)</label>
+            <input type="text" id="edit-pengurus-nia" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-mono" placeholder="11.07.02.xxx">
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">No. WhatsApp / HP</label>
+            <input type="text" id="edit-pengurus-kontak" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" placeholder="08xxxxxxxx">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Urutan Tampilan:</label>
+          <input type="number" id="edit-pengurus-urutan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-mono" value="10">
+        </div>
+
+        <div class="flex justify-end gap-2 pt-3 border-t">
+          <button type="button" id="btn-batal-modal-pengurus" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-bold hover:bg-slate-50 transition">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-floppy-disk text-gold"></i>
+            <span>Simpan Pengurus</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: PREVIEW & CETAK SURAT (A4 PRINTABLE) ==================== -->
+  <div id="modal-preview-surat" class="modal-backdrop hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 overflow-y-auto p-4 sm:p-6 flex items-start justify-center">
+    <div class="modal-content-box bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-8 space-y-6 shadow-2xl relative my-4">
+      
+      <!-- Toolbar Aksi Modal Preview -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-4 no-print">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <h3 class="font-bold text-slate-800 text-sm sm:text-base">Pratinjau Surat Resmi Siap Cetak (A4 Standard)</h3>
+        </div>
+        
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button id="btn-print-surat" class="flex-1 sm:flex-none px-5 py-2.5 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg transition">
+            <i class="fa-solid fa-print text-gold"></i>
+            <span>Cetak / Simpan PDF</span>
+          </button>
+          <button id="btn-close-preview" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+            Tutup
+          </button>
+        </div>
+      </div>
+
+      <!-- KERTAS SURAT RESMI (PRINT CANVAS) -->
+      <div id="print-area-surat" class="surat-paper bg-white p-8 sm:p-12 border border-slate-300 text-slate-900">
+        
+        <!-- KOP SURAT RESMI -->
+        <div class="kop-surat-container flex items-center justify-between border-b-2 border-ansor pb-3">
+          <div class="kop-logo shrink-0" id="print-kop-logo-left">
+            <!-- Injected via JS -->
+          </div>
+          <div class="kop-teks text-center flex-1 px-4">
+            <h1 class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>
+            <h2 id="print-kop-title" class="text-base sm:text-xl font-black text-ansor uppercase tracking-wider">GERAKAN PEMUDA ANSOR</h2>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wide">DESA JATINOM KECAMATAN KANIGORO</h3>
+            <p id="print-kop-alamat" class="text-[9.5px] sm:text-[10.5px] text-slate-500 mt-1 leading-tight">
+              Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com
+            </p>
+          </div>
+          <div class="kop-logo shrink-0" id="print-kop-logo-right">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+        <div class="kop-double-line border-b-2 border-gold mt-1 mb-6"></div>
+
+        <!-- HEADER DATA SURAT (Nomor, Lampiran, Hal & Tanggal) -->
+        <div class="flex justify-between items-start text-xs leading-relaxed mb-6">
+          <table class="w-auto">
+            <tr>
+              <td class="pr-2 font-semibold">Nomor</td>
+              <td class="pr-2">:</td>
+              <td id="print-nomor-surat" class="font-mono font-bold text-slate-900">001/PR-XII-11-07-02/SU-01/XI/2026</td>
+            </tr>
+            <tr>
+              <td class="pr-2 font-semibold">Lamp.</td>
+              <td class="pr-2">:</td>
+              <td id="print-lampiran">-</td>
+            </tr>
+            <tr>
+              <td class="pr-2 font-semibold">Hal</td>
+              <td class="pr-2">:</td>
+              <td id="print-perihal" class="font-bold underline">Undangan Rutinan MDS Rijalul Ansor</td>
+            </tr>
+          </table>
+
+          <div class="text-right text-xs">
+            <div id="print-tgl-hijriah" class="font-serif">14 Jumadil Ula 1448 H</div>
+            <div id="print-tgl-masehi" class="font-semibold">04 November 2026 M</div>
+          </div>
+        </div>
+
+        <!-- KEPADA YTH / TUJUAN SURAT -->
+        <div class="text-xs leading-relaxed mb-6">
+          <p class="font-semibold">Kepada Yang Terhormat:</p>
+          <div id="print-tujuan-surat" class="font-bold pl-0 mt-1 whitespace-pre-line text-slate-800">
+            Seluruh Sahabat Pengurus & Anggota PR GP Ansor Jatinom
+            Di - Jatinom
+          </div>
+        </div>
+
+        <!-- ISI REDAKSI SURAT -->
+        <div id="print-isi-surat" class="text-xs leading-relaxed text-justify space-y-3 font-serif">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- TANDA TANGAN & STEMPEL RESMI -->
+        <div class="mt-10 pt-4 text-xs">
+          <p class="text-center font-bold mb-4 uppercase tracking-wider text-slate-800" id="print-ttd-heading">
+            PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM
+          </p>
+
+          <div class="grid grid-cols-2 gap-8 text-center relative mt-6">
+            
+            <!-- Kolom Kiri: Sekretaris -->
+            <div class="flex flex-col items-center justify-between h-40">
+              <span id="print-ttd1-jabatan" class="font-bold text-slate-800">Sekretaris,</span>
+              
+              <!-- Signature Area Kiri -->
+              <div class="relative w-full h-24 flex items-center justify-center">
+                <div id="print-img-ttd-sekretaris" class="w-32 h-16 flex items-center justify-center">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <div>
+                <h4 id="print-ttd1-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">AHMAD NUR SHOLIHIN</h4>
+                <p id="print-ttd1-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.002</p>
+              </div>
+            </div>
+
+            <!-- Kolom Kanan: Ketua + Stempel Basah -->
+            <div class="flex flex-col items-center justify-between h-40 relative">
+              <span id="print-ttd2-jabatan" class="font-bold text-slate-800">Ketua,</span>
+              
+              <!-- Signature & Stempel Area Kanan -->
+              <div class="relative w-full h-24 flex items-center justify-center">
+                <!-- Stempel Ranting Menimpa TTD -->
+                <div id="print-img-stempel" class="absolute -left-6 sm:left-2 top-0 w-24 h-24 pointer-events-none opacity-85 z-10 transform -rotate-12">
+                  <!-- Injected via JS -->
+                </div>
+
+                <div id="print-img-ttd-ketua" class="w-32 h-16 flex items-center justify-center relative z-0">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <div>
+                <h4 id="print-ttd2-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">MUHAMMAD ZAINAL ARIFIN</h4>
+                <p id="print-ttd2-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.001</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: CATAT SURAT MASUK ==================== -->
+  <div id="modal-surat-masuk" class="modal-backdrop hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-inbox text-ansor"></i>
+          <span>Catat Surat Masuk Baru</span>
+        </h3>
+        <button id="btn-close-surat-masuk" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <form id="form-surat-masuk" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Nomor Surat Masuk *</label>
+          <input type="text" id="masuk-nomor" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-mono focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: 045/PAC/SR-01/XI/2026" required>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Asal Pengirim / Instansi *</label>
+          <input type="text" id="masuk-pengirim" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: PAC GP Ansor Kanigoro" required>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Perihal / Hal *</label>
+          <input type="text" id="masuk-perihal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Undangan Konferensi Anak Cabang" required>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Tanggal Surat *</label>
+            <input type="date" id="masuk-tanggal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" required>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Klasifikasi Surat</label>
+            <select id="masuk-jenis" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+              <option value="SU">Surat Undangan</option>
+              <option value="SR">Surat Rutin / Biasa</option>
+              <option value="SI">Surat Instruksi</option>
+              <option value="SE">Surat Edaran</option>
+              <option value="SM">Surat Mandat</option>
+              <option value="SK">Surat Keputusan</option>
+              <option value="Lainnya">Lain-lain</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-3 border-t">
+          <button type="button" id="btn-batal-surat-masuk" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition">
+            Batal
+          </button>
+          <button type="submit" class="px-4 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-1.5 shadow transition">
+            <i class="fa-solid fa-floppy-disk text-gold"></i>
+            <span>Simpan ke Arsip</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: BACA LENGKAP WARTA ==================== -->
+  <div id="modal-baca-berita" class="modal-backdrop hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 overflow-y-auto p-4 flex items-center justify-center">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 sm:p-8 space-y-4 shadow-2xl relative my-6 border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <span id="baca-berita-kategori" class="text-xs font-bold px-3 py-1 bg-emerald-100 text-ansor-dark rounded-full uppercase">
+          Kategori
+        </span>
+        <button id="btn-close-baca-berita" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <h2 id="baca-berita-judul" class="text-lg sm:text-xl font-black text-slate-800 leading-snug">
+          Judul Berita
+        </h2>
+        <div class="flex items-center gap-3 text-xs text-slate-500 pb-2 border-b">
+          <span id="baca-berita-tanggal"><i class="fa-solid fa-calendar text-gold mr-1"></i> Tanggal</span>
+          <span>&bull;</span>
+          <span id="baca-berita-penulis"><i class="fa-solid fa-user-pen text-ansor mr-1"></i> Penulis</span>
+        </div>
+
+        <div id="baca-berita-gambar-container" class="rounded-xl overflow-hidden max-h-72 w-full bg-slate-100 hidden">
+          <img id="baca-berita-gambar" src="" alt="Foto Warta" class="w-full h-full object-cover">
+        </div>
+
+        <div id="baca-berita-isi" class="text-xs sm:text-sm text-slate-700 leading-relaxed font-serif whitespace-pre-line space-y-3 pt-2">
+          <!-- Isi Berita -->
+        </div>
+      </div>
+
+      <div class="pt-4 border-t flex justify-end">
+        <button id="btn-tutup-baca-berita-bottom" class="px-5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">
+          Tutup Berita
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: BACKUP & RESTORE ==================== -->
+  <div id="modal-backup" class="modal-backdrop hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-database text-ansor"></i>
+          <span>Backup & Sinkronisasi Data</span>
+        </h3>
+        <button id="btn-close-backup" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500">
+        Cadangkan seluruh data persuratan, anggota kader, pengurus, warta, dan agenda ke file JSON cadangan untuk keamanan arsip.
+      </p>
+
+      <div class="space-y-3 pt-1">
+        <button id="btn-download-backup-json" class="w-full py-2.5 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow transition">
+          <i class="fa-solid fa-download text-gold"></i>
+          <span>Unduh File Cadangan (JSON Backup)</span>
+        </button>
+
+        <div class="border-t pt-3">
+          <label class="block text-xs font-medium text-slate-700 mb-1.5">Pulihkan Data dari File JSON:</label>
+          <input type="file" id="input-file-restore" accept=".json" class="w-full text-xs text-slate-500 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-50 file:text-ansor file:font-semibold">
+        </div>
+
+        <div class="border-t pt-3">
+          <button id="btn-reset-pabrik" class="w-full py-2 bg-red-50 hover:bg-red-100 text-red-700 rounded-xl text-xs font-bold border border-red-200 transition">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+            Reset ke Data Awal Ranting Jatinom
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE -->
+  <script src="js/app.js"></script>
+  <script src="js/ui.js"></script>
+</body>
+</html>
+
