@@ -162,17 +162,26 @@ body {
   transform: scale(1.1);
 }
 
-/* Desktop Layout Offset */
+/* Desktop Layout Offset - Sidebar Visible */
 @media (min-width: 1024px) {
   .sidebar-desktop-fixed {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
-    transform: translateX(0) !important;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
   }
   .main-content-layout {
     margin-left: 270px;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Desktop Sidebar HIDDEN state */
+  body.sidebar-collapsed .sidebar-desktop-fixed {
+    transform: translateX(-270px);
+  }
+  body.sidebar-collapsed .main-content-layout {
+    margin-left: 0;
   }
 }
 
@@ -191,6 +200,58 @@ body {
   .main-content-layout {
     margin-left: 0;
   }
+}
+
+/* Sidebar Toggle Button (Desktop) */
+#btn-desktop-toggle-sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  #btn-desktop-toggle-sidebar {
+    display: flex;
+  }
+}
+
+/* Dashboard Cards */
+.dash-stat-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  padding: 1.25rem 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+}
+.dash-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.09);
+}
+.dash-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+/* Upload Logo Area */
+.logo-upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.logo-upload-zone:hover {
+  border-color: #006837;
+  background: #f0fdf4;
+}
+.logo-upload-zone input[type="file"] {
+  display: none;
 }
 
 /* Pastikan utilitas hidden dan modal backdrop selalu patuh */

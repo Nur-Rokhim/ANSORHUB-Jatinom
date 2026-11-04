@@ -445,7 +445,11 @@ class AnsorStore {
   static setCustomLogo(type, dataUrl) {
     const settings = this.getSettings();
     if (!settings.customLogos) settings.customLogos = {};
-    settings.customLogos[type] = dataUrl;
+    if (dataUrl === null || dataUrl === undefined) {
+      delete settings.customLogos[type];
+    } else {
+      settings.customLogos[type] = dataUrl;
+    }
     this.saveSettings(settings);
   }
 

@@ -7,7 +7,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   // --- APPLICATION STATE ---
   let state = {
-    activeTab: "tab-warta", // Tab Pertama Default: Warta Ansor
+    activeTab: "tab-dashboard", // Tab Pertama Default: Dashboard
     currentTemplate: "SU", // Default: Surat Undangan
     kaderList: AnsorStore.getKader(),
     agendaList: AnsorStore.getAgenda(),
@@ -322,6 +322,62 @@ document.addEventListener("DOMContentLoaded", () => {
     closeSidebar();
   });
 
+  // --- UPLOAD LOGO MODAL ---
+  const modalUploadLogo = document.getElementById("modal-upload-logo");
+  document.getElementById("sidebar-btn-upload-logo")?.addEventListener("click", () => {
+    openUploadLogoModal();
+    closeSidebar();
+  });
+  document.getElementById("btn-close-upload-logo")?.addEventListener("click", () => modalUploadLogo?.classList.add("hidden"));
+  document.getElementById("btn-close-upload-logo-2")?.addEventListener("click", () => modalUploadLogo?.classList.add("hidden"));
+
+  function openUploadLogoModal() {
+    modalUploadLogo?.classList.remove("hidden");
+    // Show current logos in preview boxes
+    ["ansor", "banser", "rijalul", "siber"].forEach(type => {
+      const prevEl = document.getElementById(`preview-upload-${type}`);
+      if (prevEl) prevEl.innerHTML = getLogoHTML(type);
+    });
+  }
+
+  // Handle file input for each logo type
+  ["ansor", "banser", "rijalul", "siber"].forEach(type => {
+    const inp = document.getElementById(`upload-logo-${type}`);
+    if (!inp) return;
+    inp.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert("Ukuran file terlalu besar. Maksimal 2MB.");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = ev.target.result;
+        AnsorStore.setCustomLogo(type, dataUrl);
+        // Update preview
+        const prevEl = document.getElementById(`preview-upload-${type}`);
+        if (prevEl) prevEl.innerHTML = `<img src="${dataUrl}" alt="Logo ${type}" class="w-full h-full object-contain">`;
+        // Re-render all logos
+        renderAllLogos();
+        addNotification("Logo Diperbarui", `Logo ${type} berhasil diubah.`, "success");
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Reset semua logo ke SVG default
+  document.getElementById("btn-reset-logo-semua")?.addEventListener("click", () => {
+    if (!confirm("Reset semua logo ke tampilan SVG default Jatinom?")) return;
+    ["ansor", "banser", "rijalul", "siber"].forEach(type => {
+      AnsorStore.setCustomLogo(type, null);
+      const prevEl = document.getElementById(`preview-upload-${type}`);
+      if (prevEl) prevEl.innerHTML = getLogoHTML(type);
+    });
+    renderAllLogos();
+    addNotification("Logo Direset", "Semua logo kembali ke SVG default.", "info");
+  });
+
   // Tombol Tamu
   document.getElementById("btn-login-tamu")?.addEventListener("click", () => {
     state.currentUser = {
@@ -384,8 +440,30 @@ document.addEventListener("DOMContentLoaded", () => {
   btnCloseSidebar?.addEventListener("click", closeSidebar);
   sidebarBackdrop?.addEventListener("click", closeSidebar);
 
+  // --- DESKTOP SIDEBAR TOGGLE (HIDE/SHOW) ---
+  const btnDesktopToggle = document.getElementById("btn-desktop-toggle-sidebar");
+  let sidebarHidden = localStorage.getItem("sahabat-sidebar-hidden") === "true";
+
+  function applySidebarDesktopState() {
+    if (sidebarHidden) {
+      document.body.classList.add("sidebar-collapsed");
+      btnDesktopToggle?.setAttribute("title", "Tampilkan Sidebar");
+    } else {
+      document.body.classList.remove("sidebar-collapsed");
+      btnDesktopToggle?.setAttribute("title", "Sembunyikan Sidebar");
+    }
+  }
+  applySidebarDesktopState();
+
+  btnDesktopToggle?.addEventListener("click", () => {
+    sidebarHidden = !sidebarHidden;
+    localStorage.setItem("sahabat-sidebar-hidden", sidebarHidden);
+    applySidebarDesktopState();
+  });
+
   // --- TAB SWITCHER (6 TABS TERSTRUKTUR & SIDEBAR HARMONIZED) ---
   const TAB_TITLES = {
+    "tab-dashboard": "Dashboard Ranting",
     "tab-warta": "1. Warta Ansor",
     "tab-surat": "2. E-Surat",
     "tab-kader": "3. E-Kader",
@@ -450,7 +528,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Render Konten Tab yang Dipilih
-    if (tabId === "tab-warta") {
+    if (tabId === "tab-dashboard") {
+      renderDashboard();
+    } else if (tabId === "tab-warta") {
       renderBeritaGrid();
     } else if (tabId === "tab-surat") {
       renderArsipTable();
@@ -465,6 +545,92 @@ document.addEventListener("DOMContentLoaded", () => {
       renderAllLogos();
     } else if (tabId === "tab-pengaturan") {
       renderUserCards();
+    }
+  }
+
+  // Global helper untuk tombol akses cepat di Dashboard
+  window.switchTabPublic = function(tabId) { switchTab(tabId); };
+
+  // --- DASHBOARD RENDER ---
+  function renderDashboard() {
+    const kaderList = AnsorStore.getKader();
+    const agendaList = AnsorStore.getAgenda();
+    const beritaList = AnsorStore.getBerita();
+
+    // Stat Numbers
+    const totalAnsor = kaderList.filter(k => k.lembaga !== "Banser").length;
+    const totalBanser = kaderList.filter(k => k.lembaga === "Banser").length;
+    const totalAgenda = agendaList.filter(a => a.status === "Aktif" || !a.status).length;
+    const totalWarta = beritaList.length;
+
+    const el = id => document.getElementById(id);
+    if (el("dash-total-ansor")) el("dash-total-ansor").textContent = totalAnsor;
+    if (el("dash-total-banser")) el("dash-total-banser").textContent = totalBanser;
+    if (el("dash-total-agenda")) el("dash-total-agenda").textContent = totalAgenda;
+    if (el("dash-total-warta")) el("dash-total-warta").textContent = totalWarta;
+
+    // Greeting & user info
+    const u = state.currentUser || state.usersList[0];
+    const hour = new Date().getHours();
+    const greet = hour < 11 ? "Selamat Pagi" : hour < 15 ? "Selamat Siang" : hour < 18 ? "Selamat Sore" : "Selamat Malam";
+    if (el("dash-greeting")) el("dash-greeting").textContent = `${greet}, Sahabat ${u?.nama || "Pengurus"}! 👋`;
+
+    // DateTime
+    if (el("dash-datetime")) {
+      const now = new Date();
+      el("dash-datetime").textContent = now.toLocaleDateString("id-ID", {
+        weekday: "long", year: "numeric", month: "long", day: "numeric"
+      }) + " — " + now.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    // Dashboard Logo
+    const dashLogo = el("dash-logo-container");
+    if (dashLogo) dashLogo.innerHTML = getLogoHTML("ansor");
+
+    // Warta Terbaru (3 terakhir)
+    const wartaEl = el("dash-warta-list");
+    if (wartaEl) {
+      const latest = [...beritaList].reverse().slice(0, 4);
+      if (latest.length === 0) {
+        wartaEl.innerHTML = `<p class="text-slate-400 italic text-xs">Belum ada warta diterbitkan.</p>`;
+      } else {
+        wartaEl.innerHTML = latest.map(b => `
+          <div class="flex items-start gap-3 p-3 rounded-xl hover:bg-slate-50 transition cursor-pointer border border-slate-100" onclick="switchTabPublic('tab-warta')">
+            <div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-newspaper text-ansor text-sm"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-slate-800 text-xs truncate">${b.judul}</p>
+              <p class="text-slate-500 text-[11px] mt-0.5 truncate">${b.ringkasan || b.isi?.substring(0, 60) || ""}</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-[10px] bg-emerald-100 text-ansor-dark px-1.5 py-0.5 rounded-full font-semibold">${b.kategori || "Ansor"}</span>
+                <span class="text-[10px] text-slate-400">${b.tanggal || ""}</span>
+              </div>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    // Agenda Terdekat (3 teratas)
+    const agendaEl = el("dash-agenda-list");
+    if (agendaEl) {
+      const upcoming = agendaList.slice(0, 3);
+      if (upcoming.length === 0) {
+        agendaEl.innerHTML = `<p class="text-slate-400 italic text-xs">Belum ada agenda terjadwal.</p>`;
+      } else {
+        agendaEl.innerHTML = upcoming.map(a => `
+          <div class="flex items-center gap-2.5 p-2 rounded-lg hover:bg-slate-50 transition">
+            <div class="w-8 h-8 rounded-lg bg-gold/10 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-calendar-check text-gold text-xs"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-bold text-slate-800 truncate">${a.judul || a.nama}</p>
+              <p class="text-[10px] text-slate-500">${a.tanggal || ""} ${a.tempat ? "• " + a.tempat : ""}</p>
+            </div>
+          </div>
+        `).join("");
+      }
     }
   }
 
@@ -2214,6 +2380,7 @@ _Wassalamu'alaikum Wr. Wb._
   renderLoginRoleButtons();
   updateHeaderUserBadge();
   applyTemplate("SU");
+  renderDashboard();    // Dashboard pertama kali
   renderBeritaGrid();
   renderArsipTable();
   updateKaderStats();
@@ -2223,6 +2390,10 @@ _Wassalamu'alaikum Wr. Wb._
   renderPengurusTable();
   renderUserCards();
   updateNotificationBell();
+
+  // Update judul header ke Dashboard saat pertama load
+  const pageTitleEl = document.getElementById("page-active-title");
+  if (pageTitleEl) pageTitleEl.textContent = "Dashboard Ranting";
 
   // XAMPP MySQL Live Check
   AnsorStore.checkXamppStatus().then((res) => {

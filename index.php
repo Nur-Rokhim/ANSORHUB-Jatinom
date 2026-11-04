@@ -200,8 +200,17 @@ require_once __DIR__ . '/config.php';
       </div>
 
       <nav class="px-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-290px)] scrollbar-none" id="sidebar-nav">
+        <!-- 0. Dashboard -->
+        <a data-tab="tab-dashboard" class="sidebar-nav-item active">
+          <span class="icon-box text-sky-400">
+            <i class="fa-solid fa-gauge-high"></i>
+          </span>
+          <span class="flex-1">Dashboard</span>
+          <span class="text-[10px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded-full font-bold">Home</span>
+        </a>
+
         <!-- 1. Warta Ansor -->
-        <a data-tab="tab-warta" class="sidebar-nav-item active">
+        <a data-tab="tab-warta" class="sidebar-nav-item">
           <span class="icon-box text-cyan-400">
             <i class="fa-solid fa-newspaper"></i>
           </span>
@@ -272,6 +281,10 @@ require_once __DIR__ . '/config.php';
           <i class="fa-solid fa-database text-xs text-gold"></i>
           <span>Backup</span>
         </button>
+        <button id="sidebar-btn-upload-logo" class="hover:text-gold flex items-center gap-1 transition" title="Upload/Ganti Logo">
+          <i class="fa-solid fa-image text-xs text-gold"></i>
+          <span>Ganti Logo</span>
+        </button>
         <button id="sidebar-btn-login" class="hover:text-gold flex items-center gap-1 transition">
           <i class="fa-solid fa-right-from-bracket text-xs text-gold"></i>
           <span>Ganti Akun</span>
@@ -292,10 +305,15 @@ require_once __DIR__ . '/config.php';
     <header class="glass-header text-white sticky top-0 z-30 shadow-md border-b-2 border-gold">
       <div class="px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
         
-        <!-- Kiri: Tombol Hamburger Mobile + Judul Halaman Aktif -->
+        <!-- Kiri: Tombol Hamburger (Mobile & Desktop) + Judul Halaman Aktif -->
         <div class="flex items-center gap-3">
+          <!-- Mobile: buka sidebar drawer -->
           <button id="btn-toggle-sidebar" class="lg:hidden p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition focus:outline-none" aria-label="Buka Menu Sidebar">
             <i class="fa-solid fa-bars text-lg text-gold"></i>
+          </button>
+          <!-- Desktop: sembunyikan/tampilkan sidebar -->
+          <button id="btn-desktop-toggle-sidebar" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition focus:outline-none" aria-label="Toggle Sidebar" title="Sembunyikan/Tampilkan Sidebar">
+            <i class="fa-solid fa-bars-staggered text-lg text-gold"></i>
           </button>
           
           <div>
@@ -367,8 +385,147 @@ require_once __DIR__ . '/config.php';
     <!-- ==================== MAIN CONTENT WRAPPER ==================== -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
 
+      <!-- ==================== 0. TAB: DASHBOARD ==================== -->
+      <section id="tab-dashboard" class="tab-pane active fade-in-tab space-y-6">
+
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white rounded-2xl shadow-lg p-6 sm:p-8 relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="space-y-2">
+              <div class="inline-flex items-center gap-2 bg-gold/20 border border-gold/40 text-gold px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider">
+                <i class="fa-solid fa-gauge-high"></i> Dashboard Utama Ranting
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-black tracking-tight" id="dash-greeting">Selamat Datang! 👋</h2>
+              <p class="text-emerald-100 text-sm" id="dash-user-info">PR GP Ansor Ranting Jatinom &bull; Kec. Kanigoro, Kab. Blitar</p>
+              <p class="text-emerald-200/70 text-xs" id="dash-datetime"></p>
+            </div>
+            <div class="w-20 h-20 shrink-0" id="dash-logo-container"><!-- logo injected --></div>
+          </div>
+        </div>
+
+        <!-- Statistik Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="dash-stat-card">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-medium">Total Kader Ansor</p>
+                <p class="text-3xl font-black text-ansor mt-1" id="dash-total-ansor">0</p>
+              </div>
+              <div class="dash-icon-box bg-emerald-50 text-ansor">
+                <i class="fa-solid fa-users"></i>
+              </div>
+            </div>
+            <p class="text-[11px] text-emerald-700 mt-2 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-id-card-clip"></i> Data Anggota Aktif
+            </p>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-medium">Personel Banser</p>
+                <p class="text-3xl font-black text-red-600 mt-1" id="dash-total-banser">0</p>
+              </div>
+              <div class="dash-icon-box bg-red-50 text-red-600">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+            </div>
+            <p class="text-[11px] text-red-700 mt-2 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-star-and-crescent"></i> Satkorkel Jatinom
+            </p>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-medium">Agenda Mendatang</p>
+                <p class="text-3xl font-black text-gold-dark mt-1" id="dash-total-agenda">0</p>
+              </div>
+              <div class="dash-icon-box bg-amber-50 text-amber-600">
+                <i class="fa-solid fa-calendar-days"></i>
+              </div>
+            </div>
+            <p class="text-[11px] text-amber-700 mt-2 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-clock"></i> Kegiatan Aktif
+            </p>
+          </div>
+
+          <div class="dash-stat-card">
+            <div class="flex items-start justify-between">
+              <div>
+                <p class="text-xs text-slate-500 font-medium">Warta Diterbitkan</p>
+                <p class="text-3xl font-black text-sky-600 mt-1" id="dash-total-warta">0</p>
+              </div>
+              <div class="dash-icon-box bg-sky-50 text-sky-600">
+                <i class="fa-solid fa-newspaper"></i>
+              </div>
+            </div>
+            <p class="text-[11px] text-sky-700 mt-2 font-semibold flex items-center gap-1">
+              <i class="fa-solid fa-rss"></i> Publikasi Ranting
+            </p>
+          </div>
+        </div>
+
+        <!-- Row: Aktivitas Terbaru + Agenda Terdekat + Akses Cepat -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          <!-- Warta Terbaru -->
+          <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-newspaper text-sky-500"></i> Warta Terbaru
+              </h3>
+              <button onclick="switchTabPublic('tab-warta')" class="text-xs text-ansor font-semibold hover:underline">Lihat Semua →</button>
+            </div>
+            <div id="dash-warta-list" class="space-y-3 text-xs">
+              <p class="text-slate-400 italic">Memuat data...</p>
+            </div>
+          </div>
+
+          <!-- Agenda Terdekat & Akses Cepat -->
+          <div class="space-y-4">
+            <!-- Agenda Terdekat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5">
+              <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-calendar-check text-gold"></i> Agenda Terdekat
+              </h3>
+              <div id="dash-agenda-list" class="space-y-2 text-xs">
+                <p class="text-slate-400 italic">Memuat data...</p>
+              </div>
+            </div>
+
+            <!-- Akses Cepat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5">
+              <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2 mb-3">
+                <i class="fa-solid fa-bolt text-amber-500"></i> Akses Cepat
+              </h3>
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="switchTabPublic('tab-surat')" class="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200 transition text-xs font-bold text-amber-800">
+                  <i class="fa-solid fa-envelope-open-text text-lg text-amber-500"></i>
+                  <span>E-Surat</span>
+                </button>
+                <button onclick="switchTabPublic('tab-kader')" class="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition text-xs font-bold text-emerald-800">
+                  <i class="fa-solid fa-id-card-clip text-lg text-ansor"></i>
+                  <span>E-Kader</span>
+                </button>
+                <button onclick="switchTabPublic('tab-agenda')" class="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-gold-soft hover:bg-amber-50 border border-gold/40 transition text-xs font-bold text-slate-700">
+                  <i class="fa-solid fa-calendar-days text-lg text-gold-dark"></i>
+                  <span>Agenda</span>
+                </button>
+                <button onclick="switchTabPublic('tab-profil')" class="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 transition text-xs font-bold text-slate-700">
+                  <i class="fa-solid fa-landmark text-lg text-slate-500"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
       <!-- ==================== 1. TAB: WARTA ANSOR ==================== -->
-      <section id="tab-warta" class="tab-pane active fade-in-tab space-y-6">
+      <section id="tab-warta" class="tab-pane hidden fade-in-tab space-y-6">
         
         <!-- Banner Warta Ansor -->
         <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white rounded-2xl shadow-md p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
@@ -1893,6 +2050,82 @@ require_once __DIR__ . '/config.php';
             Reset ke Data Awal Ranting Jatinom
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: UPLOAD LOGO ==================== -->
+  <div id="modal-upload-logo" class="modal-backdrop hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-5 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b pb-3">
+        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-image text-ansor"></i>
+          <span>Upload / Ganti Logo Aplikasi</span>
+        </h3>
+        <button id="btn-close-upload-logo" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500">Upload logo PNG/JPG untuk mengganti logo yang tampil di sidebar, header surat, dan login. Logo disimpan di perangkat ini.</p>
+
+      <div class="grid grid-cols-2 gap-4">
+        <!-- Ansor -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-ansor inline-block"></span> Logo Ansor
+          </p>
+          <div class="logo-upload-zone" onclick="document.getElementById('upload-logo-ansor').click()">
+            <div id="preview-upload-ansor" class="w-16 h-16 mx-auto mb-2"><!-- preview --></div>
+            <p class="text-[10px] text-slate-500">Klik untuk pilih gambar</p>
+            <input type="file" id="upload-logo-ansor" accept="image/*" data-logo-type="ansor">
+          </div>
+        </div>
+
+        <!-- Banser -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-red-600 inline-block"></span> Logo Banser
+          </p>
+          <div class="logo-upload-zone" onclick="document.getElementById('upload-logo-banser').click()">
+            <div id="preview-upload-banser" class="w-16 h-16 mx-auto mb-2"><!-- preview --></div>
+            <p class="text-[10px] text-slate-500">Klik untuk pilih gambar</p>
+            <input type="file" id="upload-logo-banser" accept="image/*" data-logo-type="banser">
+          </div>
+        </div>
+
+        <!-- Rijalul Ansor -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-blue-800 inline-block"></span> Logo MDS Rijalul Ansor
+          </p>
+          <div class="logo-upload-zone" onclick="document.getElementById('upload-logo-rijalul').click()">
+            <div id="preview-upload-rijalul" class="w-16 h-16 mx-auto mb-2"><!-- preview --></div>
+            <p class="text-[10px] text-slate-500">Klik untuk pilih gambar</p>
+            <input type="file" id="upload-logo-rijalul" accept="image/*" data-logo-type="rijalul">
+          </div>
+        </div>
+
+        <!-- Siber -->
+        <div class="space-y-2">
+          <p class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-slate-600 inline-block"></span> Logo Siber Ansor
+          </p>
+          <div class="logo-upload-zone" onclick="document.getElementById('upload-logo-siber').click()">
+            <div id="preview-upload-siber" class="w-16 h-16 mx-auto mb-2"><!-- preview --></div>
+            <p class="text-[10px] text-slate-500">Klik untuk pilih gambar</p>
+            <input type="file" id="upload-logo-siber" accept="image/*" data-logo-type="siber">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between gap-2 pt-2 border-t">
+        <button id="btn-reset-logo-semua" class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold transition">
+          <i class="fa-solid fa-rotate-left mr-1"></i> Reset ke SVG Default
+        </button>
+        <button id="btn-close-upload-logo-2" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold transition">
+          <i class="fa-solid fa-check mr-1"></i> Selesai
+        </button>
       </div>
     </div>
   </div>
