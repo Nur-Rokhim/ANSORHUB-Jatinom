@@ -249,34 +249,51 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (selectKopLogo) selectKopLogo.addEventListener("change", updateKopLogos);
 
-  // --- HALAMAN LOGIN PORTAL (6 ROLES INTERAKTIF) ---
+  // --- HALAMAN LOGIN PORTAL (ROLE SELECTOR DROPDOWN + PASSWORD) ---
   const modalLoginPortal = document.getElementById("modal-login-portal");
 
   function renderLoginRoleButtons() {
-    const container = document.getElementById("grid-login-roles");
-    if (!container) return;
-    container.innerHTML = "";
+    // Populate Dropdown Username
+    const selectEl = document.getElementById("login-username");
+    if (!selectEl) return;
+    
+    // Simpan pilihan yang sedang terpilih bila ada
+    const currentVal = selectEl.value;
+    selectEl.innerHTML = `<option value="" disabled selected>-- Pilih Akun Pengurus --</option>`;
 
     state.usersList.forEach((u) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "p-2.5 rounded-xl border border-slate-200 bg-white hover:border-ansor hover:bg-emerald-50 text-left transition shadow-sm group flex flex-col justify-between";
-      btn.innerHTML = `
-        <div class="flex items-center gap-1.5 mb-1">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span class="font-extrabold text-[11px] text-slate-800 group-hover:text-ansor">${u.role}</span>
-        </div>
-        <div class="text-[10px] text-slate-500 truncate font-medium">${u.nama}</div>
-        <div class="mt-2 text-[9px] text-emerald-700 font-bold flex items-center justify-between">
-          <span>Masuk</span>
-          <i class="fa-solid fa-arrow-right text-[8px]"></i>
-        </div>
-      `;
-      btn.addEventListener("click", () => {
-        applyLoginSession(u);
-      });
-      container.appendChild(btn);
+      const opt = document.createElement("option");
+      opt.value = u.username;
+      opt.textContent = `${u.role} — ${u.nama}`;
+      opt.setAttribute("data-role", u.role);
+      opt.setAttribute("data-nama", u.nama);
+      opt.setAttribute("data-akses", u.akses || "");
+      selectEl.appendChild(opt);
     });
+
+    if (currentVal) {
+      selectEl.value = currentVal;
+    }
+
+    // Trigger update info deskripsi role saat dropdown dipilih
+    selectEl.onchange = () => {
+      const selectedOpt = selectEl.options[selectEl.selectedIndex];
+      const descBox = document.getElementById("login-selected-role-desc");
+      const roleText = document.getElementById("role-desc-text");
+      const badgeText = document.getElementById("role-badge-text");
+
+      if (selectedOpt && selectedOpt.value) {
+        const role = selectedOpt.getAttribute("data-role");
+        const nama = selectedOpt.getAttribute("data-nama");
+        const akses = selectedOpt.getAttribute("data-akses");
+        
+        if (descBox) descBox.classList.remove("hidden");
+        if (roleText) roleText.textContent = `${nama} (${akses || "Akses Pengurus"})`;
+        if (badgeText) badgeText.textContent = role;
+      } else {
+        if (descBox) descBox.classList.add("hidden");
+      }
+    };
   }
 
   function applyLoginSession(user) {
@@ -393,18 +410,43 @@ document.addEventListener("DOMContentLoaded", () => {
     modalLoginPortal.classList.add("hidden");
   });
 
-  // Form Login Manual Username & PIN
+  // Toggle Password / PIN Visibility
+  const btnTogglePin = document.getElementById("btn-toggle-pin-visibility");
+  const inputPin = document.getElementById("login-pin");
+  const iconPinEye = document.getElementById("icon-pin-eye");
+
+  btnTogglePin?.addEventListener("click", () => {
+    if (!inputPin) return;
+    if (inputPin.type === "password") {
+      inputPin.type = "text";
+      if (iconPinEye) iconPinEye.className = "fa-solid fa-eye-slash mr-0.5";
+      btnTogglePin.innerHTML = `<i class="fa-solid fa-eye-slash mr-0.5"></i> Sembunyikan`;
+    } else {
+      inputPin.type = "password";
+      if (iconPinEye) iconPinEye.className = "fa-solid fa-eye mr-0.5";
+      btnTogglePin.innerHTML = `<i class="fa-solid fa-eye mr-0.5"></i> Tampilkan`;
+    }
+  });
+
+  // Form Login Manual Username Dropdown & Password / PIN
   document.getElementById("form-login-manual")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const uname = document.getElementById("login-username").value.trim().toLowerCase();
     const pin = document.getElementById("login-pin").value.trim();
 
+    if (!uname) {
+      alert("Silakan pilih akun pengurus ranting terlebih dahulu!");
+      return;
+    }
+
     const found = state.usersList.find((u) => u.username.toLowerCase() === uname && u.pin === pin);
     if (found) {
       applyLoginSession(found);
       alert(`Selamat datang, Sahabat ${found.nama} (${found.role})!`);
+      // Reset field PIN
+      document.getElementById("login-pin").value = "";
     } else {
-      alert("Username atau PIN tidak sesuai. Silakan pilih kartu akun di atas untuk masuk langsung.");
+      alert("Kata sandi atau PIN tidak sesuai untuk akun yang dipilih. Silakan coba kembali.");
     }
   });
 

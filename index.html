@@ -81,8 +81,8 @@
         </div>
       </div>
       
-      <!-- Panel Kanan: Form & Fast Role Selector -->
-      <div class="flex-1 bg-white p-6 sm:p-8 space-y-5 relative overflow-y-auto max-h-[90vh]">
+      <!-- Panel Kanan: Form Login Username (Dropdown) & Password -->
+      <div class="flex-1 bg-white p-6 sm:p-10 space-y-6 relative flex flex-col justify-center">
         <!-- Tombol Tutup Modal Login -->
         <button id="btn-close-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition z-20" title="Tutup Login">
           <i class="fa-solid fa-xmark text-sm"></i>
@@ -100,68 +100,84 @@
         </div>
 
         <div>
-          <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-arrow-right-to-bracket text-ansor"></i>
-            <span>Masuk ke Dashboard</span>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-0.5 rounded-full inline-block mb-1.5">
+            Autentikasi Pengurus
+          </span>
+          <h3 class="text-2xl font-black text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-right-to-bracket text-ansor"></i>
+            <span>Masuk ke Sistem</span>
           </h3>
-          <p class="text-xs text-slate-500 mt-0.5">Pilih akun pengurus untuk akses cepat atau masuk dengan username & PIN</p>
+          <p class="text-xs text-slate-500 mt-1">Silakan pilih akun pengurus ranting dan masukkan kata sandi / PIN Anda</p>
         </div>
 
-        <!-- 1-Click Role Selection Grid -->
-        <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-users-gear text-gold"></i>
-              <span>Pilih Cepat Akun Pengurus:</span>
-            </span>
-            <span class="text-[10px] text-slate-400">Akses Khusus</span>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="grid-login-roles">
-            <!-- Injected via JavaScript (Super Admin, Ketua, Sekretaris, Kasatkorkel, Kasetma, MDS, Bendahara, Siber) -->
-          </div>
-        </div>
-
-        <!-- Divider -->
-        <div class="relative flex items-center justify-center pt-1">
-          <div class="border-t border-slate-200 w-full"></div>
-          <span class="bg-white px-3 text-[11px] text-slate-400 font-medium uppercase absolute">atau masuk manual</span>
-        </div>
-
-        <!-- Manual form -->
-        <form id="form-login-manual" class="space-y-3 text-xs">
+        <!-- Form Login Model Username Dropdown + Password -->
+        <form id="form-login-manual" class="space-y-4 text-xs">
+          <!-- Dropdown Pilihan Username / Akun Pengurus -->
           <div>
-            <label class="block font-medium text-slate-700 mb-1">Username / Akun Pengurus:</label>
+            <label class="block font-bold text-slate-700 mb-1.5 text-xs">
+              <i class="fa-solid fa-user-shield text-ansor mr-1"></i>
+              Username / Akun Pengurus:
+            </label>
             <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <i class="fa-solid fa-user"></i>
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ansor pointer-events-none">
+                <i class="fa-solid fa-id-badge text-sm"></i>
               </span>
-              <input type="text" id="login-username" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium" placeholder="superadmin / ketua / sekretaris / bendahara..." required>
+              <select id="login-username" class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-semibold text-slate-800 text-xs appearance-none transition" required>
+                <option value="" disabled selected>-- Pilih Akun Pengurus --</option>
+                <!-- Opsi akun diisi otomatis via JS berdasarkan state.usersList -->
+              </select>
+              <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-slate-400">
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+              </span>
+            </div>
+            <!-- Info peran akun yang dipilih -->
+            <div id="login-selected-role-desc" class="mt-1.5 p-2 bg-emerald-50/70 rounded-lg border border-emerald-100 text-[11px] text-emerald-800 hidden flex items-center justify-between">
+              <span id="role-desc-text" class="font-medium">-</span>
+              <span class="text-[10px] bg-emerald-200/60 font-bold px-2 py-0.5 rounded text-emerald-900" id="role-badge-text">Role</span>
             </div>
           </div>
 
+          <!-- Input Password / PIN -->
           <div>
-            <label class="block font-medium text-slate-700 mb-1">PIN / Kata Sandi:</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
-                <i class="fa-solid fa-lock"></i>
-              </span>
-              <input type="password" id="login-pin" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-mono text-center tracking-widest text-sm" placeholder="••••" required>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="block font-bold text-slate-700 text-xs">
+                <i class="fa-solid fa-lock text-ansor mr-1"></i>
+                Kata Sandi / PIN:
+              </label>
+              <button type="button" id="btn-toggle-pin-visibility" class="text-[11px] text-emerald-700 hover:text-emerald-900 font-medium">
+                <i class="fa-solid fa-eye mr-0.5" id="icon-pin-eye"></i> Tampilkan
+              </button>
             </div>
-            <p class="text-[10px] text-slate-400 mt-1">Default PIN Super Admin: <code class="font-bold text-ansor">1934</code> | Pengurus: <code class="font-bold text-ansor">1234</code></p>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <i class="fa-solid fa-key text-xs"></i>
+              </span>
+              <input type="password" id="login-pin" class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-mono text-center tracking-widest text-base font-bold text-slate-800 transition" placeholder="••••" required>
+            </div>
+            <p class="text-[10.5px] text-slate-400 mt-1.5 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info text-ansor text-[10px]"></i>
+              <span>Default PIN Super Admin: <code class="font-bold text-ansor bg-emerald-50 px-1 py-0.2 rounded">1934</code> &bull; Pengurus: <code class="font-bold text-ansor bg-emerald-50 px-1 py-0.2 rounded">1234</code></span>
+            </p>
           </div>
 
-          <div class="flex items-center gap-2 pt-1">
-            <button type="submit" class="flex-1 py-2.5 bg-ansor hover:bg-ansor-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-md transition">
+          <!-- Tombol Masuk / Login & Tamu -->
+          <div class="pt-2 space-y-2">
+            <button type="submit" class="w-full py-3 bg-ansor hover:bg-ansor-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-900/30 transition text-sm">
               <i class="fa-solid fa-right-to-bracket text-gold"></i>
-              <span>Masuk ke Dashboard</span>
+              <span>Masuk Sekarang</span>
             </button>
-            <button type="button" id="btn-login-tamu" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition" title="Buka sebagai publik/tamu">
-              Akses Tamu
+            <button type="button" id="btn-login-tamu" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition text-xs flex items-center justify-center gap-1.5" title="Buka sebagai publik/tamu">
+              <i class="fa-solid fa-user-group text-slate-400"></i>
+              <span>Lanjutkan sebagai Tamu / Anggota Ranting</span>
             </button>
           </div>
         </form>
 
+        <div class="text-center pt-2 border-t border-slate-100">
+          <p class="text-[11px] text-slate-400">
+            Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa
+          </p>
+        </div>
       </div>
     </div>
   </div>
