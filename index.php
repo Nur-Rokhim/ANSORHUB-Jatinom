@@ -51,7 +51,7 @@ require_once __DIR__ . '/config.php';
     <div class="login-card-new max-w-4xl w-full flex overflow-hidden rounded-2xl shadow-2xl relative my-auto">
       
       <!-- Panel Kiri: Branding GP Ansor Ranting Jatinom -->
-      <div class="hidden md:flex w-5/12 bg-gradient-to-b from-emerald-900 via-ansor to-emerald-950 flex-col items-center justify-center p-8 relative overflow-hidden select-none">
+      <div class="hidden md:flex w-5/12 login-brand-panel flex-col items-center justify-center p-8 relative overflow-hidden select-none">
         <!-- Background Decorative Ornaments -->
         <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-gold/15 rounded-full blur-2xl pointer-events-none"></div>
