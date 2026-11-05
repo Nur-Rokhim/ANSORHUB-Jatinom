@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/config.php';
 ?>
 <!DOCTYPE html>
@@ -179,9 +179,8 @@ require_once __DIR__ . '/config.php';
             <!-- Injected via JS -->
           </div>
           <div class="min-w-0 flex-1">
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center">
               <span class="text-sm font-black tracking-wide text-white truncate">SAHABAT JATINOM</span>
-              <span class="text-[9px] font-black bg-gold text-slate-950 px-1 py-0.2 rounded shadow">v2.3</span>
             </div>
             <p class="text-[11px] text-emerald-200 font-semibold truncate">PR GP ANSOR JATINOM</p>
             <p class="text-[9.5px] text-emerald-300/70 truncate">Kanigoro, Kab. Blitar</p>
@@ -1985,7 +1984,7 @@ require_once __DIR__ . '/config.php';
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <div class="text-center md:text-left">
           <p class="font-extrabold text-white text-sm">
-            SAHABAT JATINOM <span class="text-gold font-normal">v2.3</span>
+            SAHABAT JATINOM
           </p>
           <p class="text-[11px] text-slate-400 mt-0.5">
             Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor
@@ -2098,11 +2097,11 @@ require_once __DIR__ . '/config.php';
       <div id="print-area-surat" class="surat-paper bg-white p-8 sm:p-12 border border-slate-300 text-slate-900">
         
         <!-- KOP SURAT RESMI -->
-        <div class="kop-surat-container flex items-center justify-between border-b-2 border-ansor pb-3">
+        <div class="kop-surat-container flex items-center justify-between mb-6">
           <div class="kop-logo shrink-0" id="print-kop-logo-left">
             <!-- Injected via JS -->
           </div>
-          <div class="kop-teks text-center flex-1 px-4">
+          <div class="kop-teks text-right flex-1 pl-6">
             <h1 class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>
             <h2 id="print-kop-title" class="text-base sm:text-xl font-black text-ansor uppercase tracking-wider">GERAKAN PEMUDA ANSOR</h2>
             <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wide">DESA JATINOM KECAMATAN KANIGORO</h3>
@@ -2110,11 +2109,10 @@ require_once __DIR__ . '/config.php';
               Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com
             </p>
           </div>
-          <div class="kop-logo shrink-0" id="print-kop-logo-right">
+          <div class="kop-logo shrink-0 hidden" id="print-kop-logo-right">
             <!-- Injected via JS -->
           </div>
         </div>
-        <div class="kop-double-line border-b-2 border-gold mt-1 mb-6"></div>
 
         <!-- HEADER DATA SURAT (Nomor, Lampiran, Hal & Tanggal) -->
         <div class="flex justify-between items-start text-xs leading-relaxed mb-6">

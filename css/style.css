@@ -380,15 +380,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 3px solid #006837;
-  padding-bottom: 12px;
-  margin-bottom: 3px;
+  margin-bottom: 24px;
   position: relative;
 }
 
 .kop-double-line {
-  border-bottom: 1.5px solid #ffc72c;
-  margin-bottom: 20px;
+  display: none !important;
 }
 
 .kop-logo {
@@ -398,9 +395,10 @@ body {
 }
 
 .kop-teks {
-  text-align: center;
+  text-align: right;
   flex: 1;
-  padding: 0 12px;
+  padding-left: 20px;
+  padding-right: 0;
 }
 
 .kop-teks h1 {

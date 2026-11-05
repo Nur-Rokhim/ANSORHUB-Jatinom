@@ -181,6 +181,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginLogoEl = document.getElementById("login-logo-container");
     if (loginLogoEl) loginLogoEl.innerHTML = getLogoHTML("ansor");
 
+    const printKopLogoKiri = document.getElementById("print-kop-logo-left");
+    if (printKopLogoKiri) printKopLogoKiri.innerHTML = getLogoHTML("ansor");
+    const printKopLogoKanan = document.getElementById("print-kop-logo-right");
+    if (printKopLogoKanan) printKopLogoKanan.innerHTML = "";
+
     updateKopLogos();
 
     const profilBigLogo = document.getElementById("profil-big-logo");
@@ -1170,30 +1175,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const elPrintTtd2Nia = document.getElementById("print-ttd2-nia");
     if (elPrintTtd2Nia) elPrintTtd2Nia.textContent = ttd2Nia;
 
-    // Kop Logos & Heading
+    // Kop Logos & Heading — Logo Ansor di Kiri, Rata Kanan, Kanan Kosong
     const logoKiri = document.getElementById("print-kop-logo-left");
     const logoKanan = document.getElementById("print-kop-logo-right");
     const kopTitle = document.getElementById("print-kop-title");
     const ttdHeading = document.getElementById("print-ttd-heading");
 
+    if (logoKiri) logoKiri.innerHTML = getLogoHTML("ansor");
+    if (logoKanan) logoKanan.innerHTML = "";
+
     if (kopLembaga === "banser") {
-      if (logoKiri) logoKiri.innerHTML = getLogoHTML("banser");
-      if (logoKanan) logoKanan.innerHTML = getLogoHTML("ansor");
       if (kopTitle) kopTitle.textContent = "SATKORKEL BANSER JATINOM";
       if (ttdHeading) ttdHeading.textContent = "SATUAN KOORDINASI KELOMPOK BANSER JATINOM";
     } else if (kopLembaga === "rijalul") {
-      if (logoKiri) logoKiri.innerHTML = getLogoHTML("rijalul");
-      if (logoKanan) logoKanan.innerHTML = getLogoHTML("ansor");
       if (kopTitle) kopTitle.textContent = "MDS RIJALUL ANSOR JATINOM";
       if (ttdHeading) ttdHeading.textContent = "MAJELIS DZIKIR DAN SHOLAWAT RIJALUL ANSOR";
     } else if (kopLembaga === "siber") {
-      if (logoKiri) logoKiri.innerHTML = getLogoHTML("siber");
-      if (logoKanan) logoKanan.innerHTML = getLogoHTML("ansor");
       if (kopTitle) kopTitle.textContent = "BADAN SIBER ANSOR JATINOM";
       if (ttdHeading) ttdHeading.textContent = "BADAN SIBER ANSOR PR JATINOM";
     } else {
-      if (logoKiri) logoKiri.innerHTML = getLogoHTML("ansor");
-      if (logoKanan) logoKanan.innerHTML = "";
       if (kopTitle) kopTitle.textContent = "GERAKAN PEMUDA ANSOR";
       if (ttdHeading) ttdHeading.textContent = "PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM";
     }
