@@ -1,4 +1,4 @@
-﻿/* SAHABAT JATINOM - Styling & Print Sheet
+/* SAHABAT JATINOM - Styling & Print Sheet
    Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor
    GP Ansor Ranting Jatinom, Kec. Kanigoro, Kab. Blitar
    Versi 2.2 - Login Portal, Multi-Role User, E-Stempel & E-Signature */
@@ -373,6 +373,19 @@ body {
   font-size: 11pt;
   line-height: 1.5;
   box-sizing: border-box;
+}
+
+/* Sub Tab Switcher (Ansor vs Banser) */
+.subtab-surat-btn {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+}
+.subtab-surat-btn:hover {
+  transform: translateY(-1px);
+}
+.subtab-surat-btn:active {
+  transform: translateY(0);
 }
 
 /* Kop Surat Resmi */

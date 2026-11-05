@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once __DIR__ . '/config.php';
 ?>
 <!DOCTYPE html>
@@ -240,14 +240,34 @@ require_once __DIR__ . '/config.php';
           <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded-full font-bold">Kabar</span>
         </a>
 
-        <!-- 2. E-Surat -->
-        <a data-tab="tab-surat" class="sidebar-nav-item">
-          <span class="icon-box text-amber-400">
-            <i class="fa-solid fa-envelope-open-text"></i>
-          </span>
-          <span class="flex-1">2. E-Surat</span>
-          <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">9 Tpl</span>
-        </a>
+        <!-- 2. E-Surat with Sub-Menu -->
+        <div class="space-y-1">
+          <a data-tab="tab-surat" class="sidebar-nav-item flex items-center justify-between cursor-pointer" id="sidebar-nav-surat">
+            <div class="flex items-center gap-3">
+              <span class="icon-box text-amber-400">
+                <i class="fa-solid fa-envelope-open-text"></i>
+              </span>
+              <span class="flex-1">2. E-Surat</span>
+            </div>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">2 Menu</span>
+          </a>
+          <div class="pl-10 pr-2 py-0.5 space-y-1" id="sidebar-sub-surat-group">
+            <button type="button" id="sidebar-btn-surat-ansor" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between text-emerald-200 hover:text-white hover:bg-emerald-800/60 transition bg-emerald-800/40">
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                <span>E-Surat Ansor</span>
+              </span>
+              <span class="text-[9px] bg-emerald-950/60 text-emerald-300 px-1 py-0.2 rounded font-mono">Ranting</span>
+            </button>
+            <button type="button" id="sidebar-btn-surat-banser" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between text-slate-300 hover:text-white hover:bg-red-900/50 transition">
+              <span class="flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+                <span>E-Surat Banser</span>
+              </span>
+              <span class="text-[9px] bg-red-950/60 text-red-300 px-1 py-0.2 rounded font-mono">Satkorkel</span>
+            </button>
+          </div>
+        </div>
 
         <!-- 3. E-Kader -->
         <a data-tab="tab-kader" class="sidebar-nav-item">
@@ -671,15 +691,38 @@ require_once __DIR__ . '/config.php';
       <!-- ==================== 2. TAB: E-SURAT ==================== -->
       <section id="tab-surat" class="tab-pane hidden fade-in-tab space-y-6">
         
+        <!-- SUB MENU E-SURAT (SUBTAB ANSOR VS BANSER) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-2 flex flex-col sm:flex-row items-center gap-2">
+          <button type="button" id="subtab-surat-ansor" class="subtab-surat-btn active flex-1 w-full sm:w-auto py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition border-2 border-ansor bg-emerald-50 text-ansor shadow-xs">
+            <span class="w-7 h-7 rounded-lg bg-emerald-800 text-gold flex items-center justify-center text-xs shrink-0">
+              <i class="fa-solid fa-file-pen"></i>
+            </span>
+            <div class="text-left leading-tight">
+              <div class="font-extrabold text-slate-800">E-Surat GP Ansor</div>
+              <div class="text-[10px] text-emerald-700 font-semibold">Pimpinan Ranting Desa Jatinom</div>
+            </div>
+          </button>
+
+          <button type="button" id="subtab-surat-banser" class="subtab-surat-btn flex-1 w-full sm:w-auto py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 transition border border-slate-200 bg-white hover:bg-slate-50 text-slate-600">
+            <span class="w-7 h-7 rounded-lg bg-red-800 text-white flex items-center justify-center text-xs shrink-0">
+              <i class="fa-solid fa-shield-halved"></i>
+            </span>
+            <div class="text-left leading-tight">
+              <div class="font-extrabold text-slate-800">E-Surat BANSER</div>
+              <div class="text-[10px] text-red-700 font-semibold">Satkorkel Desa Jatinom</div>
+            </div>
+          </button>
+        </div>
+
         <!-- Banner Ringkasan Tab E-Surat -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-file-pen text-ansor"></i>
-              <span>Generator Surat Resmi GP Ansor Ranting Jatinom</span>
+              <i id="surat-banner-icon" class="fa-solid fa-file-pen text-ansor"></i>
+              <span id="surat-banner-title">Generator Surat Resmi GP Ansor Ranting Jatinom</span>
             </h2>
             <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Format nomor baku: <code class="bg-slate-100 px-2 py-0.5 rounded text-ansor-dark font-mono font-semibold">[No]/PR-XII-11-07-02/[Jenis]-[Sifat]/[Bulan]/[Tahun]</code>
+              Format nomor baku: <code id="surat-banner-format" class="bg-slate-100 px-2 py-0.5 rounded text-ansor-dark font-mono font-semibold">[No]/PR-XII-11-07-02/[Jenis]-[Sifat]/[Bulan]/[Tahun]</code>
             </p>
           </div>
           <div class="flex items-center gap-2 w-full md:w-auto">
@@ -705,48 +748,13 @@ require_once __DIR__ . '/config.php';
 
             <form id="form-buat-surat" class="space-y-5">
               
-              <!-- Pilihan 9 Template Surat Ready to Use -->
+              <!-- Pilihan Template Surat Ready to Use -->
               <div>
-                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                  1. Pilih Jenis Surat Resmi (9 Kode Peraturan Organisasi):
+                <label id="template-selector-label" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  1. Pilih Jenis Surat Resmi (9 Kode Peraturan Organisasi GP Ansor):
                 </label>
                 <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-2" id="template-selector-container">
-                  <button type="button" data-tpl="SU" class="tpl-btn active px-2.5 py-2 rounded-xl border-2 border-ansor bg-emerald-50 text-ansor font-bold text-xs flex flex-col items-center justify-center transition shadow-sm">
-                    <span class="text-sm font-extrabold">SU</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Undangan</span>
-                  </button>
-                  <button type="button" data-tpl="SR" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SR</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Rutin</span>
-                  </button>
-                  <button type="button" data-tpl="SK" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SK</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Keputusan</span>
-                  </button>
-                  <button type="button" data-tpl="SM" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SM</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Mandat</span>
-                  </button>
-                  <button type="button" data-tpl="ST" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">ST</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Tugas</span>
-                  </button>
-                  <button type="button" data-tpl="SI" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SI</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Instruksi</span>
-                  </button>
-                  <button type="button" data-tpl="SE" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SE</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Edaran</span>
-                  </button>
-                  <button type="button" data-tpl="Not" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">Not</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Notulensi</span>
-                  </button>
-                  <button type="button" data-tpl="SRU" class="tpl-btn px-2.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex flex-col items-center justify-center transition">
-                    <span class="text-sm font-extrabold">SRU</span>
-                    <span class="text-[10px] font-medium truncate w-full text-center">Rekomendasi</span>
-                  </button>
+                  <!-- Injected via JavaScript (Ansor vs Banser) -->
                 </div>
               </div>
 
@@ -923,14 +931,14 @@ require_once __DIR__ . '/config.php';
 
               <div class="space-y-3 text-xs">
                 <div>
-                  <label class="text-[11px] font-medium text-slate-500">Pihak 1 (Kiri - Sekretaris / Pengurus):</label>
+                  <label id="label-penandatangan-pihak1" class="text-[11px] font-medium text-slate-500">Pihak 1 (Kiri - Sekretaris):</label>
                   <input type="text" id="setting-ttd1-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="AHMAD NUR SHOLIHIN">
                   <input type="text" id="setting-ttd1-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Sekretaris">
                   <input type="text" id="setting-ttd1-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.002">
                 </div>
 
                 <div class="border-t pt-2">
-                  <label class="text-[11px] font-medium text-slate-500">Pihak 2 (Kanan - Ketua / Komandan):</label>
+                  <label id="label-penandatangan-pihak2" class="text-[11px] font-medium text-slate-500">Pihak 2 (Kanan - Ketua):</label>
                   <input type="text" id="setting-ttd2-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="MUHAMMAD ZAINAL ARIFIN">
                   <input type="text" id="setting-ttd2-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Ketua Pimpinan Ranting">
                   <input type="text" id="setting-ttd2-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.001">
@@ -2107,9 +2115,9 @@ require_once __DIR__ . '/config.php';
             </div>
           </div>
           <div class="kop-teks text-right flex-1 pl-6">
-            <h1 class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>
+            <h1 id="print-kop-subheading" class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>
             <h2 id="print-kop-title" class="text-base sm:text-xl font-black text-ansor uppercase tracking-wider">GERAKAN PEMUDA ANSOR</h2>
-            <h3 class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wide">DESA JATINOM KECAMATAN KANIGORO</h3>
+            <h3 id="print-kop-unit" class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wide">DESA JATINOM KECAMATAN KANIGORO</h3>
             <p id="print-kop-alamat" class="text-[9.5px] sm:text-[10.5px] text-slate-500 mt-1 leading-tight">
               Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com
             </p>

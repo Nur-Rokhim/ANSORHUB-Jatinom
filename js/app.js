@@ -382,6 +382,7 @@ const INITIAL_SIGNATURES = {
   stempelAnsor: "",
   // Banser
   ttdKasatkorkel: "",
+  ttdKasetma: "",
   stempelBanser: "",
   // MDS Rijalul Ansor
   ttdMds: "",
@@ -400,6 +401,9 @@ const INITIAL_SETTINGS = {
   sekretarisNama: "AHMAD NUR SHOLIHIN",
   sekretarisNia: "11.07.02.002",
   kasatkorkelNama: "SUBHAN MUBAROK",
+  kasatkorkelNia: "11.07.02.003",
+  kasetmaNama: "BAMBANG TRI SUTRISNO",
+  kasetmaNia: "11.07.02.005",
   ketuaMdsNama: "GUS M. FAHMI ILHAM",
   ketuaSiberNama: "FAJAR SIDIQ",
   alamatSekretariat: "Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com",
@@ -887,11 +891,246 @@ Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom, Kecamatan Kanigoro, Kabupate
   }
 };
 
+// --- TEMPLATES CONTENT GENERATOR BANSER (SATKORKEL DESA JATINOM) ---
+const TEMPLATES_BANSER_MAP = {
+  SPH: {
+    nama: "Surat Perintah Harian",
+    kode: "SPH",
+    defaultPerihal: "Perintah Harian Kesiapsiagaan Personel BANSER Satkorkel Jatinom",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">PERINTAH HARIAN KEPALA SATKORKEL BANSER JATINOM</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/SPH-01/XI/2026"}</span>
+</div>
+<p><strong>BISMILLAHIRRAHMANIRRAHIM</strong></p>
+<p>Memperhatikan dinamika kamtibmas dan kebutuhan khidmah pengawalan para 'Alim Ulama serta giat keagamaan di wilayah Desa Jatinom, dengan senantiasa berpegang teguh pada doktrin <em>Nawa Prasetya Banser</em> dan komando satu barisan:</p>
+<p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna Desa Jatinom dengan ini mengeluarkan <strong>PERINTAH HARIAN</strong> kepada:</p>
+<p style="margin-left: 20px; font-weight: bold; font-size: 11pt;">SELURUH PERSONEL BANSER SATKORKEL JATINOM</p>
+<p>Untuk melaksanakan instruksi kesiapsiagaan sebagai berikut:</p>
+<ol style="margin-left: 20px; padding-left: 15px; line-height: 1.6;">
+  <li><strong>SIAP SIAGA SATU KOMANDO:</strong> Seluruh anggota Banser wajib bersiaga dan senantiasa merespon instruksi komando Markas Satkorkel maupun arahan Pimpinan Ranting GP Ansor Jatinom.</li>
+  <li><strong>PENGAMANAN & PENGAWALAN:</strong> Melaksanakan sterilisasi pengamanan lokasi kegiatan, pengawalan para Masyayikh / Habaib / Kyai, serta pengaturan ketertiban jamaah pada agenda: <strong>${d.kegiatan || "Rangkaian Pengajian & Tradisi Jam'iyyah Nahdlatul Ulama Desa Jatinom"}</strong>.</li>
+  <li><strong>DISIPLIN TATA ATRIBUT:</strong> Mengenakan Seragam Dinas Resmi BANSER (PDL / PDH) lengkap dengan atribut baret dan kelengkapan dinas yang bersih, rapi, dan mencerminkan kewibawaan korps.</li>
+  <li><strong>AKHLAKUL KARIMAH:</strong> Mengedepankan sikap santun, humanis, dan koordinatif dengan aparat berwenang serta tokoh masyarakat setempat.</li>
+  <li><strong>LAPORAN BERKALA:</strong> Setiap regu / unit wajib melaporkan situasi perkembangan lapangan secara berjenjang kepada Kasetma dan Kasatkorkel.</li>
+</ol>
+<p>Perintah Harian ini berlaku sejak tanggal dikeluarkan untuk dilaksanakan dengan penuh keikhlasan, dedikasi, dan tanggung jawab penuh demi marwah para Ulama dan keutuhan NKRI.</p>
+<p style="text-align: right; margin-top: 15px; font-weight: bold; font-style: italic;">Satu Komando, Satu Barisan! Banser Maju Terus Pantang Mundur!</p>
+`
+  },
+  ST: {
+    nama: "Surat Tugas",
+    kode: "ST",
+    defaultPerihal: "Surat Tugas Pengamanan dan Pengawalan Kegiatan",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">SURAT TUGAS PENGAMANAN</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/ST-01/XI/2026"}</span>
+</div>
+<p>Yang bertanda tangan di bawah ini Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna (BANSER) Desa Jatinom, Kecamatan Kanigoro, Kabupaten Blitar, dengan ini MENUGASKAN kepada nama-nama personel Banser:</p>
+<div style="margin: 12px 0 15px 20px; line-height: 1.6;">
+  ${d.daftarPetugas || `
+  1. <strong>Subhan Mubarok</strong> — Kasatkorkel (Koordinator Lapangan)<br>
+  2. <strong>Bambang Tri Sutrisno</strong> — Kasetma / Unit Dalmas<br>
+  3. <strong>Rizky Dwi Kurniawan</strong> — Unit Provos (Disiplin Anggota)<br>
+  4. <strong>Agus Setyawan</strong> — Unit Dalmas (Sterilisasi Area)<br>
+  5. <strong>M. Nur Huda</strong> — Unit Balantas (Pengaturan Lalu Lintas)<br>
+  6. <em>Beserta Anggota Regu Piket Satkorkel Jatinom</em>
+  `}
+</div>
+<p>Untuk melaksanakan tugas pengamanan, pengawalan para Masyayikh, serta kelancaran arus lalu lintas dalam rangka:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.kegiatan || "Pengajian Akbar & Peringatan Maulid Nabi Muhammad SAW"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td>${d.hariTanggal || "Ahad Pon, 15 November 2026"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Waktu / Pukul</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.00 WIB s.d Selesai"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Lokasi / Titik Tugas</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Halaman Masjid Baitur Muttaqin Desa Jatinom"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pakaian Dinas</strong></td><td style="vertical-align: top;">:</td><td>Pakaian Dinas Lapangan (PDL Banser) Lengkap / Baret</td></tr>
+</table>
+<p>Demikian Surat Tugas ini diterbitkan agar dilaksanakan dengan sungguh-sungguh, amanah, dan penuh dedikasi. Setelah bertugas wajib melaporkan hasilnya kepada Kepala Satkorkel.</p>
+`
+  },
+  SU: {
+    nama: "Surat Undangan",
+    kode: "SU",
+    defaultPerihal: "Undangan Apel Kesetiaan dan Koordinasi Markas Satkorkel",
+    generateBody: (d) => `
+<p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+<p>Salam silaturrahim teriring salam komando kami haturkan, semoga Sahabat seluruh jajaran personel Banser senantiasa dilimpahi kesehatan dan keteguhan iman dalam menjalankan amanah perjuangan Aswaja An-Nahdliyyah.</p>
+<p>Dalam rangka konsolidasi internal, evaluasi pengamanan, serta peneguhan kedisiplinan korps, Kepala Satuan Koordinasi Kelompok (SATKORKEL) BANSER Desa Jatinom dengan ini MENGUNDANG Sahabat pada:</p>
+<table style="width: 100%; margin: 15px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td>${d.hariTanggal || "Jum'at Kliwon, 20 November 2026"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Waktu / Jam</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB s.d Selesai"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Markas Satkorkel BANSER Jatinom / Balai Desa"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Acara</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.kegiatan || "Apel Kesetiaan Personel, Refreshing PBB, dan Rapat Koordinasi Pengamanan"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pakaian</strong></td><td style="vertical-align: top;">:</td><td>Seragam PDL / PDH Banser Lengkap + Baret</td></tr>
+</table>
+<p>Mengingat pentingnya agenda tersebut demi kesiapan barisan, seluruh anggota Banser Ranting Jatinom DIWAJIBKAN hadir tepat waktu. Apabila berhalangan, harap melapor secara tertulis kepada Kasetma.</p>
+<p>Demikian undangan ini kami sampaikan, atas kehadiran dan kedisiplinan Sahabat kami haturkan terima kasih.</p>
+<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+`
+  },
+  SPR: {
+    nama: "Surat Perintah",
+    kode: "SPR",
+    defaultPerihal: "Perintah Sterilisasi Pengamanan Acara Pengajian Akbar",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">SURAT PERINTAH OPERASIONAL</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/SPR-01/XI/2026"}</span>
+</div>
+<p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna (BANSER) Desa Jatinom, memerintahkan kepada:</p>
+<p style="margin-left: 20px; font-weight: bold;">Seluruh Anggota Satkorkel BANSER Jatinom dan Unit Khusus (Provos, Balantas, Bagana, Basada)</p>
+<p>Untuk melaksanakan operasi sterilisasi dan penyiagaan posko pam pada:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Agenda</strong></td><td style="width: 15px; vertical-align: top;">:</td><td>${d.kegiatan || "Sterilisasi dan Pengamanan Jalur VIP Masyayikh"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td>${d.hariTanggal || "Sabtu, 21 November 2026"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Lokasi</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Desa Jatinom, Kec. Kanigoro, Kab. Blitar"}</td></tr>
+</table>
+<p>Perintah ini wajib dijalankan dengan penuh tanggung jawab dan mengutamakan keselamatan jamaah serta mematuhi arahan komandan lapangan.</p>
+`
+  },
+  SE: {
+    nama: "Surat Edaran",
+    kode: "SE",
+    defaultPerihal: "Edaran Registrasi NABA dan Pembaruan Atribut Dinas Personel",
+    generateBody: (d) => `
+<p>Salam silaturrahim teriring salam komando kami sampaikan kepada seluruh Sahabat Banser.</p>
+<p>Menindaklanjuti arahan Satuan Koordinasi Cabang (Satkorcab) BANSER Kabupaten Blitar mengenai pendataan anggota berbasis NABA (Nomor Anggota Banser), dengan ini Kepala Satkorkel BANSER Jatinom menyampaikan edaran:</p>
+<div style="margin: 15px 0 15px 20px; line-height: 1.6;">
+  1. Seluruh personel Banser Satkorkel Jatinom wajib menyetorkan fotokopi KTP, sertifikat Diklatsar/Susbalan, dan pasfoto terbaru ke Kasetma untuk pembaruan database sistem.<br>
+  2. Standarisasi pemakaian baret, emblem, bed logo Banser, badge wilayah Blitar, dan kopelrim harus sesuai protokoler resmi Banser.<br>
+  3. Pendaftaran anggota baru untuk Diklatsar angkatan mendatang dibuka melalui koordinasi pengurus ranting.
+</div>
+<p>Demikian edaran ini dibuat untuk dipedomani bersama demi kerapian dan soliditas barisan Banser Jatinom.</p>
+`
+  },
+  SP: {
+    nama: "Surat Peringatan",
+    kode: "SP",
+    defaultPerihal: "Peringatan Pelanggaran Kedisiplinan Personel Banser",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">SURAT PERINGATAN KEDISIPLINAN</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/SP-01/XI/2026"}</span>
+</div>
+<p>Kepala Satkorkel BANSER Desa Jatinom setelah menerima laporan dari Unit Provos dan hasil sidang kehormatan markas, dengan ini memberikan PERINGATAN kepada:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Personel</strong></td><td style="width: 15px; vertical-align: top;">:</td><td>${d.namaKader || "Sahabat Terkait"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>NABA / NIK</strong></td><td style="vertical-align: top;">:</td><td>${d.nikKader || "11.07.02.xxx"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Kesatuan</strong></td><td style="vertical-align: top;">:</td><td>Satkorkel BANSER Desa Jatinom</td></tr>
+</table>
+<p>Atas tindakan ketidakdisiplinan yang tidak mengindahkan instruksi tugas dan melanggar kode etik Nawa Prasetya Banser. Yang bersangkutan diwajibkan menghadap Kepala Satkorkel dan Kasetma untuk pembinaan lebih lanjut.</p>
+`
+  },
+  SKA: {
+    nama: "Surat Keterangan Aktif",
+    kode: "SKA",
+    defaultPerihal: "Keterangan Keaktifan Anggota BANSER Satkorkel Jatinom",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px; border-bottom: 2px solid #000; padding-bottom: 2px;">SURAT KETERANGAN AKTIF ANGGOTA</strong><br>
+  <span style="font-size: 10pt; font-family: monospace; margin-top: 5px; display: inline-block;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/SKA-01/XI/2026"}</span>
+</div>
+<p>Yang bertanda tangan di bawah ini Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna (BANSER) Desa Jatinom menerangkan bahwa:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Lengkap</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.namaKader || "Sahabat Rizky Dwi Kurniawan"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Tempat, Tgl Lahir</strong></td><td style="vertical-align: top;">:</td><td>${d.ttlKader || "Blitar, 10 Mei 1998"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Alamat</strong></td><td style="vertical-align: top;">:</td><td>${d.alamatKader || "RT 02 / RW 01 Desa Jatinom, Kec. Kanigoro, Blitar"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Jenjang Kaderisasi</strong></td><td style="vertical-align: top;">:</td><td>DIKLATSAR BANSER (Lulus Berijazah)</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Jabatan / Satuan</strong></td><td style="vertical-align: top;">:</td><td>Anggota Aktif Satkorkel BANSER Jatinom</td></tr>
+</table>
+<p>Adalah benar-benar anggota aktif yang senantiasa berkhidmah dan mentaati komando Satkorkel BANSER Desa Jatinom. Surat keterangan ini diterbitkan untuk dipergunakan sebagaimana mestinya.</p>
+`
+  },
+  Not: {
+    nama: "Notulensi Apel / Rapat",
+    kode: "Not",
+    defaultPerihal: "Notulensi Rapat Evaluasi & Apel Satkorkel Banser",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">NOTULENSI APEL & KOORDINASI MARKAS</strong><br>
+  <span>SATUAN KOORDINASI KELOMPOK (SATKORKEL) BANSER JATINOM</span>
+</div>
+<table style="width: 100%; margin-bottom: 15px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td>${d.hariTanggal || "Ahad Malam, 15 November 2026"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Waktu</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "20.00 WIB s.d 22.00 WIB"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pimpinan Apel</strong></td><td style="vertical-align: top;">:</td><td>Kasatkorkel BANSER Jatinom (Sahabat Subhan Mubarok)</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Peserta Hadir</strong></td><td style="vertical-align: top;">:</td><td>${d.kehadiran || "15 Personel Banser Jatinom"}</td></tr>
+</table>
+<p><strong>POKOK HASIL RAPAT / INSTRUKSI:</strong></p>
+<div style="margin-left: 20px; line-height: 1.6;">
+  1. <strong>Pengamanan Giat Rutin:</strong> Jadwal piket pengamanan pengajian selapanan desa dibagi menjadi 3 regu bergilir.<br>
+  2. <strong>Logistik & Perlengkapan:</strong> Inventaris rompi lantas, lampu tongkat lalu lintas, dan jas hujan markas telah dicek oleh Kasetma.<br>
+  3. <strong>Sosial Tanggap Bencana:</strong> Unit Bagana disiagakan mengantisipasi potensi musim penghujan di wilayah Jatinom.
+</div>
+`
+  },
+  SPN: {
+    nama: "Surat Pengantar",
+    kode: "SPN",
+    defaultPerihal: "Surat Pengantar Laporan Kegiatan Pengamanan ke Satkorcab",
+    generateBody: (d) => `
+<p>Bersama surat ini, Kepala Satuan Koordinasi Kelompok (SATKORKEL) BANSER Desa Jatinom menyampaikan berkas / dokumen laporan kegiatan sebagai berikut:</p>
+<table style="width: 100%; margin: 15px 0 15px 20px; border-collapse: collapse; border: 1px solid #94a3b8;">
+  <tr style="background: #f1f5f9;"><th style="border: 1px solid #94a3b8; padding: 6px;">No</th><th style="border: 1px solid #94a3b8; padding: 6px;">Uraian Berkas / Dokumen</th><th style="border: 1px solid #94a3b8; padding: 6px;">Banyaknya</th><th style="border: 1px solid #94a3b8; padding: 6px;">Keterangan</th></tr>
+  <tr><td style="border: 1px solid #94a3b8; padding: 6px; text-align: center;">1</td><td style="border: 1px solid #94a3b8; padding: 6px;">Laporan Pertanggungjawaban (LPJ) Pengamanan Giat Peringatan Hari Besar Islam di Desa Jatinom</td><td style="border: 1px solid #94a3b8; padding: 6px; text-align: center;">1 Bundel</td><td style="border: 1px solid #94a3b8; padding: 6px;">Disampaikan dengan hormat untuk verifikasi</td></tr>
+</table>
+<p>Demikian surat pengantar ini kami sampaikan atas perhatiannya diucapkan terima kasih.</p>
+`
+  },
+  STF: {
+    nama: "Surat Tugas Fasilitator / Instruktur",
+    kode: "STF",
+    defaultPerihal: "Penugasan Instruktur / Fasilitator Latihan Lapangan",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">SURAT TUGAS INSTRUKTUR / FASILITATOR</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/STF-01/XI/2026"}</span>
+</div>
+<p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) BANSER Desa Jatinom memberikan TUGAS INSTRUKTUR / FASILITATOR kepada:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Instruktur</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.namaKader || "Sahabat Subhan Mubarok"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Kualifikasi</strong></td><td style="vertical-align: top;">:</td><td>Lulusan SUSBALAN / Suspelat</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Materi Pelatihan</strong></td><td style="vertical-align: top;">:</td><td>Peraturan Baris Berbaris (PBB) dan Tata Cara Pengamanan Markas</td></tr>
+</table>
+<p>Untuk menjadi instruktur pada kegiatan pelatihan kepemudaan / kaderisasi Banser. Demikian surat tugas ini dibuat untuk dilaksanakan sebaik-baiknya.</p>
+`
+  },
+  BA: {
+    nama: "Berita Acara",
+    kode: "BA",
+    defaultPerihal: "Berita Acara Serah Terima Pengamanan dan Logistik Banser",
+    generateBody: (d) => `
+<div style="text-align: center; margin-bottom: 18px;">
+  <strong style="font-size: 13pt; letter-spacing: 0.5px;">BERITA ACARA SERAH TERIMA PENGAMANAN</strong><br>
+  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/BA-01/XI/2026"}</span>
+</div>
+<p>Pada hari ini <strong>${d.hariTanggal || "Ahad, 15 November 2026"}</strong> bertempat di <strong>${d.tempat || "Sekretariat Ranting Jatinom"}</strong> telah dilaksanakan serah terima tugas pengamanan dan logistik dari regu jaga kepada regu piket berikutnya dalam kondisi aman, tertib, dan lengkap.</p>
+`
+  },
+  SPRI: {
+    nama: "Surat Rekomendasi Izin",
+    kode: "SPRI",
+    defaultPerihal: "Rekomendasi Izin Pengawalan Jalur dan Keramaian Banser",
+    generateBody: (d) => `
+<p>Salam silaturrahim teriring salam komando kami haturkan.</p>
+<p>Sehubungan dengan pelaksanaan agenda syi'ar Aswaja An-Nahdliyyah di Desa Jatinom, Kepala Satkorkel BANSER Jatinom dengan ini memberikan REKOMENDASI PENGAMANAN dan IZIN LALU LINTAS untuk:</p>
+<table style="width: 100%; margin: 10px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Agenda</strong></td><td style="width: 15px; vertical-align: top;">:</td><td>${d.kegiatan || "Pawai Ta'aruf & Pengajian Akbar Desa Jatinom"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Jalur / Rute</strong></td><td style="vertical-align: top;">:</td><td>Rute Jalan Utama Desa Jatinom Menuju Lapangan</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Penanggung Jawab</strong></td><td style="vertical-align: top;">:</td><td>Kasatkorkel & Unit Balantas Satkorkel Jatinom</td></tr>
+</table>
+<p>Demikian rekomendasi ini dibuat untuk digunakan dalam permohonan koordinasi bersama pihak keamanan terkait.</p>
+`
+  }
+};
+
 // Expose state and helper functions to global window
 window.AnsorStore = AnsorStore;
 window.ROMAN_MONTHS = ROMAN_MONTHS;
 window.getHijriDate = getHijriDate;
 window.getIndonesianDate = getIndonesianDate;
 window.TEMPLATES_MAP = TEMPLATES_MAP;
+window.TEMPLATES_BANSER_MAP = TEMPLATES_BANSER_MAP;
 window.INITIAL_KEUANGAN = INITIAL_KEUANGAN;
 
