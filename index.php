@@ -385,7 +385,7 @@ require_once __DIR__ . '/config.php';
             </button>
 
             <!-- Dropdown Notifikasi -->
-            <div id="dropdown-notifikasi" class="hidden absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 text-slate-800 z-50 overflow-hidden text-xs">
+            <div id="dropdown-notifikasi" class="hidden absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 text-slate-800 z-[999] overflow-hidden text-xs">
               <div class="p-3 bg-emerald-900 text-white flex items-center justify-between border-b border-emerald-800">
                 <span class="font-bold flex items-center gap-1.5">
                   <i class="fa-solid fa-bell text-gold"></i> Notifikasi & Pengingat

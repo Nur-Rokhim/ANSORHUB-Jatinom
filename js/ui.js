@@ -2508,13 +2508,27 @@ _Wassalamu'alaikum Wr. Wb._
   const btnToggleNotif = document.getElementById("btn-toggle-notifikasi");
   const dropdownNotif = document.getElementById("dropdown-notifikasi");
   btnToggleNotif?.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    dropdownNotif?.classList.toggle("hidden");
+    if (!dropdownNotif) return;
+    const isHidden = dropdownNotif.classList.contains("hidden");
+    if (isHidden) {
+      renderNotificationList();
+      dropdownNotif.classList.remove("hidden");
+    } else {
+      dropdownNotif.classList.add("hidden");
+    }
+  });
+
+  dropdownNotif?.addEventListener("click", (e) => {
+    e.stopPropagation();
   });
 
   document.addEventListener("click", (e) => {
-    if (!dropdownNotif?.contains(e.target) && !btnToggleNotif?.contains(e.target)) {
-      dropdownNotif?.classList.add("hidden");
+    if (dropdownNotif && !dropdownNotif.classList.contains("hidden")) {
+      if (!dropdownNotif.contains(e.target) && !btnToggleNotif?.contains(e.target)) {
+        dropdownNotif.classList.add("hidden");
+      }
     }
   });
 

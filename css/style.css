@@ -41,7 +41,8 @@ body {
 .glass-header {
   background: linear-gradient(135deg, #004d28 0%, #006837 50%, #003a1e 100%);
   position: relative;
-  overflow: hidden;
+  overflow: visible; /* Pastikan dropdown notifikasi & menu tidak terpotong */
+  z-index: 40;
 }
 
 .glass-header::after {
