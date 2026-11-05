@@ -285,6 +285,15 @@ body {
   border-radius: 1.25rem;
 }
 
+.login-card-new {
+  background: #ffffff;
+  border: 1px solid rgba(255, 199, 44, 0.35);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 104, 55, 0.2);
+  border-radius: 1.25rem;
+  max-width: 56rem;
+  width: 100%;
+}
+
 /* Stempel & Tanda Tangan Digital Basah */
 .digital-stamp {
   position: absolute;

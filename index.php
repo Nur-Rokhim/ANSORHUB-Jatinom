@@ -46,60 +46,92 @@ require_once __DIR__ . '/config.php';
 </head>
 <body class="bg-slate-100 min-h-screen flex flex-col font-sans antialiased text-slate-800">
 
-  <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF ==================== -->
+  <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF (REDESIGN SPLIT LAYOUT) ==================== -->
   <div id="modal-login-portal" class="login-backdrop hidden">
-    <div class="login-card max-w-xl w-full p-6 sm:p-8 space-y-6 relative overflow-hidden">
-      <!-- Tombol Tutup Modal Login -->
-      <button id="btn-close-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition z-20" title="Tutup Login">
-        <i class="fa-solid fa-xmark text-base"></i>
-      </button>
+    <div class="login-card-new max-w-4xl w-full flex overflow-hidden rounded-2xl shadow-2xl relative my-auto">
+      
+      <!-- Panel Kiri: Branding GP Ansor Ranting Jatinom -->
+      <div class="hidden md:flex w-5/12 bg-gradient-to-b from-emerald-900 via-ansor to-emerald-950 flex-col items-center justify-center p-8 relative overflow-hidden select-none">
+        <!-- Background Decorative Ornaments -->
+        <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-gold/15 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffc72c_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
 
-      <!-- Ornamen Pojok Emas -->
-      <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-gold/30 to-transparent rounded-bl-full pointer-events-none"></div>
-
-      <!-- Header Login -->
-      <div class="text-center space-y-2">
-        <div class="w-20 h-20 mx-auto p-2 bg-emerald-950/5 rounded-2xl border border-gold/40 shadow-inner flex items-center justify-center">
-          <div id="login-logo-container" class="w-full h-full flex items-center justify-center">
-            <!-- Injected via JS -->
+        <!-- Logo & Branding -->
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="w-24 h-24 mb-4 p-2 bg-white/10 rounded-3xl border border-gold/40 shadow-xl flex items-center justify-center backdrop-blur-sm">
+            <div id="login-logo-container" class="w-full h-full flex items-center justify-center">
+              <!-- Injected via JS -->
+            </div>
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-widest text-gold bg-black/30 border border-gold/30 px-3 py-1 rounded-full mb-2">
+            Pimpinan Ranting Jatinom
+          </span>
+          <h2 class="text-2xl font-black text-white tracking-tight leading-tight">
+            SAHABAT JATINOM
+          </h2>
+          <p class="text-emerald-200 text-xs text-center mt-2 font-medium leading-relaxed max-w-[240px]">
+            Sistem Administrasi GP Ansor<br>Pimpinan Ranting Desa Jatinom
+          </p>
+          <div class="mt-5 w-16 h-1 bg-gold rounded-full"></div>
+          <p class="text-emerald-300/80 text-[11px] text-center mt-4 italic font-serif leading-relaxed">
+            "Khidmah Aswaja An-Nahdliyyah<br>Satu Komando Bela Ulama & Bangsa"
+          </p>
+          <div class="mt-6 flex items-center gap-1.5 text-[10px] text-emerald-200/60 font-mono">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>Versi 2.5 Stabil &bull; Kanigoro</span>
           </div>
         </div>
-        <div>
-          <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-0.5 rounded-full">
-            Gerakan Pemuda Ansor
-          </span>
-          <h2 class="text-2xl font-black text-slate-800 tracking-tight mt-1.5">
-            PORTAL SAHABAT JATINOM
-          </h2>
-          <p class="text-xs text-slate-500 font-medium">
-            Pimpinan Ranting Desa Jatinom &bull; Kec. Kanigoro, Kab. Blitar
-          </p>
-        </div>
       </div>
+      
+      <!-- Panel Kanan: Form & Fast Role Selector -->
+      <div class="flex-1 bg-white p-6 sm:p-8 space-y-5 relative overflow-y-auto max-h-[90vh]">
+        <!-- Tombol Tutup Modal Login -->
+        <button id="btn-close-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition z-20" title="Tutup Login">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
 
-      <!-- Pilihan 2 Metode Login: 1-Click Role atau Form PIN -->
-      <div class="space-y-4">
-        <!-- 1-Click Role Selection -->
+        <!-- Header Login (Mobile only logo) -->
+        <div class="md:hidden text-center pb-2 border-b border-slate-100">
+          <div id="login-logo-mobile" class="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
+            <!-- Injected via JS -->
+          </div>
+          <span class="text-[10px] font-black uppercase tracking-wider text-ansor bg-emerald-50 px-2.5 py-0.5 rounded-full">
+            PR GP Ansor Jatinom
+          </span>
+          <h2 class="text-xl font-black text-slate-800 mt-1">PORTAL SAHABAT</h2>
+        </div>
+
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <h3 class="text-lg font-black text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-arrow-right-to-bracket text-ansor"></i>
+            <span>Masuk ke Dashboard</span>
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Pilih akun pengurus untuk akses cepat atau masuk dengan username & PIN</p>
+        </div>
+
+        <!-- 1-Click Role Selection Grid -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
               <i class="fa-solid fa-users-gear text-gold"></i>
-              Pilih Cepat Akun Pengurus:
+              <span>Pilih Cepat Akun Pengurus:</span>
             </span>
-            <span class="text-[10px] text-slate-400">Khusus Pengurus Ranting</span>
+            <span class="text-[10px] text-slate-400">Akses Khusus</span>
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" id="grid-login-roles">
-            <!-- Injected via JavaScript (Super Admin, Ketua, Sekretaris, Kasatkorkel, MDS, Siber) -->
+            <!-- Injected via JavaScript (Super Admin, Ketua, Sekretaris, Kasatkorkel, Kasetma, MDS, Bendahara, Siber) -->
           </div>
         </div>
 
-        <div class="relative flex items-center justify-center">
+        <!-- Divider -->
+        <div class="relative flex items-center justify-center pt-1">
           <div class="border-t border-slate-200 w-full"></div>
-          <span class="bg-white px-3 text-[11px] text-slate-400 font-medium uppercase absolute">Atau Masuk dengan PIN</span>
+          <span class="bg-white px-3 text-[11px] text-slate-400 font-medium uppercase absolute">atau masuk manual</span>
         </div>
 
-        <!-- Form Manual Username & PIN -->
+        <!-- Manual form -->
         <form id="form-login-manual" class="space-y-3 text-xs">
           <div>
             <label class="block font-medium text-slate-700 mb-1">Username / Akun Pengurus:</label>
@@ -107,7 +139,7 @@ require_once __DIR__ . '/config.php';
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                 <i class="fa-solid fa-user"></i>
               </span>
-              <input type="text" id="login-username" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium" placeholder="superadmin / ketua / sekretaris..." required>
+              <input type="text" id="login-username" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-medium" placeholder="superadmin / ketua / sekretaris / bendahara..." required>
             </div>
           </div>
 
@@ -132,12 +164,7 @@ require_once __DIR__ . '/config.php';
             </button>
           </div>
         </form>
-      </div>
 
-      <div class="text-center pt-2 border-t border-slate-100">
-        <p class="text-[11px] text-slate-400">
-          Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa
-        </p>
       </div>
     </div>
   </div>
@@ -245,6 +272,15 @@ require_once __DIR__ . '/config.php';
           <span class="text-[10px] bg-gold/20 text-gold px-1.5 py-0.5 rounded-full font-bold">MDS</span>
         </a>
 
+        <!-- 4.5. Keuangan -->
+        <a data-tab="tab-keuangan" class="sidebar-nav-item">
+          <span class="icon-box text-green-400">
+            <i class="fa-solid fa-money-bill-wave"></i>
+          </span>
+          <span class="flex-1">Keuangan</span>
+          <span class="text-[10px] bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded-full font-bold">BOS</span>
+        </a>
+
         <!-- 5. Profil Ranting -->
         <a data-tab="tab-profil" class="sidebar-nav-item">
           <span class="icon-box text-amber-300">
@@ -260,7 +296,7 @@ require_once __DIR__ . '/config.php';
             <i class="fa-solid fa-gears"></i>
           </span>
           <span class="flex-1">6. Pengaturan</span>
-          <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-full font-bold">6 User</span>
+          <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-full font-bold">Multi User</span>
         </a>
       </nav>
     </div>
@@ -823,7 +859,20 @@ require_once __DIR__ . '/config.php';
 
                 <div>
                   <label class="block text-xs font-medium text-slate-600 mb-1">Editor Redaksi Surat (HTML Support):</label>
-                  <textarea id="input-isi-surat" rows="8" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-serif leading-relaxed focus:ring-2 focus:ring-ansor focus:bg-white"></textarea>
+                  <textarea id="input-isi-surat" rows="9" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-serif leading-relaxed focus:ring-2 focus:ring-ansor focus:bg-white"><p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+<p>Salam silaturrahim teriring do'a kami sampaikan, semoga Sahabat senantiasa dalam limpahan taufiq dan hidayah Allah SWT serta sukses dalam menjalankan aktifitas keseharian.</p>
+<p>Dengan hormat, bersama surat ini kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam kegiatan:</p>
+<table style="width: 100%; margin: 15px 0 15px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>Rutinan MDS Rijalul Ansor & Silaturrahim Ranting</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari / Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>Sabtu Malam Ahad Pon, 14 November 2026</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pukul</strong></td><td style="vertical-align: top;">:</td><td>19.30 WIB (Ba'da Isya) s.d Selesai</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>Musholla Baitur Muttaqin RT 02 / RW 01 Dsn. Krajan Jatinom</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Agenda</strong></td><td style="vertical-align: top;">:</td><td>Pembacaan Maulid Diba', Yasin Tahlil, & Koordinasi Kasat/MDS</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Dresscode</strong></td><td style="vertical-align: top;">:</td><td>Baju Koko Putih / Seragam Ansor / Batik Ansor, Berpeci Hitam.</td></tr>
+</table>
+<p>Mengingat pentingnya kegiatan tersebut, kehadiran Bapak/Ibu/Saudara/i sangat kami harapkan tepat waktu.</p>
+<p>Demikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih.</p>
+<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p></textarea>
                 </div>
               </div>
 
@@ -1058,9 +1107,48 @@ require_once __DIR__ . '/config.php';
                 </div>
               </div>
 
-              <div>
-                <label class="block font-medium text-slate-700 mb-1">Alamat Domisili (RT/RW / Dusun) *</label>
-                <input type="text" id="kader-alamat" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: RT 02 / RW 01 Dsn. Jatinom Krajan" required>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Alamat Domisili (RT/RW / Dusun) *</label>
+                  <input type="text" id="kader-alamat" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: RT 02 / RW 01 Dsn. Jatinom Krajan" required>
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Email (Opsional)</label>
+                  <input type="email" id="kader-email" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="email@contoh.com">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Pekerjaan / Profesi:</label>
+                  <select id="kader-pekerjaan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+                    <option value="Pelajar/Mahasiswa">Pelajar/Mahasiswa</option>
+                    <option value="PNS/ASN">PNS/ASN</option>
+                    <option value="TNI/Polri">TNI/Polri</option>
+                    <option value="Petani/Pekebun">Petani/Pekebun</option>
+                    <option value="Pedagang/Wirausaha">Pedagang/Wirausaha</option>
+                    <option value="Buruh/Pekerja">Buruh/Pekerja</option>
+                    <option value="Karyawan Swasta">Karyawan Swasta</option>
+                    <option value="Guru/Tenaga Pendidik">Guru/Tenaga Pendidik</option>
+                    <option value="Tenaga Kesehatan">Tenaga Kesehatan</option>
+                    <option value="Lainnya" selected>Lainnya</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-700 mb-1">Jenjang Pengkaderan Khusus / Kursus:</label>
+                  <select id="kader-kaderisasi-khusus" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+                    <option value="Belum Ada" selected>Belum Ada</option>
+                    <option value="Provost">Provost</option>
+                    <option value="Protokoler">Protokoler</option>
+                    <option value="Bagana">Bagana</option>
+                    <option value="Balantas">Balantas</option>
+                    <option value="Basada">Basada</option>
+                    <option value="Balakar">Balakar</option>
+                    <option value="Baritim">Baritim</option>
+                    <option value="Suspelat 1">Suspelat 1</option>
+                    <option value="Suspelat 2">Suspelat 2</option>
+                  </select>
+                </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">

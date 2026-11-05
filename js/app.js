@@ -16,6 +16,9 @@ const INITIAL_KADER = [
     tglLahir: "1993-05-12",
     alamat: "RT 01 / RW 01 Dsn. Jatinom Krajan",
     wa: "081234567890",
+    email: "ketua.jatinom@ansor.id",
+    pekerjaan: "Pedagang/Wirausaha",
+    kaderisasiKhusus: "Belum Ada",
     lembaga: ["Ansor", "Rijalul Ansor"],
     kaderisasi: "PKD",
     jabatan: "Ketua PR GP Ansor"
@@ -29,6 +32,9 @@ const INITIAL_KADER = [
     tglLahir: "1995-08-20",
     alamat: "RT 02 / RW 01 Dsn. Jatinom Krajan",
     wa: "081398765432",
+    email: "sekretaris.jatinom@ansor.id",
+    pekerjaan: "Guru/Tenaga Pendidik",
+    kaderisasiKhusus: "Belum Ada",
     lembaga: ["Ansor"],
     kaderisasi: "PKD",
     jabatan: "Sekretaris PR GP Ansor"
@@ -42,6 +48,9 @@ const INITIAL_KADER = [
     tglLahir: "1991-01-15",
     alamat: "RT 03 / RW 02 Dsn. Wonorejo Jatinom",
     wa: "082155443322",
+    email: "banser.jatinom@ansor.id",
+    pekerjaan: "Pedagang/Wirausaha",
+    kaderisasiKhusus: "Suspelat 1",
     lembaga: ["Ansor", "Banser"],
     kaderisasi: "SUSBALAN",
     jabatan: "Kasatkorkel Banser Jatinom"
@@ -55,6 +64,9 @@ const INITIAL_KADER = [
     tglLahir: "1994-04-09",
     alamat: "RT 01 / RW 03 Dsn. Jatinom Kulon",
     wa: "085733221144",
+    email: "rijalul.jatinom@ansor.id",
+    pekerjaan: "Guru/Tenaga Pendidik",
+    kaderisasiKhusus: "Belum Ada",
     lembaga: ["Ansor", "Rijalul Ansor"],
     kaderisasi: "PKD",
     jabatan: "Ketua MDS Rijalul Ansor"
@@ -68,9 +80,12 @@ const INITIAL_KADER = [
     tglLahir: "1998-11-18",
     alamat: "RT 02 / RW 02 Dsn. Wonorejo",
     wa: "089677889900",
+    email: "kasetma.jatinom@ansor.id",
+    pekerjaan: "Karyawan Swasta",
+    kaderisasiKhusus: "Balantas",
     lembaga: ["Banser"],
     kaderisasi: "DIKLATSAR",
-    jabatan: "Anggota Satkorkel Banser"
+    jabatan: "Kasetma & Wakasatkorkel Banser"
   },
   {
     id: "KDR-006",
@@ -81,6 +96,9 @@ const INITIAL_KADER = [
     tglLahir: "2000-12-25",
     alamat: "RT 04 / RW 01 Dsn. Jatinom Krajan",
     wa: "087811223344",
+    email: "rizky.provos@ansor.id",
+    pekerjaan: "Karyawan Swasta",
+    kaderisasiKhusus: "Provost",
     lembaga: ["Ansor", "Banser"],
     kaderisasi: "DIKLATSAR",
     jabatan: "Unit Provos Banser"
@@ -214,7 +232,7 @@ const INITIAL_USERS = [
     id: "USR-03",
     username: "sekretaris",
     nama: "Ahmad Nur Sholihin",
-    role: "Sekretaris",
+    role: "Sekretaris Ansor",
     pin: "1234",
     email: "sekretaris.jatinom@ansor.id",
     akses: "Manajemen E-Surat, E-Kader & Notulensi",
@@ -234,7 +252,18 @@ const INITIAL_USERS = [
   },
   {
     id: "USR-05",
-    username: "mds",
+    username: "kasetma",
+    nama: "Bambang Tri Sutrisno",
+    role: "Kasetma",
+    pin: "1234",
+    email: "kasetma.jatinom@ansor.id",
+    akses: "Administrasi Markas Banser & Logistik Personel",
+    status: "Aktif",
+    badgeColor: "bg-orange-100 text-orange-800 border-orange-200"
+  },
+  {
+    id: "USR-06",
+    username: "ketua_mds",
     nama: "Gus M. Fahmi Ilham",
     role: "Ketua MDS Rijalul Ansor",
     pin: "1234",
@@ -244,7 +273,18 @@ const INITIAL_USERS = [
     badgeColor: "bg-amber-100 text-amber-800 border-amber-200"
   },
   {
-    id: "USR-06",
+    id: "USR-07",
+    username: "bendahara",
+    nama: "Abdul Wahid",
+    role: "Bendahara Ansor",
+    pin: "1234",
+    email: "bendahara.jatinom@ansor.id",
+    akses: "Manajemen Keuangan, Kas Ranting & Pembukuan",
+    status: "Aktif",
+    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200"
+  },
+  {
+    id: "USR-08",
     username: "siber",
     nama: "Fajar Sidiq",
     role: "Ketua Siber Ansor",
@@ -253,6 +293,55 @@ const INITIAL_USERS = [
     akses: "Kelola Warta Ansor, Media Publikasi & IT",
     status: "Aktif",
     badgeColor: "bg-cyan-100 text-cyan-800 border-cyan-200"
+  }
+];
+
+// DATA KEUANGAN / PEMBUKUAN KAS RANTING
+const INITIAL_KEUANGAN = [
+  {
+    id: "TRX-001",
+    tanggal: "2026-11-01",
+    kategori: "Saldo Awal",
+    keterangan: "Saldo awal kas Pimpinan Ranting GP Ansor Jatinom",
+    jenis: "pemasukan",
+    jumlah: 3500000,
+    pj: "Abdul Wahid (Bendahara)"
+  },
+  {
+    id: "TRX-002",
+    tanggal: "2026-11-02",
+    kategori: "Infaq Rutinan",
+    keterangan: "Infaq Koin Mandiri Rutinan Selapanan MDS Rijalul Ansor Krajan",
+    jenis: "pemasukan",
+    jumlah: 750000,
+    pj: "Arif Munandar (Bendahara MDS)"
+  },
+  {
+    id: "TRX-003",
+    tanggal: "2026-11-03",
+    kategori: "Operasional",
+    keterangan: "Pembelian ATK, Kertas Kop Surat, & Tinta Printer Sekretariat",
+    jenis: "pengeluaran",
+    jumlah: 275000,
+    pj: "Ahmad Nur Sholihin (Sekretaris)"
+  },
+  {
+    id: "TRX-004",
+    tanggal: "2026-11-04",
+    kategori: "Logistik",
+    keterangan: "Dukungan logistik & konsumsi pengamanan apel Banser",
+    jenis: "pengeluaran",
+    jumlah: 350000,
+    pj: "Subhan Mubarok (Kasatkorkel)"
+  },
+  {
+    id: "TRX-005",
+    tanggal: "2026-11-05",
+    kategori: "Donatur",
+    keterangan: "Infaq donatur pengembangan dakwah & kaderisasi ranting",
+    jenis: "pemasukan",
+    jumlah: 1000000,
+    pj: "M. Zainal Arifin (Ketua)"
   }
 ];
 
@@ -315,6 +404,8 @@ const INITIAL_SETTINGS = {
   ketuaSiberNama: "FAJAR SIDIQ",
   alamatSekretariat: "Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com",
   waOfficial: "081234567890",
+  visi: "Terwujudnya Generasi Muda Nahdlatul Ulama yang bertaqwa, berilmu, berakhlakul karimah, dan berdedikasi tinggi dalam pengembangan masyarakat Desa Jatinom.",
+  misi: "1. Meningkatkan kualitas kaderisasi dan pembinaan anggota GP Ansor.\n2. Memperkuat sinergi antara GP Ansor, Satkorkel Banser, dan MDS Rijalul Ansor.\n3. Mengembangkan kegiatan sosial, dakwah, dan ekonomi masyarakat.\n4. Menjaga keutuhan NKRI dan nilai-nilai Aswaja An-Nahdliyyah.\n5. Membangun sistem administrasi yang transparan dan akuntabel.",
   customLogos: {
     ansor: "",
     banser: "",
@@ -342,6 +433,14 @@ const INITIAL_NOTIFIKASI = [
   },
   {
     id: "NTF-003",
+    judul: "Pembukuan Kas Ranting Terbaru",
+    pesan: "Catatan transaksi kas bulan berjalan telah diperbarui oleh Bendahara.",
+    waktu: "2 jam yang lalu",
+    dibaca: false,
+    kategori: "keuangan"
+  },
+  {
+    id: "NTF-004",
     judul: "Database Kader Baru Ditambahkan",
     pesan: "Sahabat Rizky Dwi Kurniawan (Unit Provos) telah terverifikasi dalam basis data kader.",
     waktu: "Kemarin",
@@ -432,10 +531,33 @@ class AnsorStore {
 
   static getNotifikasi() {
     const data = localStorage.getItem("sahabat_notifikasi");
-    return data ? JSON.parse(data) : INITIAL_NOTIFIKASI;
+    if (!data) return INITIAL_NOTIFIKASI;
+    try {
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+      return INITIAL_NOTIFIKASI;
+    } catch (e) {
+      return INITIAL_NOTIFIKASI;
+    }
   }
   static saveNotifikasi(list) {
     localStorage.setItem("sahabat_notifikasi", JSON.stringify(list));
+  }
+
+  static getKeuangan() {
+    const data = localStorage.getItem("sahabat_keuangan");
+    if (!data) return INITIAL_KEUANGAN;
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_KEUANGAN;
+    } catch (e) {
+      return INITIAL_KEUANGAN;
+    }
+  }
+  static saveKeuangan(list) {
+    localStorage.setItem("sahabat_keuangan", JSON.stringify(list));
   }
 
   static getCustomLogo(type) {
@@ -455,7 +577,22 @@ class AnsorStore {
 
   static getUsers() {
     const data = localStorage.getItem("sahabat_users");
-    return data ? JSON.parse(data) : INITIAL_USERS;
+    if (!data) return INITIAL_USERS;
+    try {
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Merge missing users (e.g. kasetma, bendahara) into stored users
+        INITIAL_USERS.forEach((iu) => {
+          if (!parsed.some((u) => u.username === iu.username)) {
+            parsed.push(iu);
+          }
+        });
+        return parsed;
+      }
+      return INITIAL_USERS;
+    } catch (e) {
+      return INITIAL_USERS;
+    }
   }
   static saveUsers(list) {
     localStorage.setItem("sahabat_users", JSON.stringify(list));
@@ -520,6 +657,7 @@ class AnsorStore {
     localStorage.setItem("sahabat_signatures", JSON.stringify(INITIAL_SIGNATURES));
     localStorage.setItem("sahabat_current_user", JSON.stringify(INITIAL_USERS[0]));
     localStorage.setItem("sahabat_notifikasi", JSON.stringify(INITIAL_NOTIFIKASI));
+    localStorage.setItem("sahabat_keuangan", JSON.stringify(INITIAL_KEUANGAN));
     localStorage.setItem("sahabat_surat_counter", "2");
   }
 }
@@ -632,16 +770,20 @@ Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom, Kecamatan Kanigoro, Kabupate
     kode: "SU",
     defaultPerihal: "Undangan Rutinan MDS Rijalul Ansor dan Silaturrahim",
     generateBody: (d) => `
-<p>Salam silaturrahim teriring do'a kami haturkan, semoga Sahabat senantiasa berada dalam naungan maghfirah dan barakah Allah SWT.</p>
-<p>Dalam rangka mempererat ukhuwah islamiyah dan melestarikan tradisi amaliyah Ahlussunnah Wal Jama'ah An-Nahdliyyah, Pimpinan Ranting GP Ansor Jatinom mengundang Sahabat untuk hadir pada:</p>
+<p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+<p>Salam silaturrahim teriring do'a kami sampaikan, semoga Sahabat senantiasa dalam limpahan taufiq dan hidayah Allah SWT serta sukses dalam menjalankan aktifitas keseharian.</p>
+<p>Dengan hormat, bersama surat ini kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam kegiatan:</p>
 <table style="width: 100%; margin: 15px 0 15px 20px; border-collapse: collapse;">
-  <tr><td style="width: 130px; vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Sabtu Malam Ahad Pon, 14 November 2026"}</strong></td></tr>
-  <tr><td style="vertical-align: top;"><strong>Waktu</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB (Ba'da Isya) s.d Selesai"}</td></tr>
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.acara || d.kegiatan || "Rutinan MDS Rijalul Ansor & Koordinasi Ranting"}</strong></td></tr>
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Hari / Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Sabtu Malam Ahad Pon, 14 November 2026"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pukul</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB (Ba'da Isya) s.d Selesai"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Musholla Baitur Muttaqin RT 02 / RW 01 Dsn. Krajan Jatinom"}</td></tr>
-  <tr><td style="vertical-align: top;"><strong>Acara</strong></td><td style="vertical-align: top;">:</td><td>${d.acara || "Pembacaan Maulid Diba', Yasin Tahlil, & Koordinasi Kasat/MDS"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Agenda</strong></td><td style="vertical-align: top;">:</td><td>${d.acara || "Pembacaan Maulid Diba', Yasin Tahlil, & Koordinasi Kasat/MDS"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Dresscode</strong></td><td style="vertical-align: top;">:</td><td>Baju Koko Putih / Seragam Ansor / Batik Ansor, Berpeci Hitam.</td></tr>
 </table>
-<p>Mengingat pentingnya acara ini, kami sangat mengharapkan kehadiran Sahabat tepat waktu. Atas kehadirannya kami ucapkan <em>jazakumullah ahsanal jaza'</em>.</p>
+<p>Mengingat pentingnya kegiatan tersebut, kehadiran Bapak/Ibu/Saudara/i sangat kami harapkan tepat waktu.</p>
+<p>Demikian undangan ini kami sampaikan. Atas perhatian dan kehadirannya, kami ucapkan terima kasih <em>jazakumullah ahsanal jaza'</em>.</p>
+<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
 `
   },
   SI: {
@@ -738,4 +880,5 @@ window.ROMAN_MONTHS = ROMAN_MONTHS;
 window.getHijriDate = getHijriDate;
 window.getIndonesianDate = getIndonesianDate;
 window.TEMPLATES_MAP = TEMPLATES_MAP;
+window.INITIAL_KEUANGAN = INITIAL_KEUANGAN;
 
