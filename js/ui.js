@@ -277,6 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Trigger update info deskripsi role saat dropdown dipilih
     selectEl.onchange = () => {
+      document.getElementById("login-error-msg")?.classList.add("hidden");
       const selectedOpt = selectEl.options[selectEl.selectedIndex];
       const descBox = document.getElementById("login-selected-role-desc");
       const roleText = document.getElementById("role-desc-text");
@@ -294,14 +295,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (descBox) descBox.classList.add("hidden");
       }
     };
+
+    // Bersihkan error saat mengetik PIN
+    document.getElementById("login-pin")?.addEventListener("input", () => {
+      document.getElementById("login-error-msg")?.classList.add("hidden");
+    });
   }
 
   function applyLoginSession(user) {
     state.currentUser = user;
     AnsorStore.setCurrentUser(user);
+    sessionStorage.setItem("sahabat_session_active", "true");
     updateHeaderUserBadge();
     modalLoginPortal.classList.add("hidden");
     addNotification("Sesi Masuk Berhasil", `Anda masuk sebagai ${user.role} (${user.nama}).`, "info");
+    if (typeof renderKeuangan === "function") renderKeuangan();
   }
 
   function updateHeaderUserBadge() {
@@ -317,23 +325,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sNama) sNama.textContent = u.nama;
   }
 
-  // Tombol buka login modal dari header & sidebar
+  // Tombol buka login modal dari header & sidebar (Ganti Akun)
   document.getElementById("btn-buka-login")?.addEventListener("click", () => {
+    document.getElementById("login-error-msg")?.classList.add("hidden");
+    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
     modalLoginPortal.classList.remove("hidden");
-  });
-  document.getElementById("btn-close-login")?.addEventListener("click", () => {
-    modalLoginPortal.classList.add("hidden");
+    document.getElementById("login-pin")?.focus();
   });
   document.getElementById("badge-active-user-container")?.addEventListener("click", () => {
+    document.getElementById("login-error-msg")?.classList.add("hidden");
+    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
     modalLoginPortal.classList.remove("hidden");
   });
   document.getElementById("sidebar-user-card")?.addEventListener("click", () => {
+    document.getElementById("login-error-msg")?.classList.add("hidden");
+    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
     modalLoginPortal.classList.remove("hidden");
     closeSidebar();
   });
   document.getElementById("sidebar-btn-login")?.addEventListener("click", () => {
+    document.getElementById("login-error-msg")?.classList.add("hidden");
+    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
     modalLoginPortal.classList.remove("hidden");
     closeSidebar();
+    document.getElementById("login-pin")?.focus();
   });
   document.getElementById("sidebar-btn-backup")?.addEventListener("click", () => {
     document.getElementById("modal-backup")?.classList.remove("hidden");
@@ -396,19 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addNotification("Logo Direset", "Semua logo kembali ke SVG default.", "info");
   });
 
-  // Tombol Tamu
-  document.getElementById("btn-login-tamu")?.addEventListener("click", () => {
-    state.currentUser = {
-      id: "GUEST",
-      username: "tamu",
-      nama: "Tamu / Anggota Ranting",
-      role: "Akses Tamu",
-      status: "Aktif"
-    };
-    AnsorStore.setCurrentUser(state.currentUser);
-    updateHeaderUserBadge();
-    modalLoginPortal.classList.add("hidden");
-  });
+  // Mode Tamu Dinonaktifkan (Wajib Login Sandi/PIN Valid)
 
   // Toggle Password / PIN Visibility
   const btnTogglePin = document.getElementById("btn-toggle-pin-visibility");
@@ -2765,6 +2768,14 @@ _Wassalamu'alaikum Wr. Wb._
   // Update judul header ke Dashboard saat pertama load
   const pageTitleEl = document.getElementById("page-active-title");
   if (pageTitleEl) pageTitleEl.textContent = "Dashboard Ranting";
+
+  // Proteksi Akses Login: Cek apakah sesi aktif sudah ada
+  const isSessionActive = sessionStorage.getItem("sahabat_session_active") === "true";
+  if (isSessionActive && state.currentUser && state.currentUser.id !== "GUEST") {
+    modalLoginPortal?.classList.add("hidden");
+  } else {
+    modalLoginPortal?.classList.remove("hidden");
+  }
 
   // XAMPP MySQL Live Check
   AnsorStore.checkXamppStatus().then((res) => {

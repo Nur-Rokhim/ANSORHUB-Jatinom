@@ -44,85 +44,66 @@
 <body class="bg-slate-100 min-h-screen flex flex-col font-sans antialiased text-slate-800">
 
   <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF (REDESIGN SPLIT LAYOUT) ==================== -->
-  <div id="modal-login-portal" class="login-backdrop hidden">
-    <div class="login-card-new max-w-4xl w-full flex overflow-hidden rounded-2xl shadow-2xl relative my-auto">
+  <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF (SECURE & COMPACT GLASS) ==================== -->
+  <div id="modal-login-portal" class="login-backdrop">
+    <div class="login-card-compact w-full max-w-[440px] mx-auto overflow-hidden rounded-3xl shadow-2xl relative my-auto animate-zoom-in">
       
-      <!-- Panel Kiri: Branding GP Ansor Ranting Jatinom -->
-      <div class="hidden md:flex w-5/12 login-brand-panel flex-col items-center justify-center p-8 relative overflow-hidden select-none">
-        <!-- Background Decorative Ornaments -->
-        <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-gold/15 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffc72c_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+      <!-- Ornamen Cahaya & Glow Keemasan -->
+      <div class="absolute -top-20 -right-20 w-44 h-44 bg-gold/25 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 w-44 h-44 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-white/95 via-white/88 to-white/92 backdrop-blur-2xl pointer-events-none"></div>
 
-        <!-- Logo & Branding -->
-        <div class="relative z-10 flex flex-col items-center text-center">
-          <div class="w-24 h-24 mb-4 p-2 bg-white/10 rounded-3xl border border-gold/40 shadow-xl flex items-center justify-center backdrop-blur-sm">
+      <!-- Konten Utama Form Login -->
+      <div class="p-7 sm:p-9 relative z-10 space-y-5">
+        
+        <!-- Header: Logo, Lembaga & Brand -->
+        <div class="text-center space-y-2.5">
+          <div class="w-20 h-20 mx-auto p-2.5 bg-gradient-to-br from-emerald-900 to-emerald-950 rounded-2xl border-2 border-gold/70 shadow-lg flex items-center justify-center transform hover:scale-105 transition-transform">
             <div id="login-logo-container" class="w-full h-full flex items-center justify-center">
               <!-- Injected via JS -->
             </div>
           </div>
-          <span class="text-[10px] font-black uppercase tracking-widest text-gold bg-black/30 border border-gold/30 px-3 py-1 rounded-full mb-2">
-            Pimpinan Ranting Jatinom
-          </span>
-          <h2 class="text-2xl font-black text-white tracking-tight leading-tight">
-            SAHABAT JATINOM
-          </h2>
-          <p class="text-emerald-200 text-xs text-center mt-2 font-medium leading-relaxed max-w-[240px]">
-            Sistem Administrasi GP Ansor<br>Pimpinan Ranting Desa Jatinom
-          </p>
-          <div class="mt-5 w-16 h-1 bg-gold rounded-full"></div>
-          <p class="text-emerald-300/80 text-[11px] text-center mt-4 italic font-serif leading-relaxed">
-            "Khidmah Aswaja An-Nahdliyyah<br>Satu Komando Bela Ulama & Bangsa"
-          </p>
-          <div class="mt-6 flex items-center gap-1.5 text-[10px] text-emerald-200/60 font-mono">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>Versi 2.5 Stabil &bull; Kanigoro</span>
+          <div>
+            <span class="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-emerald-900 bg-emerald-100/90 border border-emerald-300 px-3 py-0.5 rounded-full shadow-xs">
+              <i class="fa-solid fa-shield-halved text-emerald-700"></i>
+              <span>PR GP ANSOR JATINOM</span>
+            </span>
+            <h2 class="text-2xl font-black text-slate-900 tracking-tight mt-1.5">
+              PORTAL SAHABAT
+            </h2>
+            <p class="text-[11.5px] text-slate-500 font-medium">
+              Sistem Administrasi Ansor, Banser & MDS Rijalul Ansor
+            </p>
           </div>
         </div>
-      </div>
-      
-      <!-- Panel Kanan: Form Login Username (Dropdown) & Password -->
-      <div class="flex-1 login-form-panel p-6 sm:p-10 space-y-6 relative flex flex-col justify-center">
-        <!-- Tombol Tutup Modal Login -->
-        <button id="btn-close-login" type="button" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition z-20" title="Tutup Login">
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
 
-        <!-- Header Login (Mobile only logo) -->
-        <div class="md:hidden text-center pb-2 border-b border-slate-100">
-          <div id="login-logo-mobile" class="w-16 h-16 mx-auto mb-2 flex items-center justify-center">
-            <!-- Injected via JS -->
+        <!-- Banner Peringatan Autentikasi Keamanan -->
+        <div class="p-2.5 rounded-xl bg-emerald-950/5 border border-emerald-800/15 flex items-center gap-2.5 text-slate-700 text-[11px] leading-tight">
+          <div class="w-7 h-7 rounded-lg bg-emerald-800 text-gold flex items-center justify-center shrink-0 text-xs shadow-xs">
+            <i class="fa-solid fa-lock"></i>
           </div>
-          <span class="text-[10px] font-black uppercase tracking-wider text-ansor bg-emerald-50 px-2.5 py-0.5 rounded-full">
-            PR GP Ansor Jatinom
-          </span>
-          <h2 class="text-xl font-black text-slate-800 mt-1">PORTAL SAHABAT</h2>
-        </div>
-
-        <div>
-          <span class="text-[11px] font-extrabold uppercase tracking-widest text-emerald-800 bg-emerald-100 px-3 py-0.5 rounded-full inline-block mb-1.5">
-            Autentikasi Pengurus
-          </span>
-          <h3 class="text-2xl font-black text-slate-800 flex items-center gap-2">
-            <i class="fa-solid fa-right-to-bracket text-ansor"></i>
-            <span>Masuk ke Sistem</span>
-          </h3>
-          <p class="text-xs text-slate-500 mt-1">Silakan pilih akun pengurus ranting dan masukkan kata sandi / PIN Anda</p>
+          <div>
+            <span class="font-bold text-slate-800">Akses Terproteksi Sandi:</span>
+            <p class="text-slate-500 text-[10.5px]">Wajib memasukkan PIN / kata sandi pengurus yang sah untuk membuka aplikasi.</p>
+          </div>
         </div>
 
         <!-- Form Login Model Username Dropdown + Password -->
         <form id="form-login-manual" class="space-y-4 text-xs">
           <!-- Dropdown Pilihan Username / Akun Pengurus -->
           <div>
-            <label class="block font-bold text-slate-700 mb-1.5 text-xs">
-              <i class="fa-solid fa-user-shield text-ansor mr-1"></i>
-              Username / Akun Pengurus:
+            <label class="block font-bold text-slate-800 mb-1.5 text-xs flex items-center justify-between">
+              <span class="flex items-center gap-1.5">
+                <i class="fa-solid fa-user-shield text-ansor"></i>
+                <span>Pilih Akun Pengurus:</span>
+              </span>
+              <span class="text-[10px] text-slate-400 font-normal">Wajib dipilih</span>
             </label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ansor pointer-events-none">
                 <i class="fa-solid fa-id-badge text-sm"></i>
               </span>
-              <select id="login-username" class="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-semibold text-slate-800 text-xs appearance-none transition" required>
+              <select id="login-username" class="w-full pl-10 pr-10 py-2.5 bg-white/90 border border-slate-300/90 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-semibold text-slate-800 text-xs appearance-none transition shadow-xs" required>
                 <option value="" disabled selected>-- Pilih Akun Pengurus --</option>
                 <!-- Opsi akun diisi otomatis via JS berdasarkan state.usersList -->
               </select>
@@ -130,52 +111,51 @@
                 <i class="fa-solid fa-chevron-down text-xs"></i>
               </span>
             </div>
+            
             <!-- Info peran akun yang dipilih -->
-            <div id="login-selected-role-desc" class="mt-1.5 p-2 bg-emerald-50/70 rounded-lg border border-emerald-100 text-[11px] text-emerald-800 hidden flex items-center justify-between">
-              <span id="role-desc-text" class="font-medium">-</span>
-              <span class="text-[10px] bg-emerald-200/60 font-bold px-2 py-0.5 rounded text-emerald-900" id="role-badge-text">Role</span>
+            <div id="login-selected-role-desc" class="mt-2 p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-[11px] text-emerald-900 hidden flex items-center justify-between shadow-xs">
+              <span id="role-desc-text" class="font-medium truncate mr-2">-</span>
+              <span class="text-[10px] bg-emerald-200 font-black px-2 py-0.5 rounded-md text-emerald-900 shrink-0" id="role-badge-text">Role</span>
             </div>
           </div>
 
           <!-- Input Password / PIN -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="block font-bold text-slate-700 text-xs">
-                <i class="fa-solid fa-lock text-ansor mr-1"></i>
-                Kata Sandi / PIN:
+              <label class="block font-bold text-slate-800 text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-key text-ansor"></i>
+                <span>Kata Sandi / PIN:</span>
               </label>
-              <button type="button" id="btn-toggle-pin-visibility" class="text-[11px] text-emerald-700 hover:text-emerald-900 font-medium">
+              <button type="button" id="btn-toggle-pin-visibility" class="text-[11px] text-emerald-700 hover:text-emerald-900 font-semibold transition">
                 <i class="fa-solid fa-eye mr-0.5" id="icon-pin-eye"></i> Tampilkan
               </button>
             </div>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                <i class="fa-solid fa-key text-xs"></i>
+                <i class="fa-solid fa-lock text-xs"></i>
               </span>
-              <input type="password" id="login-pin" class="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-mono text-center tracking-widest text-base font-bold text-slate-800 transition" placeholder="••••" required>
+              <input type="password" id="login-pin" class="w-full pl-10 pr-3 py-2.5 bg-white/90 border border-slate-300/90 rounded-xl focus:ring-2 focus:ring-ansor focus:bg-white font-mono text-center tracking-widest text-base font-bold text-slate-800 transition shadow-xs" placeholder="••••" required autocomplete="current-password">
             </div>
-            <p class="text-[10.5px] text-slate-400 mt-1.5 flex items-center gap-1">
-              <i class="fa-solid fa-circle-info text-ansor text-[10px]"></i>
-              <span>Default PIN Super Admin: <code class="font-bold text-ansor bg-emerald-50 px-1 py-0.2 rounded">1934</code> &bull; Pengurus: <code class="font-bold text-ansor bg-emerald-50 px-1 py-0.2 rounded">1234</code></span>
-            </p>
+            <!-- Alert pesan error password salah -->
+            <div id="login-error-msg" class="hidden mt-1.5 text-[11px] text-red-600 font-bold flex items-center gap-1.5 bg-red-50 p-2 rounded-lg border border-red-200">
+              <i class="fa-solid fa-circle-exclamation text-xs"></i>
+              <span id="login-error-text">Kata sandi tidak sesuai!</span>
+            </div>
           </div>
 
-          <!-- Tombol Masuk / Login & Tamu -->
-          <div class="pt-2 space-y-2">
-            <button type="submit" class="w-full py-3 bg-ansor hover:bg-ansor-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg hover:shadow-emerald-900/30 transition text-sm">
-              <i class="fa-solid fa-right-to-bracket text-gold"></i>
+          <!-- Tombol Masuk / Login -->
+          <div class="pt-2">
+            <button type="submit" id="btn-submit-login" class="w-full py-3 bg-gradient-to-r from-ansor via-emerald-700 to-ansor-dark hover:from-emerald-800 hover:to-emerald-950 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 hover:shadow-xl transition-all text-sm group">
+              <i class="fa-solid fa-right-to-bracket text-gold group-hover:translate-x-0.5 transition-transform"></i>
               <span>Masuk Sekarang</span>
-            </button>
-            <button type="button" id="btn-login-tamu" class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition text-xs flex items-center justify-center gap-1.5" title="Buka sebagai publik/tamu">
-              <i class="fa-solid fa-user-group text-slate-400"></i>
-              <span>Lanjutkan sebagai Tamu / Anggota Ranting</span>
             </button>
           </div>
         </form>
 
-        <div class="text-center pt-2 border-t border-slate-100">
-          <p class="text-[11px] text-slate-400">
-            Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa
+        <!-- Footer Card -->
+        <div class="text-center pt-2 border-t border-slate-200/60">
+          <p class="text-[10px] text-slate-500 font-serif italic">
+            "Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa"
           </p>
         </div>
       </div>
