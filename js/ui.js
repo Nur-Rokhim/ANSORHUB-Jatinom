@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SAHABAT Jatinom - UI Controller & Event Handlers
  * Pimpinan Ranting GP Ansor Desa Jatinom, Kec. Kanigoro, Kab. Blitar
  * Versi 2.2 - Portal Login, Warta Ansor CRUD, 6 Roles User, Digital Signatures & Stamps
@@ -428,25 +428,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Form Login Manual Username Dropdown & Password / PIN
+  // Form Login Manual Username Dropdown & Password / PIN — SECURE (no bypass, no alert)
   document.getElementById("form-login-manual")?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const uname = document.getElementById("login-username").value.trim().toLowerCase();
-    const pin = document.getElementById("login-pin").value.trim();
+    const uname = document.getElementById("login-username")?.value.trim().toLowerCase() || "";
+    const pin   = document.getElementById("login-pin")?.value.trim() || "";
+    const errDiv  = document.getElementById("login-error-msg");
+    const errText = document.getElementById("login-error-text");
 
-    if (!uname) {
-      alert("Silakan pilih akun pengurus ranting terlebih dahulu!");
-      return;
-    }
+    const showErr = (msg) => {
+      if (errDiv)  errDiv.classList.remove("hidden");
+      if (errText) errText.textContent = msg;
+      document.getElementById("login-pin")?.focus();
+    };
+    const hideErr = () => errDiv?.classList.add("hidden");
+
+    if (!uname) { showErr("Silakan pilih akun pengurus ranting terlebih dahulu!"); return; }
+    if (!pin)   { showErr("Kata sandi / PIN wajib diisi!"); return; }
 
     const found = state.usersList.find((u) => u.username.toLowerCase() === uname && u.pin === pin);
     if (found) {
-      applyLoginSession(found);
-      alert(`Selamat datang, Sahabat ${found.nama} (${found.role})!`);
-      // Reset field PIN
+      hideErr();
       document.getElementById("login-pin").value = "";
+      applyLoginSession(found);
     } else {
-      alert("Kata sandi atau PIN tidak sesuai untuk akun yang dipilih. Silakan coba kembali.");
+      showErr("❌ Kata sandi / PIN salah! Akses ditolak. Silakan coba lagi.");
+      document.getElementById("login-pin").value = "";
     }
   });
 

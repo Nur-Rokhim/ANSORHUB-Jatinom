@@ -1,4 +1,4 @@
-/* SAHABAT JATINOM - Styling & Print Sheet
+﻿/* SAHABAT JATINOM - Styling & Print Sheet
    Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor
    GP Ansor Ranting Jatinom, Kec. Kanigoro, Kab. Blitar
    Versi 2.2 - Login Portal, Multi-Role User, E-Stempel & E-Signature */
@@ -293,6 +293,26 @@ body {
 }
 
 /* Kartu Login Transparan / Frosted Glass */
+/* ===== LOGIN CARD COMPACT (REDESIGN 2025) ===== */
+.login-card-compact {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border: 1.5px solid rgba(255,255,255,0.35);
+  box-shadow: 0 8px 48px 0 rgba(0,80,30,0.28), 0 2px 12px rgba(0,0,0,0.18);
+  overflow: hidden;
+}
+
+@keyframes zoom-in {
+  from { opacity: 0; transform: scale(0.88) translateY(24px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0px); }
+}
+.animate-zoom-in {
+  animation: zoom-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
 .login-card-new {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(20px);
