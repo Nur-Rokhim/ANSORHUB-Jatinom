@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentUser: AnsorStore.getCurrentUser(),
     signatures: AnsorStore.getSignatures(),
     notifikasiList: AnsorStore.getNotifikasi(),
+    keuanganList: AnsorStore.getKeuangan(),
     pengurusList: AnsorStore.getPengurus(),
     currentPengurusFilter: "semua",
     currentReadingBerita: null
@@ -468,6 +469,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "tab-surat": "2. E-Surat",
     "tab-kader": "3. E-Kader",
     "tab-agenda": "4. Agenda",
+    "tab-keuangan": "Keuangan Ranting",
     "tab-profil": "5. Profil Ranting",
     "tab-pengaturan": "6. Pengaturan"
   };
@@ -539,6 +541,8 @@ document.addEventListener("DOMContentLoaded", () => {
       updateKaderStats();
     } else if (tabId === "tab-agenda") {
       renderAgendaCards();
+    } else if (tabId === "tab-keuangan") {
+      renderKeuangan();
     } else if (tabId === "tab-profil") {
       renderProfilDetails();
       renderPengurusTable();
@@ -1378,6 +1382,8 @@ document.addEventListener("DOMContentLoaded", () => {
         k.nama.toLowerCase().includes(searchVal) ||
         (k.nia && k.nia.toLowerCase().includes(searchVal)) ||
         (k.alamat && k.alamat.toLowerCase().includes(searchVal)) ||
+        (k.pekerjaan && k.pekerjaan.toLowerCase().includes(searchVal)) ||
+        (k.kaderisasiKhusus && k.kaderisasiKhusus.toLowerCase().includes(searchVal)) ||
         (k.nik && k.nik.includes(searchVal));
 
       const matchLembaga =
@@ -1390,11 +1396,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400 italic">Data kader tidak ditemukan.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 italic">Data kader tidak ditemukan.</td></tr>`;
       return;
     }
 
-    filtered.forEach((k) => {
+    filtered.forEach((k, idx) => {
       const badges = (k.lembaga || [])
         .map((lem) => {
           if (lem === "Ansor") return `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold badge-ansor">Ansor</span>`;
@@ -1410,17 +1416,28 @@ document.addEventListener("DOMContentLoaded", () => {
       const tr = document.createElement("tr");
       tr.className = "hover:bg-slate-50 border-b border-slate-100";
       tr.innerHTML = `
+        <td class="py-2.5 px-3 text-slate-400 text-center font-mono">${idx + 1}</td>
         <td class="py-2.5 px-3">
           <div class="font-bold text-slate-800">${k.nama}</div>
           <div class="text-[10px] font-mono text-slate-400">NIA: ${k.nia || "-"} | NIK: ${k.nik || "-"}</div>
-          ${k.jabatan ? `<div class="text-[10px] text-emerald-700 font-semibold">${k.jabatan}</div>` : ""}
+          <div class="flex items-center gap-2 mt-0.5">
+            ${k.jabatan ? `<span class="text-[10px] text-emerald-700 font-semibold">${k.jabatan}</span>` : ""}
+            ${k.pekerjaan ? `<span class="text-[9.5px] text-slate-400">&bull; ${k.pekerjaan}</span>` : ""}
+          </div>
+          ${k.email ? `<div class="text-[9.5px] text-slate-400"><i class="fa-solid fa-envelope text-[8px] mr-1"></i>${k.email}</div>` : ""}
         </td>
-        <td class="py-2.5 px-3 text-slate-600 text-[11px]">${k.alamat}</td>
         <td class="py-2.5 px-3"><div class="flex flex-wrap gap-1">${badges}</div></td>
         <td class="py-2.5 px-3">
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${k.kaderisasi === "Belum Kaderisasi" ? "bg-slate-100 text-slate-600" : "bg-amber-100 text-amber-900"}">
-            ${k.kaderisasi || "-"}
-          </span>
+          <div class="space-y-1">
+            <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold ${k.kaderisasi === "Belum Kaderisasi" ? "bg-slate-100 text-slate-600" : "bg-amber-100 text-amber-900"}">
+              ${k.kaderisasi || "-"}
+            </span>
+            ${k.kaderisasiKhusus && k.kaderisasiKhusus !== "Belum Ada" ? `<div><span class="inline-block px-1.5 py-0.2 rounded text-[9px] font-extrabold bg-red-100 text-red-800 border border-red-200"><i class="fa-solid fa-medal text-[8px] mr-0.5 text-red-600"></i>${k.kaderisasiKhusus}</span></div>` : ""}
+          </div>
+        </td>
+        <td class="py-2.5 px-3 text-slate-600 text-[11px] leading-tight">
+          <div>${k.alamat}</div>
+          ${k.tempatLahir ? `<div class="text-[10px] text-slate-400">${k.tempatLahir}, ${k.tglLahir || "-"}</div>` : ""}
         </td>
         <td class="py-2.5 px-3">
           <a href="https://wa.me/${waClean}?text=Assalamu'alaikum%20Sahabat%20${encodeURIComponent(k.nama)}" target="_blank" class="inline-flex items-center gap-1 px-2 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded text-[11px] font-bold transition">
@@ -1485,6 +1502,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const tglLahir = document.getElementById("kader-tgl-lahir").value;
       const alamat = document.getElementById("kader-alamat").value.trim();
       const wa = document.getElementById("kader-wa").value.trim();
+      const email = document.getElementById("kader-email")?.value.trim() || "";
+      const pekerjaan = document.getElementById("kader-pekerjaan")?.value || "Lainnya";
+      const kaderisasiKhusus = document.getElementById("kader-kaderisasi-khusus")?.value || "Belum Ada";
       const kaderisasi = document.getElementById("kader-kaderisasi").value;
       const jabatan = document.getElementById("kader-jabatan").value.trim();
 
@@ -1498,7 +1518,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (idx !== -1) {
           state.kaderList[idx] = {
             ...state.kaderList[idx],
-            nama, nik, nia, tempatLahir, tglLahir, alamat, wa,
+            nama, nik, nia, tempatLahir, tglLahir, alamat, wa, email,
+            pekerjaan, kaderisasiKhusus,
             lembaga: lembagaChecked,
             kaderisasi, jabatan
           };
@@ -1506,7 +1527,8 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const newKader = {
           id: "KDR-" + Date.now().toString().slice(-4),
-          nama, nik, nia, tempatLahir, tglLahir, alamat, wa,
+          nama, nik, nia, tempatLahir, tglLahir, alamat, wa, email,
+          pekerjaan, kaderisasiKhusus,
           lembaga: lembagaChecked,
           kaderisasi, jabatan
         };
@@ -1539,6 +1561,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("kader-tgl-lahir").value = k.tglLahir || "";
     document.getElementById("kader-alamat").value = k.alamat;
     document.getElementById("kader-wa").value = k.wa;
+    if (document.getElementById("kader-email")) document.getElementById("kader-email").value = k.email || "";
+    if (document.getElementById("kader-pekerjaan")) document.getElementById("kader-pekerjaan").value = k.pekerjaan || "Lainnya";
+    if (document.getElementById("kader-kaderisasi-khusus")) document.getElementById("kader-kaderisasi-khusus").value = k.kaderisasiKhusus || "Belum Ada";
     document.getElementById("kader-kaderisasi").value = k.kaderisasi || "Belum Kaderisasi";
     document.getElementById("kader-jabatan").value = k.jabatan || "";
 
@@ -1808,6 +1833,241 @@ _Wassalamu'alaikum Wr. Wb._
 
   document.getElementById("filter-kategori-agenda")?.addEventListener("change", renderAgendaCards);
 
+  // --- TAB 4.5: KEUANGAN RANTING (PEMBUKUAN KAS) ---
+  const containerFormTransaksi = document.getElementById("container-form-transaksi");
+  const formTransaksi = document.getElementById("form-transaksi");
+
+  document.getElementById("btn-buka-form-transaksi")?.addEventListener("click", () => {
+    resetFormTransaksi();
+    containerFormTransaksi?.classList.remove("hidden");
+    document.getElementById("transaksi-tanggal").value = todayStr;
+    containerFormTransaksi?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  document.getElementById("btn-tutup-form-transaksi")?.addEventListener("click", () => {
+    containerFormTransaksi?.classList.add("hidden");
+  });
+
+  document.getElementById("btn-batal-transaksi")?.addEventListener("click", () => {
+    resetFormTransaksi();
+    containerFormTransaksi?.classList.add("hidden");
+  });
+
+  function resetFormTransaksi() {
+    formTransaksi?.reset();
+    const idEl = document.getElementById("transaksi-id");
+    if (idEl) idEl.value = "";
+    const titleEl = document.getElementById("form-transaksi-title");
+    if (titleEl) titleEl.textContent = "Pencatatan Transaksi Kas Baru";
+    const u = state.currentUser || state.usersList[0];
+    const pjEl = document.getElementById("transaksi-pj");
+    if (pjEl) pjEl.value = `${u.nama} (${u.role})`;
+  }
+
+  function formatRupiah(num) {
+    const n = parseInt(num) || 0;
+    return "Rp " + n.toLocaleString("id-ID");
+  }
+
+  function renderKeuangan() {
+    const list = state.keuanganList || [];
+    const filterJenis = document.getElementById("filter-jenis-kas")?.value || "semua";
+    const searchVal = document.getElementById("search-keuangan")?.value.toLowerCase().trim() || "";
+
+    // Hitung ringkasan total pemasukan, pengeluaran & saldo
+    let totalMasuk = 0;
+    let totalKeluar = 0;
+
+    list.forEach((t) => {
+      const jml = parseInt(t.jumlah) || 0;
+      if (t.jenis === "pemasukan") totalMasuk += jml;
+      else if (t.jenis === "pengeluaran") totalKeluar += jml;
+    });
+
+    const saldo = totalMasuk - totalKeluar;
+
+    const elMasuk = document.getElementById("stat-total-pemasukan");
+    const elKeluar = document.getElementById("stat-total-pengeluaran");
+    const elSaldo = document.getElementById("stat-saldo-kas");
+
+    if (elMasuk) elMasuk.textContent = formatRupiah(totalMasuk);
+    if (elKeluar) elKeluar.textContent = formatRupiah(totalKeluar);
+    if (elSaldo) {
+      elSaldo.textContent = formatRupiah(saldo);
+      elSaldo.className = `text-xl sm:text-2xl font-black ${saldo >= 0 ? "text-emerald-800" : "text-red-600"}`;
+    }
+
+    // Role check warning & button state
+    const u = state.currentUser || state.usersList[0];
+    const isBendaharaOrAdmin = u.role === "Bendahara Ansor" || u.role === "Super Admin" || u.role === "Ketua Ansor";
+    const warnEl = document.getElementById("transaksi-role-warning");
+    const submitBtn = document.getElementById("btn-submit-transaksi");
+    if (warnEl && submitBtn) {
+      if (isBendaharaOrAdmin) {
+        warnEl.classList.add("hidden");
+        submitBtn.removeAttribute("disabled");
+        submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+      } else {
+        warnEl.classList.remove("hidden");
+      }
+    }
+
+    // Filter daftar transaksi
+    const filtered = list.filter((t) => {
+      const matchJenis = filterJenis === "semua" || t.jenis === filterJenis;
+      const matchSearch =
+        (t.keterangan && t.keterangan.toLowerCase().includes(searchVal)) ||
+        (t.kategori && t.kategori.toLowerCase().includes(searchVal)) ||
+        (t.pj && t.pj.toLowerCase().includes(searchVal));
+      return matchJenis && matchSearch;
+    });
+
+    const tbody = document.getElementById("tbody-keuangan");
+    if (!tbody) return;
+    tbody.innerHTML = "";
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-400 italic">Belum ada catatan transaksi kas.</td></tr>`;
+      return;
+    }
+
+    // Hitung running balance urut waktu
+    let runningSaldo = 0;
+    const itemsWithSaldo = list.map((item) => {
+      const jml = parseInt(item.jumlah) || 0;
+      if (item.jenis === "pemasukan") runningSaldo += jml;
+      else runningSaldo -= jml;
+      return { ...item, saldoSetelahnya: runningSaldo };
+    });
+
+    filtered.forEach((t, idx) => {
+      const matchedWithSaldo = itemsWithSaldo.find((x) => x.id === t.id);
+      const saldoRow = matchedWithSaldo ? matchedWithSaldo.saldoSetelahnya : 0;
+      const jml = parseInt(t.jumlah) || 0;
+
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-50 border-b border-slate-100";
+      tr.innerHTML = `
+        <td class="py-2.5 px-3 text-slate-400 font-mono text-center">${idx + 1}</td>
+        <td class="py-2.5 px-3 font-medium text-slate-700 whitespace-nowrap">
+          <div>${t.tanggal}</div>
+          <span class="text-[9.5px] uppercase font-bold px-1.5 py-0.2 rounded ${t.jenis === "pemasukan" ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"}">${t.jenis}</span>
+        </td>
+        <td class="py-2.5 px-3">
+          <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
+            ${t.kategori || "Umum"}
+          </span>
+        </td>
+        <td class="py-2.5 px-3 text-slate-800 max-w-xs font-medium">
+          <div>${t.keterangan}</div>
+        </td>
+        <td class="py-2.5 px-3 text-slate-500 text-[11px] whitespace-nowrap">${t.pj || "-"}</td>
+        <td class="py-2.5 px-3 text-right font-mono font-bold text-emerald-700 whitespace-nowrap">
+          ${t.jenis === "pemasukan" ? "+ " + formatRupiah(jml) : "-"}
+        </td>
+        <td class="py-2.5 px-3 text-right font-mono font-bold text-red-600 whitespace-nowrap">
+          ${t.jenis === "pengeluaran" ? "- " + formatRupiah(jml) : "-"}
+        </td>
+        <td class="py-2.5 px-3 text-right font-mono font-black text-slate-900 whitespace-nowrap">
+          ${formatRupiah(saldoRow)}
+        </td>
+        <td class="py-2.5 px-3 text-center whitespace-nowrap">
+          <div class="flex items-center justify-center gap-1">
+            <button data-id="${t.id}" class="btn-edit-transaksi px-2 py-1 bg-amber-100 text-amber-700 hover:bg-amber-200 rounded text-[11px]" title="Edit Transaksi"><i class="fa-solid fa-pen"></i></button>
+            <button data-id="${t.id}" class="btn-hapus-transaksi px-2 py-1 bg-red-100 text-red-600 hover:bg-red-200 rounded text-[11px]" title="Hapus Transaksi"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Wire edit & hapus buttons
+    document.querySelectorAll(".btn-edit-transaksi").forEach((b) => {
+      b.addEventListener("click", () => {
+        const id = b.getAttribute("data-id");
+        const t = state.keuanganList.find((x) => x.id === id);
+        if (!t) return;
+        containerFormTransaksi?.classList.remove("hidden");
+        document.getElementById("transaksi-id").value = t.id;
+        document.getElementById("transaksi-tanggal").value = t.tanggal;
+        document.getElementById("transaksi-jenis").value = t.jenis;
+        document.getElementById("transaksi-kategori").value = t.kategori || "Lainnya";
+        document.getElementById("transaksi-jumlah").value = t.jumlah;
+        document.getElementById("transaksi-keterangan").value = t.keterangan;
+        document.getElementById("transaksi-pj").value = t.pj || "";
+        document.getElementById("form-transaksi-title").textContent = "Edit Transaksi Kas: " + t.keterangan;
+        containerFormTransaksi?.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    document.querySelectorAll(".btn-hapus-transaksi").forEach((b) => {
+      b.addEventListener("click", () => {
+        const u = state.currentUser || state.usersList[0];
+        if (u.role !== "Bendahara Ansor" && u.role !== "Super Admin") {
+          alert("Akses Ditolak: Hanya Bendahara Ansor dan Super Admin yang dapat menghapus transaksi kas.");
+          return;
+        }
+        const id = b.getAttribute("data-id");
+        if (confirm("Hapus catatan transaksi kas ini dari pembukuan?")) {
+          state.keuanganList = state.keuanganList.filter((x) => x.id !== id);
+          AnsorStore.saveKeuangan(state.keuanganList);
+          renderKeuangan();
+          addNotification("Transaksi Dihapus", "Satu catatan transaksi kas berhasil dihapus dari buku pembukuan.", "info");
+        }
+      });
+    });
+  }
+
+  // Submit form transaksi kas
+  formTransaksi?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const u = state.currentUser || state.usersList[0];
+    if (u.role !== "Bendahara Ansor" && u.role !== "Super Admin" && u.role !== "Ketua Ansor") {
+      alert("Akses Terbatas: Hanya Bendahara Ansor, Ketua, atau Super Admin yang berwenang mencatat kas.");
+      return;
+    }
+
+    const id = document.getElementById("transaksi-id").value;
+    const tanggal = document.getElementById("transaksi-tanggal").value;
+    const jenis = document.getElementById("transaksi-jenis").value;
+    const kategori = document.getElementById("transaksi-kategori").value;
+    const jumlah = parseInt(document.getElementById("transaksi-jumlah").value) || 0;
+    const keterangan = document.getElementById("transaksi-keterangan").value.trim();
+    const pj = document.getElementById("transaksi-pj").value.trim();
+
+    if (jumlah <= 0) {
+      alert("Nominal transaksi harus lebih dari 0!");
+      return;
+    }
+
+    if (id) {
+      const idx = state.keuanganList.findIndex((x) => x.id === id);
+      if (idx !== -1) {
+        state.keuanganList[idx] = {
+          ...state.keuanganList[idx],
+          tanggal, jenis, kategori, jumlah, keterangan, pj
+        };
+        addNotification("Transaksi Kas Diperbarui", `${kategori} sejumlah ${formatRupiah(jumlah)} telah diperbarui.`, "keuangan");
+      }
+    } else {
+      const newTrx = {
+        id: "TRX-" + Date.now().toString().slice(-4),
+        tanggal, jenis, kategori, jumlah, keterangan, pj
+      };
+      state.keuanganList.unshift(newTrx);
+      addNotification("Kas Baru Dicatat", `${jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"} ${kategori} ${formatRupiah(jumlah)} dicatat oleh ${pj}.`, "keuangan");
+    }
+
+    AnsorStore.saveKeuangan(state.keuanganList);
+    renderKeuangan();
+    resetFormTransaksi();
+    containerFormTransaksi?.classList.add("hidden");
+    alert("Catatan transaksi kas berhasil disimpan!");
+  });
+
+  document.getElementById("filter-jenis-kas")?.addEventListener("change", renderKeuangan);
+  document.getElementById("search-keuangan")?.addEventListener("input", renderKeuangan);
+
   // --- TAB 5: PROFIL RANTING & UPLOAD TTD / STEMPEL ---
   function renderProfilDetails() {
     const s = state.settings;
@@ -1831,7 +2091,53 @@ _Wassalamu'alaikum Wr. Wb._
 
     const psiber = document.getElementById("profil-nama-siber");
     if (psiber) psiber.textContent = s.ketuaSiberNama || "FAJAR SIDIQ";
+
+    loadVisiMisi();
   }
+
+  // --- VISI & MISI HANDLER (DAPAT DIEDIT DAN DISIMPAN) ---
+  function loadVisiMisi() {
+    const s = state.settings;
+    const visi = s.visi || "Terwujudnya pemuda Desa Jatinom yang berkarakter islami Ahlussunnah Wal Jama'ah An-Nahdliyyah, berdaya guna secara intelektual dan ekonomi, militan dalam membentengi Ulama, serta teguh mengawal keutuhan Negara Kesatuan Republik Indonesia.";
+    const misi = s.misi || "1. Pengkaderan Terstruktur: Melaksanakan kaderisasi formal (PKD Ansor & Diklatsar Banser) secara berkesinambungan bagi pemuda desa.\n2. Tradisi & Amaliyah: Mengistiqomahkan majelis dzikir, shalawat Diba', dan tahlil melalui MDS Rijalul Ansor di seluruh dusun Desa Jatinom.\n3. Satu Komando: Meningkatkan disiplin dan kesiapsiagaan Satkorkel Banser dalam tanggap sosial, bencana, dan marwah ulama.\n4. Digitalisasi & Kemandirian: Menerapkan administrasi modern dan menumbuhkan kemandirian ekonomi kader ranting.";
+
+    const textVisi = document.getElementById("text-visi");
+    const textMisi = document.getElementById("text-misi");
+    if (textVisi) textVisi.textContent = `"${visi}"`;
+    if (textMisi) textMisi.textContent = misi;
+
+    const inputVisi = document.getElementById("input-visi");
+    const inputMisi = document.getElementById("input-misi");
+    if (inputVisi) inputVisi.value = visi;
+    if (inputMisi) inputMisi.value = misi;
+  }
+
+  document.getElementById("btn-edit-visi-misi")?.addEventListener("click", () => {
+    document.getElementById("display-visi-misi")?.classList.add("hidden");
+    document.getElementById("form-visi-misi")?.classList.remove("hidden");
+  });
+
+  document.getElementById("btn-batal-visi-misi")?.addEventListener("click", () => {
+    document.getElementById("display-visi-misi")?.classList.remove("hidden");
+    document.getElementById("form-visi-misi")?.classList.add("hidden");
+  });
+
+  document.getElementById("btn-simpan-visi-misi")?.addEventListener("click", () => {
+    const visi = document.getElementById("input-visi")?.value.trim();
+    const misi = document.getElementById("input-misi")?.value.trim();
+    if (!visi || !misi) {
+      alert("Visi dan Misi tidak boleh kosong!");
+      return;
+    }
+    state.settings.visi = visi;
+    state.settings.misi = misi;
+    AnsorStore.saveSettings(state.settings);
+    loadVisiMisi();
+    document.getElementById("display-visi-misi")?.classList.remove("hidden");
+    document.getElementById("form-visi-misi")?.classList.add("hidden");
+    addNotification("Visi Misi Disimpan", "Visi dan Misi Ranting berhasil diperbarui dan disimpan.", "info");
+    alert("Visi dan Misi Ranting Jatinom berhasil disimpan!");
+  });
 
   // Setup Upload Signature & Stamp
   function setupUploadSignatureInput(inputId, storageKey) {
@@ -2153,6 +2459,7 @@ _Wassalamu'alaikum Wr. Wb._
         badge.classList.add("hidden");
       } else {
         badge.classList.remove("hidden");
+        badge.style.display = "flex";
       }
     }
     renderNotificationList();
@@ -2386,6 +2693,7 @@ _Wassalamu'alaikum Wr. Wb._
   updateKaderStats();
   renderKaderTable();
   renderAgendaCards();
+  renderKeuangan();
   renderProfilDetails();
   renderPengurusTable();
   renderUserCards();

@@ -535,6 +535,19 @@ class AnsorStore {
     try {
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed) && parsed.length > 0) {
+        // Jika semua sudah dibaca di localstorage lama pengguna, tambahkan notifikasi baru agar lonceng aktif
+        const hasUnread = parsed.some((n) => !n.dibaca);
+        if (!hasUnread) {
+          parsed.unshift({
+            id: "NTF-" + Date.now().toString().slice(-4),
+            judul: "Pusat Notifikasi Aktif",
+            pesan: "Sistem Administrasi SAHABAT Jatinom v2.5 siap digunakan.",
+            waktu: "Baru saja",
+            dibaca: false,
+            kategori: "info"
+          });
+          localStorage.setItem("sahabat_notifikasi", JSON.stringify(parsed));
+        }
         return parsed;
       }
       return INITIAL_NOTIFIKASI;

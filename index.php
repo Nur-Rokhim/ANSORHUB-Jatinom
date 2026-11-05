@@ -1385,6 +1385,194 @@ require_once __DIR__ . '/config.php';
 
       </section>
 
+      <!-- ==================== 4.5. TAB: KEUANGAN RANTING (PEMBUKUAN KAS) ==================== -->
+      <section id="tab-keuangan" class="tab-pane hidden fade-in-tab space-y-6">
+
+        <!-- Banner Keuangan Ranting -->
+        <div class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white rounded-2xl shadow-md p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+          <div class="relative z-10 space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-black uppercase tracking-wider">
+              <i class="fa-solid fa-vault"></i> Kas & Perbendaharaan Ranting
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight">PEMBUKUAN KEUANGAN KAS GP ANSOR JATINOM</h2>
+            <p class="text-xs sm:text-sm text-emerald-100 max-w-2xl leading-relaxed">
+              Pencatatan kas masuk dan keluar yang transparan, akuntabel, dan amanah. Terhubung dengan kas GP Ansor, Satkorkel Banser, dan MDS Rijalul Ansor.
+            </p>
+          </div>
+          <button id="btn-buka-form-transaksi" class="px-5 py-3 bg-gold hover:bg-amber-400 text-slate-900 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg transition shrink-0 relative z-10">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span>Catat Transaksi Kas</span>
+          </button>
+        </div>
+
+        <!-- 3 Kartu Ringkasan Finansial -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-100 text-ansor flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-arrow-down-long"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">Total Pemasukan Kas</span>
+              <h3 id="stat-total-pemasukan" class="text-xl sm:text-2xl font-black text-emerald-700">Rp 0</h3>
+              <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-circle-check mr-1"></i>Iuran, Infaq & Donatur</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-arrow-up-long"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">Total Pengeluaran Kas</span>
+              <h3 id="stat-total-pengeluaran" class="text-xl sm:text-2xl font-black text-red-600">Rp 0</h3>
+              <span class="text-[10px] text-red-500 font-semibold"><i class="fa-solid fa-receipt mr-1"></i>Operasional & Logistik</span>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl shrink-0">
+              <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500 font-medium">Saldo Kas Aktif</span>
+              <h3 id="stat-saldo-kas" class="text-xl sm:text-2xl font-black text-slate-900">Rp 0</h3>
+              <span class="text-[10px] text-slate-500 font-semibold"><i class="fa-solid fa-clock-rotate-left mr-1"></i>Realtime Buku Kas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Tambah/Edit Transaksi (Collapsible) -->
+        <div id="container-form-transaksi" class="hidden bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice-dollar text-ansor"></i>
+              <span id="form-transaksi-title">Pencatatan Transaksi Kas Baru</span>
+            </h3>
+            <button id="btn-tutup-form-transaksi" class="text-slate-400 hover:text-slate-600">
+              <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+          </div>
+
+          <form id="form-transaksi" class="space-y-4 text-xs">
+            <input type="hidden" id="transaksi-id" value="">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Tanggal Transaksi *</label>
+                <input type="date" id="transaksi-tanggal" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" required>
+              </div>
+
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Jenis Transaksi *</label>
+                <select id="transaksi-jenis" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-semibold">
+                  <option value="pemasukan" class="text-emerald-700 font-bold">Pemasukan (Kas Masuk)</option>
+                  <option value="pengeluaran" class="text-red-700 font-bold">Pengeluaran (Kas Keluar)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Nominal (Rp) *</label>
+                <input type="number" id="transaksi-jumlah" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white font-mono font-bold text-sm" placeholder="Contoh: 250000" min="1" required>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Kategori / Pos Anggaran *</label>
+                <select id="transaksi-kategori" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+                  <option value="Infaq Rutinan">Infaq Rutinan / Selapanan</option>
+                  <option value="Iuran Anggota">Iuran Anggota Ranting</option>
+                  <option value="Donatur">Donatur / Simpatisan</option>
+                  <option value="Kas Ansor">Kas GP Ansor</option>
+                  <option value="Kas Banser">Kas Satkorkel Banser</option>
+                  <option value="Kas MDS">Kas MDS Rijalul Ansor</option>
+                  <option value="Operasional">Operasional Sekretariat / ATK</option>
+                  <option value="Konsumsi & Giat">Konsumsi & Giat Lapangan</option>
+                  <option value="Logistik Banser">Logistik Pengamanan Banser</option>
+                  <option value="Bisyarah / Transport">Bisyarah / Transport Dai</option>
+                  <option value="Lainnya">Lain-lain</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-medium text-slate-700 mb-1">Penanggung Jawab / Pencatat *</label>
+                <input type="text" id="transaksi-pj" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Contoh: Abdul Wahid (Bendahara)" value="Abdul Wahid (Bendahara)" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="block font-medium text-slate-700 mb-1">Uraian / Keterangan Transaksi *</label>
+              <textarea id="transaksi-keterangan" rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" placeholder="Rincian peruntukan kas atau sumber pemasukan..." required></textarea>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+              <span id="transaksi-role-warning" class="text-[11px] text-amber-700 font-semibold hidden">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i>Hanya Bendahara dan Super Admin yang berhak menyimpan data kas.
+              </span>
+              <div class="flex items-center gap-2 ml-auto">
+                <button type="button" id="btn-batal-transaksi" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-bold hover:bg-slate-50 transition">Batal</button>
+                <button type="submit" id="btn-submit-transaksi" class="px-6 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-2 shadow transition">
+                  <i class="fa-solid fa-floppy-disk text-gold"></i>
+                  <span>Simpan Transaksi Kas</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tabel Pembukuan Kas Lengkap -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-3">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-book text-ansor"></i>
+                <span>Buku Catatan Kas Ranting Jatinom</span>
+              </h3>
+              <p class="text-xs text-slate-500">Seluruh riwayat arus kas masuk dan kas keluar organisasi</p>
+            </div>
+
+            <!-- Filter Jenis Kas & Pencarian -->
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <select id="filter-jenis-kas" class="px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-semibold focus:ring-ansor">
+                <option value="semua">Semua Transaksi</option>
+                <option value="pemasukan">Hanya Pemasukan</option>
+                <option value="pengeluaran">Hanya Pengeluaran</option>
+              </select>
+
+              <div class="relative w-full sm:w-48">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" id="search-keuangan" class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:ring-1 focus:ring-ansor focus:bg-white" placeholder="Cari transaksi...">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabel Responsif -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 uppercase tracking-wider text-[11px] border-b">
+                <tr>
+                  <th class="py-3 px-3 w-10">No</th>
+                  <th class="py-3 px-3">Tanggal</th>
+                  <th class="py-3 px-3">Kategori</th>
+                  <th class="py-3 px-3">Uraian / Keterangan</th>
+                  <th class="py-3 px-3">PJ / Pencatat</th>
+                  <th class="py-3 px-3 text-right">Pemasukan (Rp)</th>
+                  <th class="py-3 px-3 text-right">Pengeluaran (Rp)</th>
+                  <th class="py-3 px-3 text-right">Saldo Kas (Rp)</th>
+                  <th class="py-3 px-3 text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-keuangan" class="divide-y divide-slate-100">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
       <!-- ==================== 5. TAB: PROFIL RANTING (NAMA-NAMA PENGURUS + UPLOAD TTD & STEMPEL) ==================== -->
       <section id="tab-profil" class="tab-pane hidden fade-in-tab space-y-6">
         
@@ -1608,39 +1796,62 @@ require_once __DIR__ . '/config.php';
           </div>
         </div>
 
-        <!-- Visi & Misi Card -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-3">
-            <div class="flex items-center gap-3 border-b pb-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-ansor flex items-center justify-center text-lg">
-                <i class="fa-solid fa-eye"></i>
-              </div>
-              <div>
-                <h3 class="text-base font-bold text-slate-800">Visi Ranting</h3>
-                <p class="text-xs text-slate-500">Arah gerakan dan cita-cita organisasi</p>
-              </div>
+        <!-- Visi & Misi Card (Editable & Tersimpan) -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-4">
+          <div class="flex items-center justify-between border-b pb-3">
+            <div>
+              <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-bullseye text-ansor text-lg"></i>
+                <span>Visi & Misi Pimpinan Ranting</span>
+              </h3>
+              <p class="text-xs text-slate-500">Arah pergerakan, nilai perjuangan, dan cita-cita organisasi yang dapat disunting</p>
             </div>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-serif italic bg-slate-50 p-4 rounded-xl border border-slate-200">
-              "Terwujudnya pemuda Desa Jatinom yang berkarakter islami Ahlussunnah Wal Jama'ah An-Nahdliyyah, berdaya guna secara intelektual dan ekonomi, militan dalam membentengi Ulama, serta teguh mengawal keutuhan Negara Kesatuan Republik Indonesia."
-            </p>
+            <button id="btn-edit-visi-misi" class="px-4 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+              <i class="fa-solid fa-pen text-gold"></i>
+              <span>Edit Visi Misi</span>
+            </button>
           </div>
 
-          <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 space-y-3">
-            <div class="flex items-center gap-3 border-b pb-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
-                <i class="fa-solid fa-bullseye"></i>
+          <!-- Tampilan Statis (Default) -->
+          <div id="display-visi-misi" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2 text-sm font-bold text-ansor">
+                <i class="fa-solid fa-eye"></i>
+                <h4>VISI RANTING JATINOM</h4>
               </div>
-              <div>
-                <h3 class="text-base font-bold text-slate-800">Misi Utama</h3>
-                <p class="text-xs text-slate-500">Langkah strategis khidmah jam'iyyah</p>
+              <div id="text-visi" class="text-xs sm:text-sm text-slate-700 leading-relaxed font-serif italic bg-emerald-50/60 p-4 rounded-xl border border-emerald-100 min-h-[140px] flex items-center">
+                <!-- Injected via JS -->
               </div>
             </div>
-            <ul class="text-xs text-slate-700 space-y-2 list-disc list-inside leading-relaxed">
-              <li><strong>Pengkaderan Terstruktur:</strong> Melaksanakan kaderisasi formal (PKD Ansor & Diklatsar Banser) secara berkesinambungan bagi pemuda desa.</li>
-              <li><strong>Tradisi & Amaliyah:</strong> Mengistiqomahkan majelis dzikir, shalawat Diba', dan tahlil melalui MDS Rijalul Ansor di seluruh dusun Desa Jatinom.</li>
-              <li><strong>Satu Komando:</strong> Meningkatkan disiplin dan kesiapsiagaan Satkorkel Banser dalam tanggap sosial, bencana, dan marwah ulama.</li>
-              <li><strong>Digitalisasi & Kemandirian:</strong> Menerapkan administrasi modern dan menumbuhkan kemandirian ekonomi kader ranting.</li>
-            </ul>
+
+            <div class="space-y-2">
+              <div class="flex items-center gap-2 text-sm font-bold text-amber-700">
+                <i class="fa-solid fa-list-check"></i>
+                <h4>MISI STRATEGIS RANTING</h4>
+              </div>
+              <div id="text-misi" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-amber-50/60 p-4 rounded-xl border border-amber-100 whitespace-pre-line min-h-[140px]">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Edit Visi Misi (Hidden by default) -->
+          <div id="form-visi-misi" class="hidden space-y-4 pt-2 border-t border-slate-100">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Visi Organisasi Ranting:</label>
+              <textarea id="input-visi" rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white text-xs leading-relaxed" placeholder="Tuliskan visi ranting..."></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Misi Organisasi Ranting (Poin 1, 2, dst per baris):</label>
+              <textarea id="input-misi" rows="6" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white text-xs leading-relaxed font-mono" placeholder="Tuliskan misi ranting..."></textarea>
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+              <button type="button" id="btn-batal-visi-misi" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition">Batal</button>
+              <button type="button" id="btn-simpan-visi-misi" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow transition">
+                <i class="fa-solid fa-floppy-disk text-gold"></i>
+                <span>Simpan Visi Misi</span>
+              </button>
+            </div>
           </div>
         </div>
 
