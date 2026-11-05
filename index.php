@@ -2098,8 +2098,13 @@ require_once __DIR__ . '/config.php';
         
         <!-- KOP SURAT RESMI -->
         <div class="kop-surat-container flex items-center justify-between mb-6">
-          <div class="kop-logo shrink-0" id="print-kop-logo-left">
-            <!-- Injected via JS -->
+          <div class="kop-logo-box shrink-0 flex flex-col items-center">
+            <div class="kop-logo" id="print-kop-logo-left">
+              <!-- Injected via JS -->
+            </div>
+            <div id="print-kop-kode-wilayah" class="kop-kode-wilayah text-[11px] font-bold text-slate-900 tracking-wider text-center mt-1">
+              XII-11-07-02
+            </div>
           </div>
           <div class="kop-teks text-right flex-1 pl-6">
             <h1 class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>

@@ -185,6 +185,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (printKopLogoKiri) printKopLogoKiri.innerHTML = getLogoHTML("ansor");
     const printKopLogoKanan = document.getElementById("print-kop-logo-right");
     if (printKopLogoKanan) printKopLogoKanan.innerHTML = "";
+    const printKopKodeWil = document.getElementById("print-kop-kode-wilayah");
+    if (printKopKodeWil) printKopKodeWil.textContent = "XII-11-07-02";
 
     updateKopLogos();
 
@@ -1183,6 +1185,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (logoKiri) logoKiri.innerHTML = getLogoHTML("ansor");
     if (logoKanan) logoKanan.innerHTML = "";
+
+    // Kode Wilayah tepat di bawah Logo Ansor
+    const elPrintKodeWil = document.getElementById("print-kop-kode-wilayah");
+    if (elPrintKodeWil) {
+      const rawKode = document.getElementById("input-kode-wilayah")?.value.trim() || "PR-XII-11-07-02";
+      elPrintKodeWil.textContent = rawKode.replace(/^PR-/, "") || "XII-11-07-02";
+    }
 
     if (kopLembaga === "banser") {
       if (kopTitle) kopTitle.textContent = "SATKORKEL BANSER JATINOM";

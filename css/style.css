@@ -388,10 +388,30 @@ body {
   display: none !important;
 }
 
+.kop-logo-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 95px;
+}
+
 .kop-logo {
   width: 85px;
   height: 85px;
   object-fit: contain;
+}
+
+.kop-kode-wilayah {
+  font-family: 'Arial', sans-serif;
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .kop-teks {
