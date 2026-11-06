@@ -731,6 +731,36 @@ body.viewing-app #view-landing-page {
     height: 7rem !important;
   }
 
+  /* Pastikan area tanda tangan dan stempel selalu tampil saat print */
+  #print-img-ttd-sekretaris,
+  #print-img-ttd-ketua,
+  #print-img-stempel {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  #print-img-ttd-sekretaris svg,
+  #print-img-ttd-ketua svg,
+  #print-img-stempel svg {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+
+  #print-img-ttd-sekretaris img,
+  #print-img-ttd-ketua img,
+  #print-img-stempel img {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+  }
+
   /* Multi-page dinamis untuk Surat Keputusan (SK) */
   body.mode-print-multi-page .surat-paper,
   .surat-paper.print-multi-page {

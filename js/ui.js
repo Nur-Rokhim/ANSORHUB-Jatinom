@@ -149,6 +149,18 @@ document.addEventListener("DOMContentLoaded", () => {
       <svg viewBox="0 0 120 70" class="w-full h-full" style="color: #003a1e;">
         <path d="M 10,45 Q 30,15 40,40 Q 50,65 60,30 Q 75,10 85,50 Q 95,55 105,35" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
         <line x1="20" y1="58" x2="95" y2="48" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>`,
+    ttdKasatkorkel: `
+      <svg viewBox="0 0 120 70" class="w-full h-full" style="color: #1a2e05;">
+        <path d="M 15,50 Q 30,10 42,32 Q 52,55 65,20 Q 78,45 92,30 Q 102,40 110,25" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M 22,25 L 80,58" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="98" cy="48" r="2.5" fill="currentColor"/>
+      </svg>`,
+    ttdKasetma: `
+      <svg viewBox="0 0 120 70" class="w-full h-full" style="color: #1a2e05;">
+        <path d="M 12,42 Q 28,12 38,36 Q 48,58 58,26 Q 70,8 80,44 Q 90,48 102,30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        <line x1="18" y1="52" x2="92" y2="44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M 68,48 Q 82,56 95,50" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
       </svg>`
   };
 
