@@ -45,17 +45,31 @@
 
   <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF (REDESIGN SPLIT LAYOUT) ==================== -->
   <!-- ==================== HALAMAN / MODAL LOGIN PORTAL INTERAKTIF (SECURE & COMPACT GLASS) ==================== -->
-  <div id="modal-login-portal" class="login-backdrop">
-    <div class="login-card-compact w-full max-w-[440px] mx-auto overflow-hidden rounded-3xl shadow-2xl relative my-auto animate-zoom-in">
+  <div id="modal-login-portal" class="login-backdrop hidden">
+    <div class="login-card-compact w-full max-w-[440px] mx-auto overflow-hidden rounded-3xl shadow-2xl relative my-auto animate-zoom-in border border-emerald-500/40">
       
-      <!-- Ornamen Cahaya & Glow Keemasan -->
-      <div class="absolute -top-20 -right-20 w-44 h-44 bg-gold/25 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-20 -left-20 w-44 h-44 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <!-- Digital glowing top strip -->
+      <div class="h-1.5 w-full bg-gradient-to-r from-ansor via-gold to-emerald-400 relative z-20"></div>
+
+      <!-- Ornamen Cahaya & Glow Keemasan Digital -->
+      <div class="absolute -top-20 -right-20 w-44 h-44 bg-gold/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 w-44 h-44 bg-emerald-500/25 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute inset-0 bg-gradient-to-b from-white/95 via-white/88 to-white/92 backdrop-blur-2xl pointer-events-none"></div>
 
       <!-- Konten Utama Form Login -->
-      <div class="p-7 sm:p-9 relative z-10 space-y-5">
+      <div class="p-6 sm:p-8 relative z-10 space-y-4">
         
+        <!-- Bar Navigasi Kembali ke Beranda -->
+        <div class="flex items-center justify-between pb-2.5 border-b border-slate-200/70">
+          <button type="button" id="btn-login-back-landing" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold text-emerald-800 transition flex items-center gap-1.5 group">
+            <i class="fa-solid fa-arrow-left text-ansor text-[11px] group-hover:-translate-x-0.5 transition-transform"></i>
+            <span>Kembali ke Beranda</span>
+          </button>
+          <span class="inline-flex items-center gap-1 text-[10.5px] font-mono text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md border border-emerald-300/60 font-bold">
+            <i class="fa-solid fa-shield-halved text-[10px] text-emerald-700"></i> SECURE ACCESS
+          </span>
+        </div>
+
         <!-- Header: Logo, Lembaga & Brand -->
         <div class="text-center space-y-2.5">
           <div class="w-20 h-20 mx-auto p-2.5 bg-gradient-to-br from-emerald-900 to-emerald-950 rounded-2xl border-2 border-gold/70 shadow-lg flex items-center justify-center transform hover:scale-105 transition-transform">
@@ -160,6 +174,446 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ==================== VIEW: LANDING PAGE (PORTAL PUBLIK SEBELUM LOGIN) ==================== -->
+  <div id="view-landing-page" class="w-full min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans select-none-text relative">
+    
+    <!-- Top Admin Bar (Hanya Muncul Bila Pengurus Sudah Login) -->
+    <div id="landing-admin-bar" class="hidden bg-emerald-950 text-white border-b border-gold/40 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2 z-50 sticky top-0 shadow-md">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-slate-300">Sesi Aktif: <strong id="landing-admin-nama" class="text-gold font-bold">M. Zainal Arifin</strong> (<span id="landing-admin-role" class="text-emerald-200">Super Admin</span>)</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btn-landing-to-admin" class="px-3 py-1 bg-gold hover:bg-amber-400 text-slate-900 rounded-lg font-bold transition flex items-center gap-1.5 shadow text-xs">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Buka Dashboard Admin</span>
+        </button>
+        <button id="btn-landing-logout" class="px-2.5 py-1 bg-red-900/70 hover:bg-red-800 text-red-200 rounded-lg font-semibold transition text-xs border border-red-700/50 flex items-center gap-1">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Keluar</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticky Navigation Bar Publik -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-emerald-900/50 shadow-xl">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+        
+        <!-- Logo & Identitas Brand -->
+        <a href="#landing-hero" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-1.5 border border-gold/60 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-black text-white text-base tracking-tight leading-none group-hover:text-gold transition-colors">ANSOR JATINOM</span>
+              <span class="text-[9.5px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-emerald-900/90 text-emerald-300 border border-emerald-700/60">Ranting</span>
+            </div>
+            <p class="text-[11px] text-emerald-300/80 font-medium">Kec. Kanigoro &bull; Kab. Blitar</p>
+          </div>
+        </a>
+
+        <!-- Menu Navigasi Desktop -->
+        <nav class="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+          <a href="#landing-hero" class="hover:text-gold transition flex items-center gap-1">
+            <i class="fa-solid fa-house text-emerald-500 text-[11px]"></i> Beranda
+          </a>
+          <a href="#landing-warta" class="hover:text-gold transition flex items-center gap-1">
+            <i class="fa-solid fa-newspaper text-emerald-500 text-[11px]"></i> Warta Ansor
+          </a>
+          <a href="#landing-struktur" class="hover:text-gold transition flex items-center gap-1">
+            <i class="fa-solid fa-sitemap text-emerald-500 text-[11px]"></i> Struktur Organisasi
+          </a>
+          <a href="#landing-pilar" class="hover:text-gold transition flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-emerald-500 text-[11px]"></i> 3 Pilar
+          </a>
+          <a href="#landing-kontak" class="hover:text-gold transition flex items-center gap-1">
+            <i class="fa-solid fa-address-book text-emerald-500 text-[11px]"></i> Kontak
+          </a>
+        </nav>
+
+        <!-- Tombol Masuk Portal Pengurus -->
+        <div class="flex items-center gap-2.5">
+          <button type="button" id="btn-landing-open-login" class="px-4 py-2 bg-gradient-to-r from-ansor via-emerald-700 to-emerald-900 hover:from-emerald-600 hover:to-emerald-800 text-white rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-950/80 border border-gold/40 transition transform hover:scale-105">
+            <i class="fa-solid fa-lock text-gold"></i>
+            <span>Portal Pengurus</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ==================== 1. HERO SECTION ==================== -->
+    <section id="landing-hero" class="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-gradient-to-b from-slate-950 via-[#031d10] to-slate-950 border-b border-emerald-900/40">
+      
+      <!-- Ornamen Digital Latar Belakang -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(0,255,140,0.08),transparent_70%)] pointer-events-none"></div>
+      <div class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute top-1/2 -right-32 w-96 h-96 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
+        
+        <!-- Badge Status Digital Resmi -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold tracking-wide shadow-inner">
+          <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+          <span>Portal Informasi & Administrasi Resmi PR GP Ansor Jatinom</span>
+        </div>
+
+        <!-- Headline Utama -->
+        <div class="space-y-3 max-w-4xl mx-auto">
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
+            Gerakan Pemuda Ansor <br class="hidden sm:inline">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-gold">Ranting Desa Jatinom</span>
+          </h1>
+          <p class="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Membina pemuda Nahdlatul Ulama dalam khidmah keagamaan Aswaja, pengawalan para Masyayikh, serta bela negara bersama <strong>SATKORKEL BANSER</strong> dan <strong>MDS Rijalul Ansor</strong>.
+          </p>
+        </div>
+
+        <!-- Tombol Aksi Cepat Hero -->
+        <div class="flex flex-wrap items-center justify-center gap-3.5 pt-2">
+          <button type="button" id="btn-hero-login" class="px-5 py-3 bg-gradient-to-r from-ansor via-emerald-700 to-ansor-dark hover:from-emerald-600 hover:to-emerald-800 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2.5 shadow-xl shadow-emerald-950/80 border border-gold/50 transition transform hover:-translate-y-0.5">
+            <i class="fa-solid fa-right-to-bracket text-gold"></i>
+            <span>Masuk Portal Administrasi</span>
+          </button>
+          
+          <a href="#landing-warta" class="px-5 py-3 bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl font-bold text-xs sm:text-sm border border-slate-700 flex items-center gap-2 transition">
+            <i class="fa-solid fa-newspaper text-emerald-400"></i>
+            <span>Baca Warta Terkini</span>
+          </a>
+
+          <a href="#landing-struktur" class="px-5 py-3 bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white rounded-xl font-bold text-xs sm:text-sm border border-slate-700 flex items-center gap-2 transition">
+            <i class="fa-solid fa-users text-gold"></i>
+            <span>Susunan Pengurus</span>
+          </a>
+        </div>
+
+        <!-- 4 Kotak Statistik Dinamis (Terkoneksi Realtime dengan Data Aplikasi) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-8">
+          <div class="p-4 rounded-2xl bg-slate-900/70 border border-emerald-800/40 backdrop-blur-sm text-center shadow-md hover:border-emerald-500/50 transition">
+            <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-lg border border-emerald-700/40">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div id="landing-stat-warta" class="text-2xl font-black text-white">4</div>
+            <div class="text-[11px] font-semibold text-slate-400">Warta Diterbitkan</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-900/70 border border-emerald-800/40 backdrop-blur-sm text-center shadow-md hover:border-emerald-500/50 transition">
+            <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-950 text-gold flex items-center justify-center text-lg border border-gold/30">
+              <i class="fa-solid fa-user-group"></i>
+            </div>
+            <div id="landing-stat-kader" class="text-2xl font-black text-white">48+</div>
+            <div class="text-[11px] font-semibold text-slate-400">Kader & Anggota</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-900/70 border border-emerald-800/40 backdrop-blur-sm text-center shadow-md hover:border-emerald-500/50 transition">
+            <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-950 text-emerald-400 flex items-center justify-center text-lg border border-emerald-700/40">
+              <i class="fa-solid fa-sitemap"></i>
+            </div>
+            <div id="landing-stat-pengurus" class="text-2xl font-black text-white">21</div>
+            <div class="text-[11px] font-semibold text-slate-400">Pengurus Ranting</div>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-900/70 border border-emerald-800/40 backdrop-blur-sm text-center shadow-md hover:border-emerald-500/50 transition">
+            <div class="w-10 h-10 mx-auto mb-2 rounded-xl bg-emerald-950 text-teal-300 flex items-center justify-center text-lg border border-teal-700/40">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div id="landing-stat-agenda" class="text-2xl font-black text-white">12+</div>
+            <div class="text-[11px] font-semibold text-slate-400">Agenda Khidmah</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. SECTION: WARTA ANSOR (INFORMASI TER-UPDATE) ==================== -->
+    <section id="landing-warta" class="py-16 bg-slate-900/90 border-b border-emerald-900/40 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header Bagian Warta -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800 pb-5">
+          <div class="space-y-1.5">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-gold uppercase tracking-wider">
+              <i class="fa-solid fa-bullhorn text-emerald-400"></i>
+              <span>Kabar & Publikasi Terkini</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              Warta Resmi GP Ansor Jatinom
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 max-w-xl">
+              Informasi kegiatan, pengumuman rapat, amaliyah shalawat, pengamanan Banser, dan berita seputar Desa Jatinom.
+            </p>
+          </div>
+
+          <!-- Input Pencarian Warta -->
+          <div class="w-full md:w-72 relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input type="text" id="landing-search-warta" placeholder="Cari judul warta..." class="w-full pl-8 pr-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-gold transition">
+          </div>
+        </div>
+
+        <!-- Kategori Filter Tab Warta -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="landing-filter-warta">
+          <button data-kategori="semua" class="btn-landing-warta-filter active px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm transition">
+            Semua Warta
+          </button>
+          <button data-kategori="Rijalul Ansor" class="btn-landing-warta-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+            MDS Rijalul Ansor
+          </button>
+          <button data-kategori="BANSER" class="btn-landing-warta-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+            Satkorkel BANSER
+          </button>
+          <button data-kategori="GP Ansor" class="btn-landing-warta-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+            GP Ansor
+          </button>
+          <button data-kategori="Sosial" class="btn-landing-warta-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition">
+            Sosial & Umum
+          </button>
+        </div>
+
+        <!-- Grid Kartu Warta (Dikelola Otomatis oleh JavaScript) -->
+        <div id="landing-warta-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Injected via JavaScript renderLandingWarta() -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 3. SECTION: PROFIL STRUKTUR ORGANISASI ==================== -->
+    <section id="landing-struktur" class="py-16 bg-slate-950 border-b border-emerald-900/40 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header Bagian Struktur Organisasi -->
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-gold uppercase tracking-wider">
+            <i class="fa-solid fa-sitemap text-emerald-400"></i>
+            <span>Susunan Kepengurusan Ranting</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            Struktur Organisasi GP Ansor Jatinom
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            Jajaran Dewan Penasehat, Pimpinan Ranting GP Ansor, Satkorkel BANSER, dan MDS Rijalul Ansor Desa Jatinom Masa Khidmah 2024 - 2027.
+          </p>
+        </div>
+
+        <!-- Filter Tab Banom Struktur -->
+        <div class="flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="landing-filter-pengurus">
+          <button data-banom="semua" class="btn-landing-pengurus-filter active px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm transition">
+            Semua Jajaran (21)
+          </button>
+          <button data-banom="Ansor" class="btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition">
+            GP Ansor
+          </button>
+          <button data-banom="Banser" class="btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition">
+            BANSER
+          </button>
+          <button data-banom="Rijalul Ansor" class="btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition">
+            MDS Rijalul Ansor
+          </button>
+          <button data-banom="Penasehat" class="btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition">
+            Penasehat NU
+          </button>
+          <button data-banom="Biro" class="btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition">
+            Biro & Siber
+          </button>
+        </div>
+
+        <!-- Grid Kartu Pengurus (Dikelola Otomatis oleh JavaScript) -->
+        <div id="landing-pengurus-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Injected via JavaScript renderLandingPengurus() -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 4. SECTION: TIGA PILAR GERAKAN ==================== -->
+    <section id="landing-pilar" class="py-16 bg-gradient-to-b from-slate-950 via-[#031d10] to-slate-950 border-b border-emerald-900/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <div class="inline-flex items-center gap-1.5 text-xs font-bold text-gold uppercase tracking-wider">
+            <i class="fa-solid fa-cubes text-emerald-400"></i>
+            <span>Tiga Pilar Khidmah Terpadu</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            Pilar Perjuangan Ansor Ranting Jatinom
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-400">
+            Sinergi tiga elemen utama dalam menjalankan amanah keagamaan, kemasyarakatan, dan kebangsaan di Desa Jatinom.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Pilar 1: GP Ansor -->
+          <div class="p-6 rounded-3xl bg-slate-900/80 border border-emerald-700/40 hover:border-emerald-500/70 transition shadow-lg space-y-4 relative overflow-hidden group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-2 border border-gold/50 shadow flex items-center justify-center">
+              <img src="img/logo-ansor.png" alt="GP Ansor" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="text-[10px] font-black uppercase text-gold tracking-widest">Kaderisasi & Gerakan</span>
+              <h3 class="text-lg font-black text-white group-hover:text-emerald-400 transition-colors">GERAKAN PEMUDA ANSOR</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Wadah pembinaan generasi muda Nahdlatul Ulama dalam penempaan kepemimpinan, kepedulian sosial, keagamaan, serta kemandirian ekonomi pemuda di Desa Jatinom.
+            </p>
+            <ul class="text-xs text-slate-400 space-y-1.5 pt-2 border-t border-slate-800">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Kaderisasi Diklatsar & PKD</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Penguatan Ekonomi Kreatif Kader</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[10px]"></i> Pengabdian Sosial Kemasyarakatan</li>
+            </ul>
+          </div>
+
+          <!-- Pilar 2: BANSER -->
+          <div class="p-6 rounded-3xl bg-slate-900/80 border border-red-700/40 hover:border-red-500/70 transition shadow-lg space-y-4 relative overflow-hidden group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-800 to-red-950 p-2 border border-red-500/50 shadow flex items-center justify-center">
+              <img src="img/logo-banser.png" alt="BANSER" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="text-[10px] font-black uppercase text-red-400 tracking-widest">Bela Ulama & NKRI</span>
+              <h3 class="text-lg font-black text-white group-hover:text-red-400 transition-colors">SATKORKEL BANSER</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Satuan Koordinasi Kelompok Barisan Ansor Serbaguna sebagai tenaga inti pengamanan para Kyai, Masyayikh, penertiban jamaah pengajian, kebencanaan, dan keamanan wilayah.
+            </p>
+            <ul class="text-xs text-slate-400 space-y-1.5 pt-2 border-t border-slate-800">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-400 text-[10px]"></i> Pengawalan Ulama & Masyayikh NU</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-400 text-[10px]"></i> Tim Dalmas, Provos & Balantas Jatinom</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-red-400 text-[10px]"></i> Tanggap Bencana & Kamtibmas</li>
+            </ul>
+          </div>
+
+          <!-- Pilar 3: MDS Rijalul Ansor -->
+          <div class="p-6 rounded-3xl bg-slate-900/80 border border-amber-600/40 hover:border-amber-400/70 transition shadow-lg space-y-4 relative overflow-hidden group">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-700 to-amber-950 p-2 border border-gold shadow flex items-center justify-center">
+              <i class="fa-solid fa-mosque text-gold text-2xl"></i>
+            </div>
+            <div>
+              <span class="text-[10px] font-black uppercase text-gold tracking-widest">Spiritualitas & Tradisi</span>
+              <h3 class="text-lg font-black text-white group-hover:text-gold transition-colors">MDS RIJALUL ANSOR</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Majelis Dzikir dan Sholawat sebagai benteng spiritual generasi muda dalam melestarikan amaliyah Ahlussunnah Wal Jama'ah, pembacaan Maulid Diba', tahlil, dan kajian fiqih.
+            </p>
+            <ul class="text-xs text-slate-400 space-y-1.5 pt-2 border-t border-slate-800">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold text-[10px]"></i> Rutinan Selapanan Maulid Diba'</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold text-[10px]"></i> Istighotsah & Yasin Tahlil Bergilir</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gold text-[10px]"></i> Kajian Aswaja & Kitab Kuning</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 5. SECTION: KONTAK & SEKRETARIAT ==================== -->
+    <section id="landing-kontak" class="py-16 bg-slate-900/90 border-b border-emerald-900/40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 rounded-3xl p-8 sm:p-12 border border-emerald-700/50 shadow-2xl relative overflow-hidden">
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10">
+            <div class="space-y-4">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold text-gold uppercase tracking-wider">
+                <i class="fa-solid fa-location-dot text-emerald-400"></i>
+                <span>Markas Komando & Sekretariat</span>
+              </span>
+              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                Hubungi Pengurus Ranting
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Kantor Sekretariat Bersama Pimpinan Ranting GP Ansor & Satkorkel BANSER Desa Jatinom terbuka untuk koordinasi kegiatan, surat kedinasan, dan pendaftaran anggota baru.
+              </p>
+              
+              <div class="space-y-2.5 text-xs text-slate-300 pt-2">
+                <div class="flex items-start gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-900/80 text-gold flex items-center justify-center shrink-0 border border-emerald-700">
+                    <i class="fa-solid fa-map-pin"></i>
+                  </div>
+                  <div>
+                    <strong class="text-white">Alamat Sekretariat:</strong>
+                    <p class="text-slate-400">Jl. Raya Jatinom, Dusun Krajan, Desa Jatinom, Kec. Kanigoro, Kab. Blitar, Jawa Timur 66171</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-900/80 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-700">
+                    <i class="fa-solid fa-envelope"></i>
+                  </div>
+                  <div>
+                    <strong class="text-white">Email Resmi:</strong>
+                    <p class="text-slate-400">ansor.jatinom@gmail.com</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-900/80 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-700">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                  </div>
+                  <div>
+                    <strong class="text-white">Layanan Informasi / WhatsApp:</strong>
+                    <p class="text-slate-400">0812-3456-7890 (Ketua / Sekretariat)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Kartu Aksi Masuk Portal -->
+            <div class="p-6 sm:p-8 rounded-2xl bg-slate-900/90 border border-emerald-500/30 text-center space-y-4 shadow-xl">
+              <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-2.5 border-2 border-gold/70 shadow-lg flex items-center justify-center">
+                <i class="fa-solid fa-key text-gold text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-black text-white">Akses Pengurus Ranting</h3>
+                <p class="text-xs text-slate-400 mt-1">
+                  Masuk ke sistem administrasi SAHABAT untuk membuat E-Surat, kelola E-Kader, Warta, Agenda, dan Keuangan Ranting.
+                </p>
+              </div>
+              <button type="button" id="btn-kontak-login" class="w-full py-3 bg-gradient-to-r from-ansor via-emerald-700 to-ansor-dark hover:from-emerald-600 hover:to-emerald-800 text-white rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/80 border border-gold/50 transition transform hover:scale-[1.02]">
+                <i class="fa-solid fa-lock text-gold"></i>
+                <span>Buka Form Login Pengurus</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 6. FOOTER LANDING PAGE ==================== -->
+    <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-900 p-1 border border-gold/50 flex items-center justify-center">
+            <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <p class="text-white font-bold text-xs">PR GP Ansor & Satkorkel BANSER Desa Jatinom</p>
+            <p class="text-[10px] text-slate-500">Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs font-semibold">
+          <a href="#landing-hero" class="hover:text-gold transition">Atas</a>
+          <a href="#landing-warta" class="hover:text-gold transition">Warta</a>
+          <a href="#landing-struktur" class="hover:text-gold transition">Struktur</a>
+          <button type="button" id="btn-footer-login" class="hover:text-gold transition text-emerald-400 font-bold flex items-center gap-1">
+            <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Login Pengurus
+          </button>
+        </div>
+      </div>
+      <div class="text-center text-[10.5px] text-slate-600 pt-4 mt-4 border-t border-slate-900">
+        &copy; 2026 Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom, Kec. Kanigoro, Kab. Blitar. All Rights Reserved.
+      </div>
+    </footer>
+
   </div>
 
   <!-- ==================== SIDEBAR BACKDROP (MOBILE) ==================== -->
@@ -324,19 +778,32 @@
         <span class="font-mono text-[9px] text-gold font-bold">DB: db_sahabat</span>
       </div>
 
-      <div class="flex items-center justify-between text-[11px] text-emerald-200/80 px-1">
-        <button id="sidebar-btn-backup" class="hover:text-gold flex items-center gap-1 transition">
-          <i class="fa-solid fa-database text-xs text-gold"></i>
-          <span>Backup</span>
+      <div class="space-y-1.5 px-1 pb-1">
+        <button id="sidebar-btn-landing-page" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center justify-between transition">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-globe text-gold"></i>
+            <span>Lihat Landing Page</span>
+          </span>
+          <i class="fa-solid fa-chevron-right text-[10px] text-emerald-400"></i>
         </button>
-        <button id="sidebar-btn-upload-logo" class="hover:text-gold flex items-center gap-1 transition" title="Upload/Ganti Logo">
-          <i class="fa-solid fa-image text-xs text-gold"></i>
-          <span>Ganti Logo</span>
-        </button>
-        <button id="sidebar-btn-login" class="hover:text-gold flex items-center gap-1 transition">
-          <i class="fa-solid fa-right-from-bracket text-xs text-gold"></i>
-          <span>Ganti Akun</span>
-        </button>
+        <div class="flex items-center justify-between text-[11px] text-emerald-200/80">
+          <button id="sidebar-btn-backup" class="hover:text-gold flex items-center gap-1 transition">
+            <i class="fa-solid fa-database text-xs text-gold"></i>
+            <span>Backup</span>
+          </button>
+          <button id="sidebar-btn-upload-logo" class="hover:text-gold flex items-center gap-1 transition" title="Upload/Ganti Logo">
+            <i class="fa-solid fa-image text-xs text-gold"></i>
+            <span>Logo</span>
+          </button>
+          <button id="sidebar-btn-login" class="hover:text-gold flex items-center gap-1 transition" title="Ganti Akun">
+            <i class="fa-solid fa-repeat text-xs text-gold"></i>
+            <span>Akun</span>
+          </button>
+          <button id="sidebar-btn-logout" class="text-red-300 hover:text-red-200 flex items-center gap-1 transition" title="Keluar / Logout">
+            <i class="fa-solid fa-right-from-bracket text-xs text-red-400"></i>
+            <span>Keluar</span>
+          </button>
+        </div>
       </div>
 
       <p class="text-[9.5px] text-center text-emerald-300/60 pt-0.5 font-serif">
@@ -414,6 +881,12 @@
               </div>
             </div>
           </div>
+
+          <!-- Tombol Lihat Landing Page Publik -->
+          <button id="btn-view-landing-page" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white border border-emerald-600/70 flex items-center gap-1.5 transition shadow" title="Lihat Tampilan Landing Page Publik">
+            <i class="fa-solid fa-globe text-gold"></i>
+            <span class="hidden md:inline">Landing Page</span>
+          </button>
 
           <!-- Tombol Buka Login / Ganti Akun -->
           <button id="btn-buka-login" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-gold hover:bg-amber-400 text-slate-900 flex items-center gap-1.5 transition shadow" title="Ganti Akun Pengurus / Login">

@@ -320,6 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionStorage.setItem("sahabat_session_active", "true");
     updateHeaderUserBadge();
     modalLoginPortal.classList.add("hidden");
+    switchToAppMode();
     addNotification("Sesi Masuk Berhasil", `Anda masuk sebagai ${user.role} (${user.nama}).`, "info");
     if (typeof renderKeuangan === "function") renderKeuangan();
   }
@@ -766,6 +767,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       AnsorStore.saveBerita(state.beritaList);
       renderBeritaGrid();
+      if (typeof renderLandingWarta === "function") renderLandingWarta();
+      if (typeof renderLandingStats === "function") renderLandingStats();
       resetFormBerita();
       containerFormBerita?.classList.add("hidden");
     });
@@ -887,6 +890,8 @@ document.addEventListener("DOMContentLoaded", () => {
           state.beritaList = state.beritaList.filter((x) => x.id !== id);
           AnsorStore.saveBerita(state.beritaList);
           renderBeritaGrid();
+          if (typeof renderLandingWarta === "function") renderLandingWarta();
+          if (typeof renderLandingStats === "function") renderLandingStats();
         }
       });
     });
@@ -926,6 +931,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modalBacaBerita?.classList.remove("hidden");
     document.body.style.overflow = "hidden";
   }
+  window.openBacaBerita = openBacaBerita;
 
   function closeBacaBerita() {
     modalBacaBerita?.classList.add("hidden");
@@ -3059,12 +3065,300 @@ _Wassalamu'alaikum Wr. Wb._
   const pageTitleEl = document.getElementById("page-active-title");
   if (pageTitleEl) pageTitleEl.textContent = "Dashboard Ranting";
 
-  // Proteksi Akses Login: Cek apakah sesi aktif sudah ada
+  // ==================== FITUR LANDING PAGE PUBLIK ====================
+  let landingActiveWartaKategori = "semua";
+  let landingSearchWartaKeyword = "";
+  let landingActivePengurusBanom = "semua";
+
+  function switchToLandingMode() {
+    document.body.classList.add("viewing-landing");
+    document.body.classList.remove("viewing-app");
+    modalLoginPortal?.classList.add("hidden");
+
+    // Admin bar di atas landing page (muncul jika sudah login)
+    const adminBar = document.getElementById("landing-admin-bar");
+    const isSessionActive = sessionStorage.getItem("sahabat_session_active") === "true";
+    if (adminBar) {
+      if (isSessionActive && state.currentUser) {
+        adminBar.classList.remove("hidden");
+        const adminNama = document.getElementById("landing-admin-nama");
+        const adminRole = document.getElementById("landing-admin-role");
+        if (adminNama) adminNama.textContent = state.currentUser.nama;
+        if (adminRole) adminRole.textContent = state.currentUser.role;
+      } else {
+        adminBar.classList.add("hidden");
+      }
+    }
+
+    renderLandingStats();
+    renderLandingWarta(landingActiveWartaKategori, landingSearchWartaKeyword);
+    renderLandingPengurus(landingActivePengurusBanom);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function switchToAppMode() {
+    document.body.classList.remove("viewing-landing");
+    document.body.classList.add("viewing-app");
+    modalLoginPortal?.classList.add("hidden");
+    const adminBar = document.getElementById("landing-admin-bar");
+    if (adminBar) adminBar.classList.add("hidden");
+  }
+
+  function openLoginModal() {
+    document.getElementById("login-error-msg")?.classList.add("hidden");
+    const pinInput = document.getElementById("login-pin");
+    if (pinInput) pinInput.value = "";
+    modalLoginPortal?.classList.remove("hidden");
+    pinInput?.focus();
+  }
+
+  function closeLoginModal() {
+    modalLoginPortal?.classList.add("hidden");
+  }
+
+  function logoutSession() {
+    if (confirm("Apakah Anda yakin ingin keluar dari akun pengurus?")) {
+      sessionStorage.removeItem("sahabat_session_active");
+      state.currentUser = null;
+      addNotification("Sesi Berakhir", "Anda telah keluar ke portal publik.", "info");
+      switchToLandingMode();
+    }
+  }
+
+  function renderLandingStats() {
+    const elWarta = document.getElementById("landing-stat-warta");
+    if (elWarta) elWarta.textContent = (state.beritaList || []).length;
+
+    const elKader = document.getElementById("landing-stat-kader");
+    const totalKader = (state.kaderList || []).length;
+    if (elKader) elKader.textContent = totalKader > 0 ? `${totalKader}+` : "48+";
+
+    const elPengurus = document.getElementById("landing-stat-pengurus");
+    const pengurusList = AnsorStore.getPengurus();
+    if (elPengurus) elPengurus.textContent = pengurusList.length;
+
+    const elAgenda = document.getElementById("landing-stat-agenda");
+    const totalAgenda = (state.agendaList || []).length;
+    if (elAgenda) elAgenda.textContent = totalAgenda > 0 ? `${totalAgenda}+` : "12+";
+  }
+
+  function renderLandingWarta(kategori = "semua", keyword = "") {
+    const container = document.getElementById("landing-warta-grid");
+    if (!container) return;
+
+    let list = [...(state.beritaList || [])];
+
+    if (kategori && kategori !== "semua") {
+      list = list.filter((b) => (b.kategori || "").toLowerCase().includes(kategori.toLowerCase()));
+    }
+
+    if (keyword && keyword.trim() !== "") {
+      const q = keyword.toLowerCase().trim();
+      list = list.filter((b) => (b.judul || "").toLowerCase().includes(q) || (b.ringkasan || "").toLowerCase().includes(q) || (b.isi || "").toLowerCase().includes(q));
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-12 text-center text-slate-500 bg-slate-950/60 rounded-2xl border border-slate-800">
+          <i class="fa-solid fa-newspaper text-3xl text-slate-700 mb-2"></i>
+          <p class="text-xs italic">Belum ada warta informasi pada kategori atau pencarian ini.</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map((b) => {
+      let badgeColor = "bg-emerald-900/80 text-emerald-300 border-emerald-700/60";
+      if ((b.kategori || "").includes("BANSER")) badgeColor = "bg-red-900/80 text-red-300 border-red-700/60";
+      else if ((b.kategori || "").includes("Rijalul")) badgeColor = "bg-amber-900/80 text-gold border-amber-700/60";
+      else if ((b.kategori || "").includes("Sosial")) badgeColor = "bg-cyan-900/80 text-cyan-300 border-cyan-700/60";
+
+      const defaultImg = "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80";
+      const gambarSrc = b.gambar || defaultImg;
+
+      return `
+        <article class="bg-slate-950 rounded-2xl border border-slate-800 hover:border-emerald-500/50 transition-all duration-300 overflow-hidden flex flex-col group shadow-lg hover:shadow-emerald-950/40">
+          <div class="relative h-48 overflow-hidden bg-slate-900 cursor-pointer" onclick="openBacaBerita('${b.id}')">
+            <img src="${gambarSrc}" alt="${b.judul}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='${defaultImg}'" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 text-[10.5px] font-extrabold uppercase px-2.5 py-1 rounded-full border shadow backdrop-blur-md ${badgeColor}">
+              ${b.kategori || "Warta"}
+            </span>
+          </div>
+
+          <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <div class="flex items-center gap-2 text-[11px] text-slate-400">
+                <span><i class="fa-regular fa-calendar-check text-emerald-400 mr-1"></i>${b.tanggal || "-"}</span>
+                <span>&bull;</span>
+                <span class="truncate"><i class="fa-regular fa-user text-gold mr-1"></i>${b.penulis || "Redaksi"}</span>
+              </div>
+              <h3 class="font-bold text-white text-sm sm:text-base leading-snug group-hover:text-gold transition-colors line-clamp-2 cursor-pointer" onclick="openBacaBerita('${b.id}')">
+                ${b.judul}
+              </h3>
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                ${b.ringkasan || (b.isi ? b.isi.substring(0, 120) + "..." : "")}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-900 flex items-center justify-between">
+              <button type="button" onclick="openBacaBerita('${b.id}')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition">
+                <span>Baca Selengkapnya</span>
+                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+              </button>
+              <button type="button" onclick="shareWartaWa('${b.id}')" class="text-slate-400 hover:text-emerald-400 text-xs p-1.5 transition" title="Bagikan ke WhatsApp">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function shareWartaWa(id) {
+    const b = (state.beritaList || []).find((x) => x.id === id);
+    if (!b) return;
+    const msg = `*WARTA RESMI GP ANSOR RANTING JATINOM*\n\n*${b.judul}*\n_${b.tanggal} | Oleh: ${b.penulis}_\n\n${b.ringkasan}\n\nSelengkapnya dapat disimak pada portal resmi SAHABAT Jatinom (Kec. Kanigoro, Kab. Blitar).\n\n_Wallahul Muwaffiq Ila Aqwamith Thorieq_`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, "_blank");
+  }
+  window.shareWartaWa = shareWartaWa;
+
+  function renderLandingPengurus(filterBanom = "semua") {
+    const container = document.getElementById("landing-pengurus-grid");
+    if (!container) return;
+
+    let list = AnsorStore.getPengurus();
+
+    if (filterBanom && filterBanom !== "semua") {
+      list = list.filter((p) => (p.lembaga || "").toLowerCase() === filterBanom.toLowerCase());
+    }
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full py-8 text-center text-slate-500 italic text-xs">
+          Tidak ada daftar pengurus pada kategori ini.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list.map((p) => {
+      let icon = "fa-user-tie";
+      let badgeClass = "bg-emerald-950 text-emerald-300 border-emerald-700/60";
+      let borderGlow = "hover:border-emerald-500/50";
+
+      if (p.lembaga === "Banser") {
+        icon = "fa-shield-halved";
+        badgeClass = "bg-red-950 text-red-300 border-red-700/60";
+        borderGlow = "hover:border-red-500/50";
+      } else if (p.lembaga === "Rijalul Ansor") {
+        icon = "fa-mosque";
+        badgeClass = "bg-amber-950 text-gold border-amber-700/60";
+        borderGlow = "hover:border-gold/50";
+      } else if (p.lembaga === "Penasehat") {
+        icon = "fa-landmark";
+        badgeClass = "bg-slate-800 text-slate-300 border-slate-700";
+        borderGlow = "hover:border-slate-500";
+      } else if (p.lembaga === "Biro") {
+        icon = "fa-laptop-code";
+        badgeClass = "bg-cyan-950 text-cyan-300 border-cyan-700/60";
+        borderGlow = "hover:border-cyan-500/50";
+      }
+
+      return `
+        <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 ${borderGlow} transition shadow flex items-start gap-3.5 group">
+          <div class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-700 flex items-center justify-center shrink-0 text-sm group-hover:scale-105 transition-transform">
+            <i class="fa-solid ${icon} text-gold"></i>
+          </div>
+          <div class="flex-1 min-w-0 space-y-1">
+            <div class="flex items-center justify-between gap-1">
+              <span class="text-[9.5px] font-extrabold uppercase px-2 py-0.5 rounded-full border ${badgeClass}">
+                ${p.lembaga}
+              </span>
+              <span class="text-[10px] font-mono text-slate-500 truncate">${p.nia && p.nia !== "-" ? "NIA: " + p.nia : ""}</span>
+            </div>
+            <h4 class="font-bold text-white text-xs truncate group-hover:text-gold transition-colors">
+              ${p.nama}
+            </h4>
+            <p class="text-[11px] text-slate-400 font-medium truncate">
+              ${p.jabatan}
+            </p>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
+  function initLandingPage() {
+    // Tombol-tombol pemicu login dari landing page
+    ["btn-landing-open-login", "btn-hero-login", "btn-kontak-login", "btn-footer-login"].forEach((id) => {
+      document.getElementById(id)?.addEventListener("click", openLoginModal);
+    });
+
+    // Tombol kembali ke beranda dari modal login
+    document.getElementById("btn-login-back-landing")?.addEventListener("click", closeLoginModal);
+
+    // Tombol dari admin bar landing page menuju admin dashboard
+    document.getElementById("btn-landing-to-admin")?.addEventListener("click", switchToAppMode);
+    document.getElementById("btn-landing-logout")?.addEventListener("click", logoutSession);
+
+    // Tombol dari admin dashboard menuju landing page
+    document.getElementById("btn-view-landing-page")?.addEventListener("click", switchToLandingMode);
+    document.getElementById("sidebar-btn-landing-page")?.addEventListener("click", () => {
+      switchToLandingMode();
+      closeSidebar();
+    });
+    document.getElementById("sidebar-btn-logout")?.addEventListener("click", () => {
+      logoutSession();
+      closeSidebar();
+    });
+
+    // Filter kategori Warta pada Landing Page
+    const filterWartaContainer = document.getElementById("landing-filter-warta");
+    if (filterWartaContainer) {
+      filterWartaContainer.querySelectorAll(".btn-landing-warta-filter").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterWartaContainer.querySelectorAll(".btn-landing-warta-filter").forEach((b) => {
+            b.className = "btn-landing-warta-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-slate-800 text-slate-300 border border-slate-700 transition";
+          });
+          btn.className = "btn-landing-warta-filter active px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm transition";
+          landingActiveWartaKategori = btn.getAttribute("data-kategori") || "semua";
+          renderLandingWarta(landingActiveWartaKategori, landingSearchWartaKeyword);
+        });
+      });
+    }
+
+    // Input live search warta
+    document.getElementById("landing-search-warta")?.addEventListener("input", (e) => {
+      landingSearchWartaKeyword = e.target.value;
+      renderLandingWarta(landingActiveWartaKategori, landingSearchWartaKeyword);
+    });
+
+    // Filter Banom Pengurus pada Landing Page
+    const filterPengurusContainer = document.getElementById("landing-filter-pengurus");
+    if (filterPengurusContainer) {
+      filterPengurusContainer.querySelectorAll(".btn-landing-pengurus-filter").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterPengurusContainer.querySelectorAll(".btn-landing-pengurus-filter").forEach((b) => {
+            b.className = "btn-landing-pengurus-filter px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 transition";
+          });
+          btn.className = "btn-landing-pengurus-filter active px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white border border-emerald-500 shadow-sm transition";
+          landingActivePengurusBanom = btn.getAttribute("data-banom") || "semua";
+          renderLandingPengurus(landingActivePengurusBanom);
+        });
+      });
+    }
+  }
+
+  initLandingPage();
+
+  // Inisialisasi Tampilan: Cek Sesi Aktif Pengurus vs Landing Page Publik
   const isSessionActive = sessionStorage.getItem("sahabat_session_active") === "true";
   if (isSessionActive && state.currentUser && state.currentUser.id !== "GUEST") {
-    modalLoginPortal?.classList.add("hidden");
+    switchToAppMode();
   } else {
-    modalLoginPortal?.classList.remove("hidden");
+    switchToLandingMode();
   }
 
   // XAMPP MySQL Live Check

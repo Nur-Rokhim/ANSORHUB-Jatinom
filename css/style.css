@@ -260,15 +260,10 @@ body {
   display: none !important;
 }
 
-/* Login Portal Screen Overlay dengan Gambar Latar Resmi */
+/* ==================== DIGITAL CYBER-ISLAMIC LOGIN BACKDROP ==================== */
 .login-backdrop {
-  background-color: #031c0e;
-  background-image: linear-gradient(180deg, rgba(3, 28, 14, 0.45) 0%, rgba(0, 45, 22, 0.40) 50%, rgba(2, 18, 9, 0.65) 100%), 
-                    url('../img/bg-login.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
+  background-color: #011109;
+  background: radial-gradient(circle at 50% 25%, #064023 0%, #022013 45%, #011009 100%);
   position: fixed;
   inset: 0;
   z-index: 100;
@@ -279,8 +274,57 @@ body {
   padding: 1.5rem;
 }
 
+/* Digital Isometric Grid Overlay */
+.login-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 140, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 140, 0.045) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+  pointer-events-none;
+}
+
+/* Digital Glowing Ambient Orbs */
+.login-backdrop::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 255, 150, 0.12) 0%, rgba(255, 199, 44, 0.06) 40%, transparent 70%);
+  filter: blur(60px);
+  pointer-events-none;
+  animation: pulse-glow 7s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
 .login-backdrop.hidden,
 .modal-backdrop.hidden {
+  display: none !important;
+}
+
+/* Mode Landing Page vs Mode Admin App Switching */
+body.viewing-landing #app-sidebar,
+body.viewing-landing .main-content-layout,
+body.viewing-landing #sidebar-backdrop {
+  display: none !important;
+}
+
+body.viewing-landing #view-landing-page {
+  display: flex !important;
+}
+
+body.viewing-app #view-landing-page {
   display: none !important;
 }
 
