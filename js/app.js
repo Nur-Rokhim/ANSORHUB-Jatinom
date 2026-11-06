@@ -902,26 +902,24 @@ const TEMPLATES_BANSER_MAP = {
   SPH: {
     nama: "Surat Perintah Harian",
     kode: "SPH",
-    defaultPerihal: "Perintah Harian Kesiapsiagaan Personel BANSER Satkorkel Jatinom",
+    defaultPerihal: "Perintah Harian dan Undangan Kesiapsiagaan Personel Satkorkel BANSER",
     generateBody: (d) => `
-<div style="text-align: center; margin-bottom: 18px;">
-  <strong style="font-size: 13pt; letter-spacing: 0.5px;">PERINTAH HARIAN KEPALA SATKORKEL BANSER JATINOM</strong><br>
-  <span style="font-size: 10pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/SPH-01/XI/2026"}</span>
-</div>
-<p><strong>BISMILLAHIRRAHMANIRRAHIM</strong></p>
-<p>Memperhatikan dinamika kamtibmas dan kebutuhan khidmah pengawalan para 'Alim Ulama serta giat keagamaan di wilayah Desa Jatinom, dengan senantiasa berpegang teguh pada doktrin <em>Nawa Prasetya Banser</em> dan komando satu barisan:</p>
-<p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna Desa Jatinom dengan ini mengeluarkan <strong>PERINTAH HARIAN</strong> kepada:</p>
-<p style="margin-left: 20px; font-weight: bold; font-size: 11pt;">SELURUH PERSONEL BANSER SATKORKEL JATINOM</p>
-<p>Untuk melaksanakan instruksi kesiapsiagaan sebagai berikut:</p>
-<ol style="margin-left: 20px; padding-left: 15px; line-height: 1.6;">
-  <li><strong>SIAP SIAGA SATU KOMANDO:</strong> Seluruh anggota Banser wajib bersiaga dan senantiasa merespon instruksi komando Markas Satkorkel maupun arahan Pimpinan Ranting GP Ansor Jatinom.</li>
-  <li><strong>PENGAMANAN & PENGAWALAN:</strong> Melaksanakan sterilisasi pengamanan lokasi kegiatan, pengawalan para Masyayikh / Habaib / Kyai, serta pengaturan ketertiban jamaah pada agenda: <strong>${d.kegiatan || "Rangkaian Pengajian & Tradisi Jam'iyyah Nahdlatul Ulama Desa Jatinom"}</strong>.</li>
-  <li><strong>DISIPLIN TATA ATRIBUT:</strong> Mengenakan Seragam Dinas Resmi BANSER (PDL / PDH) lengkap dengan atribut baret dan kelengkapan dinas yang bersih, rapi, dan mencerminkan kewibawaan korps.</li>
-  <li><strong>AKHLAKUL KARIMAH:</strong> Mengedepankan sikap santun, humanis, dan koordinatif dengan aparat berwenang serta tokoh masyarakat setempat.</li>
-  <li><strong>LAPORAN BERKALA:</strong> Setiap regu / unit wajib melaporkan situasi perkembangan lapangan secara berjenjang kepada Kasetma dan Kasatkorkel.</li>
-</ol>
-<p>Perintah Harian ini berlaku sejak tanggal dikeluarkan untuk dilaksanakan dengan penuh keikhlasan, dedikasi, dan tanggung jawab penuh demi marwah para Ulama dan keutuhan NKRI.</p>
-<p style="text-align: right; margin-top: 15px; font-weight: bold; font-style: italic;">Satu Komando, Satu Barisan! Banser Maju Terus Pantang Mundur!</p>
+<p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
+<p>Salam silaturrahim teriring salam komando kami haturkan, semoga Sahabat seluruh jajaran personel BANSER senantiasa dilimpahi kesehatan dan keteguhan iman dalam menjalankan amanah perjuangan Aswaja An-Nahdliyyah.</p>
+<p>Dalam rangka konsolidasi kesiapsiagaan korps, evaluasi pengamanan, serta peneguhan kedisiplinan barisan satu komando, Kepala Satuan Koordinasi Kelompok (SATKORKEL) BANSER Desa Jatinom dengan ini mengeluarkan <strong>PERINTAH HARIAN & UNDANGAN</strong> kepada:</p>
+<p style="margin-left: 20px; font-weight: bold; font-size: 11pt;">SELURUH PERSONEL BANSER SATKORKEL DESA JATINOM</p>
+<p>Untuk hadir dan melaksanakan instruksi kesiapsiagaan pada agenda:</p>
+<table style="width: 100%; margin: 12px 0 14px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.acara || d.kegiatan || "Apel Kesetiaan Personel, Refreshing PBB, dan Koordinasi Pengamanan"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Jum'at Kliwon, 20 November 2026"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pukul / Waktu</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB (Ba'da Isya) s.d Selesai"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Markas Satkorkel BANSER Jatinom / Balai Desa Jatinom"}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pakaian Dinas</strong></td><td style="vertical-align: top;">:</td><td>Seragam PDL / PDH Banser Lengkap + Baret</td></tr>
+</table>
+<p>Mengingat pentingnya instruksi komando ini, seluruh anggota Banser Ranting Jatinom <strong>DIWAJIBKAN</strong> hadir tepat waktu dan menjunjung tinggi doktrin <em>Nawa Prasetya Banser</em>. Apabila berhalangan, harap melapor secara tertulis kepada Kasetma.</p>
+<p>Demikian Perintah Harian ini disampaikan untuk dilaksanakan dengan penuh keikhlasan, dedikasi, dan tanggung jawab demi membentengi Ulama dan menjaga NKRI.</p>
+<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+<p style="text-align: right; margin-top: 12px; font-weight: bold; font-style: italic;">Satu Komando, Satu Barisan! Banser Maju Terus Pantang Mundur!</p>
 `
   },
   ST: {

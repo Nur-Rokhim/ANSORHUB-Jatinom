@@ -314,7 +314,24 @@ body {
 }
 
 /* Mode Landing Page vs Mode Admin App Switching */
-/* Default: sembunyikan landing page sampai JS menentukan mode */
+/* Anti-Flicker: Sembunyikan elemen sebelum JS siap jika belum ada session */
+html.initial-landing #app-sidebar,
+html.initial-landing .main-content-layout,
+html.initial-landing #sidebar-backdrop {
+  display: none !important;
+}
+
+html.initial-landing #view-landing-page {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+html.initial-app #view-landing-page {
+  display: none !important;
+}
+
+/* Default: sembunyikan landing page jika tanpa class */
 #view-landing-page {
   display: none;
 }
@@ -662,12 +679,35 @@ body.viewing-app #view-landing-page {
     max-width: 100% !important;
     width: 100% !important;
     min-height: auto !important;
-    page-break-after: avoid;
+  }
+
+  /* 1 Lembar A4 (Single Page Strict) untuk Non-SK Ansor & Semua Surat Banser */
+  body.mode-print-single-page .surat-paper,
+  .surat-paper.print-exact-single-page {
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-inside: avoid !important;
+    break-after: avoid !important;
+    max-height: 25.5cm !important;
+  }
+
+  body.mode-print-single-page .surat-paper #print-isi-surat,
+  .surat-paper.print-exact-single-page #print-isi-surat {
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+  }
+
+  /* Multi-page dinamis untuk Surat Keputusan (SK) */
+  body.mode-print-multi-page .surat-paper,
+  .surat-paper.print-multi-page {
+    page-break-after: auto !important;
+    break-after: auto !important;
+    max-height: none !important;
   }
 
   @page {
     size: A4 portrait;
-    margin: 2cm 2cm 2cm 2cm;
+    margin: 1.5cm 2cm 1.5cm 2cm;
   }
 }
 

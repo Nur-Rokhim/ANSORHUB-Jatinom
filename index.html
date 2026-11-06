@@ -40,6 +40,22 @@
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
+
+  <!-- Anti-Flicker Script: Deteksi Mode Tampilan Sebelum Halaman Render -->
+  <script>
+    (function() {
+      try {
+        var isSession = sessionStorage.getItem("sahabat_session_active") === "true";
+        if (isSession) {
+          document.documentElement.classList.add("initial-app");
+        } else {
+          document.documentElement.classList.add("initial-landing");
+        }
+      } catch (e) {
+        document.documentElement.classList.add("initial-landing");
+      }
+    })();
+  </script>
 </head>
 <body class="bg-slate-100 min-h-screen flex flex-col font-sans antialiased text-slate-800">
 
@@ -709,34 +725,32 @@
       </div>
 
       <nav class="px-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-290px)] scrollbar-none" id="sidebar-nav">
-        <!-- 0. Dashboard -->
+        <!-- Dashboard -->
         <a data-tab="tab-dashboard" class="sidebar-nav-item active">
           <span class="icon-box text-sky-400">
             <i class="fa-solid fa-gauge-high"></i>
           </span>
           <span class="flex-1">Dashboard</span>
-          <span class="text-[10px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded-full font-bold">Home</span>
         </a>
 
-        <!-- 1. Warta Ansor -->
+        <!-- Warta Ansor -->
         <a data-tab="tab-warta" class="sidebar-nav-item">
           <span class="icon-box text-cyan-400">
             <i class="fa-solid fa-newspaper"></i>
           </span>
-          <span class="flex-1">1. Warta Ansor</span>
-          <span class="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded-full font-bold">Kabar</span>
+          <span class="flex-1">Warta Ansor</span>
         </a>
 
-        <!-- 2. E-Surat with Sub-Menu -->
+        <!-- E-Surat with Sub-Menu -->
         <div class="space-y-1">
           <a data-tab="tab-surat" class="sidebar-nav-item flex items-center justify-between cursor-pointer" id="sidebar-nav-surat">
             <div class="flex items-center gap-3">
               <span class="icon-box text-amber-400">
                 <i class="fa-solid fa-envelope-open-text"></i>
               </span>
-              <span class="flex-1">2. E-Surat</span>
+              <span class="flex-1">E-Surat</span>
             </div>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">2 Menu</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-emerald-300"></i>
           </a>
           <div class="pl-10 pr-2 py-0.5 space-y-1" id="sidebar-sub-surat-group">
             <button type="button" id="sidebar-btn-surat-ansor" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between text-emerald-200 hover:text-white hover:bg-emerald-800/60 transition bg-emerald-800/40">
@@ -744,61 +758,54 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
                 <span>E-Surat Ansor</span>
               </span>
-              <span class="text-[9px] bg-emerald-950/60 text-emerald-300 px-1 py-0.2 rounded font-mono">Ranting</span>
             </button>
             <button type="button" id="sidebar-btn-surat-banser" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center justify-between text-slate-300 hover:text-white hover:bg-red-900/50 transition">
               <span class="flex items-center gap-2">
                 <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
                 <span>E-Surat Banser</span>
               </span>
-              <span class="text-[9px] bg-red-950/60 text-red-300 px-1 py-0.2 rounded font-mono">Satkorkel</span>
             </button>
           </div>
         </div>
 
-        <!-- 3. E-Kader -->
+        <!-- E-Kader -->
         <a data-tab="tab-kader" class="sidebar-nav-item">
           <span class="icon-box text-emerald-300">
             <i class="fa-solid fa-id-card-clip"></i>
           </span>
-          <span class="flex-1">3. E-Kader</span>
-          <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded-full font-bold">Data</span>
+          <span class="flex-1">E-Kader</span>
         </a>
 
-        <!-- 4. Agenda -->
+        <!-- Agenda -->
         <a data-tab="tab-agenda" class="sidebar-nav-item">
           <span class="icon-box text-gold">
             <i class="fa-solid fa-calendar-days"></i>
           </span>
-          <span class="flex-1">4. Agenda</span>
-          <span class="text-[10px] bg-gold/20 text-gold px-1.5 py-0.5 rounded-full font-bold">MDS</span>
+          <span class="flex-1">Agenda</span>
         </a>
 
-        <!-- 4.5. Keuangan -->
+        <!-- Keuangan -->
         <a data-tab="tab-keuangan" class="sidebar-nav-item">
           <span class="icon-box text-green-400">
             <i class="fa-solid fa-money-bill-wave"></i>
           </span>
           <span class="flex-1">Keuangan</span>
-          <span class="text-[10px] bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded-full font-bold">BOS</span>
         </a>
 
-        <!-- 5. Profil Ranting -->
+        <!-- Profil Ranting -->
         <a data-tab="tab-profil" class="sidebar-nav-item">
           <span class="icon-box text-amber-300">
             <i class="fa-solid fa-landmark"></i>
           </span>
-          <span class="flex-1">5. Profil Ranting</span>
-          <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded-full font-bold">TTD/Stempel</span>
+          <span class="flex-1">Profil Ranting</span>
         </a>
 
-        <!-- 6. Pengaturan -->
+        <!-- Pengaturan -->
         <a data-tab="tab-pengaturan" class="sidebar-nav-item">
           <span class="icon-box text-purple-300">
             <i class="fa-solid fa-gears"></i>
           </span>
-          <span class="flex-1">6. Pengaturan</span>
-          <span class="text-[10px] bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded-full font-bold">Multi User</span>
+          <span class="flex-1">Pengaturan</span>
         </a>
       </nav>
     </div>

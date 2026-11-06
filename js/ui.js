@@ -1522,11 +1522,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modalPreview?.classList.remove("hidden");
     document.body.style.overflow = "hidden";
+
+    // Mode Cetak: Atur kelas single-page A4 vs multi-page SK
+    const printArea = document.getElementById("print-area-surat");
+    const currentTpl = (state.currentTemplate || "").toUpperCase();
+    if (printArea) {
+      if (currentTpl === "SK" && !isBanser) {
+        // Surat Keputusan (SK) Ansor: Multi-page / dinamis disesuaikan dengan isinya
+        printArea.classList.remove("print-exact-single-page");
+        printArea.classList.add("print-multi-page");
+        document.body.classList.remove("mode-print-single-page");
+        document.body.classList.add("mode-print-multi-page");
+      } else {
+        // Selain SK (Semua jenis E-Surat Banser dan E-Surat Ansor non-SK): Pas 1 Lembar A4
+        printArea.classList.add("print-exact-single-page");
+        printArea.classList.remove("print-multi-page");
+        document.body.classList.add("mode-print-single-page");
+        document.body.classList.remove("mode-print-multi-page");
+      }
+    }
   }
 
   function closePreviewSurat() {
     modalPreview?.classList.add("hidden");
     document.body.style.overflow = "";
+    document.body.classList.remove("mode-print-single-page", "mode-print-multi-page");
   }
 
   document.getElementById("btn-preview-surat")?.addEventListener("click", openPreviewSurat);
