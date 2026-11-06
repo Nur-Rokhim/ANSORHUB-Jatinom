@@ -415,6 +415,12 @@ const INITIAL_SETTINGS = {
     banser: "",
     rijalul: "",
     siber: ""
+  },
+  medsos: {
+    facebook: "https://facebook.com/ansor.jatinom",
+    instagram: "https://instagram.com/ansor_jatinom",
+    youtube: "https://youtube.com/@ansorjatinom",
+    tiktok: "https://tiktok.com/@ansor_jatinom"
   }
 };
 

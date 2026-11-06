@@ -2733,6 +2733,74 @@ _Wassalamu'alaikum Wr. Wb._
         }
       });
     });
+
+    populateSettingsInputs();
+  }
+
+  function populateSettingsInputs() {
+    const s = state.settings || {};
+    const setNama = document.getElementById("set-nama-ranting");
+    if (setNama && s.namaRanting) setNama.value = s.namaRanting;
+    const setWa = document.getElementById("set-wa-official");
+    if (setWa && s.waOfficial) setWa.value = s.waOfficial;
+    const setAlamat = document.getElementById("set-alamat-sekretariat");
+    if (setAlamat && s.alamatSekretariat) setAlamat.value = s.alamatSekretariat;
+
+    const medsos = s.medsos || {};
+    const setFb = document.getElementById("set-medsos-facebook");
+    if (setFb && medsos.facebook !== undefined) setFb.value = medsos.facebook;
+    const setIg = document.getElementById("set-medsos-instagram");
+    if (setIg && medsos.instagram !== undefined) setIg.value = medsos.instagram;
+    const setYt = document.getElementById("set-medsos-youtube");
+    if (setYt && medsos.youtube !== undefined) setYt.value = medsos.youtube;
+    const setTt = document.getElementById("set-medsos-tiktok");
+    if (setTt && medsos.tiktok !== undefined) setTt.value = medsos.tiktok;
+  }
+
+  function renderMedsosLinks() {
+    const s = state.settings || {};
+    const m = s.medsos || {
+      facebook: "https://facebook.com/ansor.jatinom",
+      instagram: "https://instagram.com/ansor_jatinom",
+      youtube: "https://youtube.com/@ansorjatinom",
+      tiktok: "https://tiktok.com/@ansor_jatinom"
+    };
+
+    // Helper untuk update atribut link atau sembunyikan jika kosong
+    const updateLink = (id, url) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (url && url.trim()) {
+        el.href = url.trim().startsWith("http") ? url.trim() : `https://${url.trim()}`;
+        el.style.display = "";
+      } else {
+        el.style.display = "none";
+      }
+    };
+
+    // Landing Page Footer Links
+    updateLink("landing-link-facebook", m.facebook);
+    updateLink("landing-link-instagram", m.instagram);
+    updateLink("landing-link-youtube", m.youtube);
+    updateLink("landing-link-tiktok", m.tiktok);
+
+    // App Footer Links
+    updateLink("app-link-facebook", m.facebook);
+    updateLink("app-link-instagram", m.instagram);
+    updateLink("app-link-youtube", m.youtube);
+    updateLink("app-link-tiktok", m.tiktok);
+
+    // Landing Page Kontak Section Links
+    updateLink("kontak-link-facebook", m.facebook);
+    updateLink("kontak-link-instagram", m.instagram);
+    updateLink("kontak-link-youtube", m.youtube);
+    updateLink("kontak-link-tiktok", m.tiktok);
+
+    // Update Kontak WA Text di Landing Page
+    const kontakWaText = document.getElementById("landing-kontak-wa");
+    if (kontakWaText && s.waOfficial) {
+      kontakWaText.textContent = `${s.waOfficial} (Ketua / Sekretariat)`;
+    }
   }
 
   // Form Setting Identitas Ranting Submit
@@ -2744,6 +2812,17 @@ _Wassalamu'alaikum Wr. Wb._
     if (setAlamat) state.settings.alamatSekretariat = setAlamat.value.trim();
     const setWa = document.getElementById("set-wa-official");
     if (setWa) state.settings.waOfficial = setWa.value.trim();
+
+    // Medsos Settings
+    if (!state.settings.medsos) state.settings.medsos = {};
+    const setFb = document.getElementById("set-medsos-facebook");
+    if (setFb) state.settings.medsos.facebook = setFb.value.trim();
+    const setIg = document.getElementById("set-medsos-instagram");
+    if (setIg) state.settings.medsos.instagram = setIg.value.trim();
+    const setYt = document.getElementById("set-medsos-youtube");
+    if (setYt) state.settings.medsos.youtube = setYt.value.trim();
+    const setTt = document.getElementById("set-medsos-tiktok");
+    if (setTt) state.settings.medsos.tiktok = setTt.value.trim();
 
     const setKetua = document.getElementById("set-ketua-nama");
     if (setKetua) state.settings.ketuaNama = setKetua.value.trim();
@@ -2777,7 +2856,8 @@ _Wassalamu'alaikum Wr. Wb._
     if (inpAlamatKop) inpAlamatKop.value = state.settings.alamatSekretariat;
 
     renderProfilDetails();
-    alert("Pengaturan identitas ranting berhasil disimpan!");
+    renderMedsosLinks();
+    alert("Pengaturan identitas dan media sosial ranting berhasil disimpan!");
   };
 
   document.getElementById("form-settings-umum")?.addEventListener("submit", handleSettingSubmit);
@@ -3059,6 +3139,8 @@ _Wassalamu'alaikum Wr. Wb._
   renderProfilDetails();
   renderPengurusTable();
   renderUserCards();
+  populateSettingsInputs();
+  renderMedsosLinks();
   updateNotificationBell();
 
   // Update judul header ke Dashboard saat pertama load

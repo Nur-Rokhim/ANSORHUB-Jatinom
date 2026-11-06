@@ -561,7 +561,26 @@ require_once __DIR__ . '/config.php';
                   </div>
                   <div>
                     <strong class="text-white">Layanan Informasi / WhatsApp:</strong>
-                    <p class="text-slate-400">0812-3456-7890 (Ketua / Sekretariat)</p>
+                    <p class="text-slate-400" id="landing-kontak-wa">0812-3456-7890 (Ketua / Sekretariat)</p>
+                  </div>
+                </div>
+
+                <!-- Tautan Medsos di Bagian Kontak Landing Page -->
+                <div class="pt-2 border-t border-slate-800">
+                  <span class="block text-[11px] font-bold text-slate-300 mb-2">Media Sosial Resmi:</span>
+                  <div class="flex items-center gap-2" id="landing-kontak-medsos">
+                    <a href="https://facebook.com/ansor.jatinom" target="_blank" rel="noopener noreferrer" id="kontak-link-facebook" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition" title="Facebook">
+                      <i class="fa-brands fa-facebook-f text-[11px]"></i>
+                    </a>
+                    <a href="https://instagram.com/ansor_jatinom" target="_blank" rel="noopener noreferrer" id="kontak-link-instagram" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-gradient-to-tr hover:from-amber-600 hover:via-pink-600 hover:to-purple-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition" title="Instagram">
+                      <i class="fa-brands fa-instagram text-[11px]"></i>
+                    </a>
+                    <a href="https://youtube.com/@ansorjatinom" target="_blank" rel="noopener noreferrer" id="kontak-link-youtube" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-red-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition" title="YouTube">
+                      <i class="fa-brands fa-youtube text-[11px]"></i>
+                    </a>
+                    <a href="https://tiktok.com/@ansor_jatinom" target="_blank" rel="noopener noreferrer" id="kontak-link-tiktok" class="w-7 h-7 rounded-lg bg-slate-900 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition" title="TikTok">
+                      <i class="fa-brands fa-tiktok text-[11px]"></i>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -592,28 +611,46 @@ require_once __DIR__ . '/config.php';
 
     <!-- ==================== 6. FOOTER LANDING PAGE ==================== -->
     <footer class="bg-slate-950 text-slate-400 text-xs py-8 border-t border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-emerald-900 p-1 border border-gold/50 flex items-center justify-center">
-            <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 p-1 border border-gold/50 flex items-center justify-center">
+              <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <p class="text-white font-bold text-xs">PR GP Ansor & Satkorkel BANSER Desa Jatinom</p>
+              <p class="text-[10px] text-slate-500">Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa</p>
+            </div>
           </div>
-          <div>
-            <p class="text-white font-bold text-xs">PR GP Ansor & Satkorkel BANSER Desa Jatinom</p>
-            <p class="text-[10px] text-slate-500">Khidmah Aswaja An-Nahdliyyah &bull; Satu Komando Bela Ulama & Bangsa</p>
-          </div>
-        </div>
 
-        <div class="flex items-center gap-4 text-xs font-semibold">
-          <a href="#landing-hero" class="hover:text-gold transition">Atas</a>
-          <a href="#landing-warta" class="hover:text-gold transition">Warta</a>
-          <a href="#landing-struktur" class="hover:text-gold transition">Struktur</a>
-          <button type="button" id="btn-footer-login" class="hover:text-gold transition text-emerald-400 font-bold flex items-center gap-1">
-            <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Login Pengurus
-          </button>
+          <!-- Social Media Icons Landing Page -->
+          <div class="flex items-center gap-2" id="landing-footer-medsos">
+            <a href="https://facebook.com/ansor.jatinom" target="_blank" rel="noopener noreferrer" id="landing-link-facebook" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition shadow-xs" title="Facebook GP Ansor Jatinom">
+              <i class="fa-brands fa-facebook-f text-xs"></i>
+            </a>
+            <a href="https://instagram.com/ansor_jatinom" target="_blank" rel="noopener noreferrer" id="landing-link-instagram" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-gradient-to-tr hover:from-amber-600 hover:via-pink-600 hover:to-purple-600 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition shadow-xs" title="Instagram @ansor_jatinom">
+              <i class="fa-brands fa-instagram text-xs"></i>
+            </a>
+            <a href="https://youtube.com/@ansorjatinom" target="_blank" rel="noopener noreferrer" id="landing-link-youtube" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-red-600 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition shadow-xs" title="YouTube GP Ansor Jatinom">
+              <i class="fa-brands fa-youtube text-xs"></i>
+            </a>
+            <a href="https://tiktok.com/@ansor_jatinom" target="_blank" rel="noopener noreferrer" id="landing-link-tiktok" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-800 flex items-center justify-center transition shadow-xs" title="TikTok @ansor_jatinom">
+              <i class="fa-brands fa-tiktok text-xs"></i>
+            </a>
+          </div>
+
+          <div class="flex items-center gap-4 text-xs font-semibold">
+            <a href="#landing-hero" class="hover:text-gold transition">Atas</a>
+            <a href="#landing-warta" class="hover:text-gold transition">Warta</a>
+            <a href="#landing-struktur" class="hover:text-gold transition">Struktur</a>
+            <button type="button" id="btn-footer-login" class="hover:text-gold transition text-emerald-400 font-bold flex items-center gap-1">
+              <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i> Login Pengurus
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="text-center text-[10.5px] text-slate-600 pt-4 mt-4 border-t border-slate-900">
-        &copy; 2026 Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom, Kec. Kanigoro, Kab. Blitar. All Rights Reserved.
+        <div class="text-center text-[10.5px] text-slate-600 pt-4 border-t border-slate-900">
+          &copy; 2026 Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom, Kec. Kanigoro, Kab. Blitar. All Rights Reserved.
+        </div>
       </div>
     </footer>
 
@@ -2433,6 +2470,40 @@ require_once __DIR__ . '/config.php';
               <textarea id="set-alamat-sekretariat" rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg leading-relaxed">Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 | Email: ansor.jatinom@gmail.com</textarea>
             </div>
 
+            <!-- Pengaturan Akun Media Sosial Resmi -->
+            <div class="pt-3 border-t border-slate-200">
+              <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <i class="fa-solid fa-share-nodes text-emerald-600"></i>
+                <span>Tautan Media Sosial Resmi (Tampil di Foot Page & Landing Page)</span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1 flex items-center gap-1">
+                    <i class="fa-brands fa-facebook text-blue-600"></i> Facebook:
+                  </label>
+                  <input type="text" id="set-medsos-facebook" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" placeholder="https://facebook.com/..." value="https://facebook.com/ansor.jatinom">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1 flex items-center gap-1">
+                    <i class="fa-brands fa-instagram text-pink-600"></i> Instagram:
+                  </label>
+                  <input type="text" id="set-medsos-instagram" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" placeholder="https://instagram.com/..." value="https://instagram.com/ansor_jatinom">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1 flex items-center gap-1">
+                    <i class="fa-brands fa-youtube text-red-600"></i> YouTube:
+                  </label>
+                  <input type="text" id="set-medsos-youtube" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" placeholder="https://youtube.com/@..." value="https://youtube.com/@ansorjatinom">
+                </div>
+                <div>
+                  <label class="block font-medium text-slate-600 mb-1 flex items-center gap-1">
+                    <i class="fa-brands fa-tiktok text-slate-900"></i> TikTok:
+                  </label>
+                  <input type="text" id="set-medsos-tiktok" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg" placeholder="https://tiktok.com/@..." value="https://tiktok.com/@ansor_jatinom">
+                </div>
+              </div>
+            </div>
+
             <div class="flex justify-end gap-2 pt-2">
               <button type="submit" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white rounded-lg font-bold flex items-center gap-1.5 shadow transition">
                 <i class="fa-solid fa-floppy-disk text-gold"></i>
@@ -2459,6 +2530,22 @@ require_once __DIR__ . '/config.php';
           <p class="text-[10px] text-slate-500 mt-0.5">
             Pimpinan Ranting Desa Jatinom &bull; Kec. Kanigoro &bull; Kab. Blitar
           </p>
+        </div>
+
+        <!-- Social Media Icons Foot Page (Dashboard App) -->
+        <div class="flex items-center gap-2" id="app-footer-medsos">
+          <a href="https://facebook.com/ansor.jatinom" target="_blank" rel="noopener noreferrer" id="app-link-facebook" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-blue-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition shadow-xs" title="Facebook GP Ansor Jatinom">
+            <i class="fa-brands fa-facebook-f text-xs"></i>
+          </a>
+          <a href="https://instagram.com/ansor_jatinom" target="_blank" rel="noopener noreferrer" id="app-link-instagram" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-gradient-to-tr hover:from-amber-600 hover:via-pink-600 hover:to-purple-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition shadow-xs" title="Instagram @ansor_jatinom">
+            <i class="fa-brands fa-instagram text-xs"></i>
+          </a>
+          <a href="https://youtube.com/@ansorjatinom" target="_blank" rel="noopener noreferrer" id="app-link-youtube" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition shadow-xs" title="YouTube GP Ansor Jatinom">
+            <i class="fa-brands fa-youtube text-xs"></i>
+          </a>
+          <a href="https://tiktok.com/@ansor_jatinom" target="_blank" rel="noopener noreferrer" id="app-link-tiktok" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition shadow-xs" title="TikTok @ansor_jatinom">
+            <i class="fa-brands fa-tiktok text-xs"></i>
+          </a>
         </div>
 
         <div class="flex items-center gap-4 text-center md:text-right">
