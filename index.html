@@ -645,7 +645,7 @@
       </div>
 
       <!-- Kartu Akun Pengurus Aktif di Sidebar -->
-      <div class="px-3 py-2.5 mx-3 my-2.5 rounded-xl bg-black/30 border border-white/10 flex items-center justify-between cursor-pointer hover:bg-black/45 transition" id="sidebar-user-card" title="Klik untuk ganti user atau login">
+      <div class="px-3 py-2.5 mx-3 my-2.5 rounded-xl bg-black/30 border border-white/10 flex items-center justify-between" id="sidebar-user-card">
         <div class="flex items-center gap-2.5 min-w-0">
           <div class="w-7 h-7 rounded-lg bg-gold text-slate-900 font-black flex items-center justify-center text-xs shadow shrink-0">
             <i class="fa-solid fa-user-shield"></i>
@@ -655,7 +655,6 @@
             <div id="sidebar-user-nama" class="text-[10.5px] text-emerald-100 truncate">M. Zainal Arifin</div>
           </div>
         </div>
-        <i class="fa-solid fa-repeat text-emerald-300 text-xs"></i>
       </div>
 
       <!-- Menu Navigasi Utama (URUTAN STRICT SESUAI PERMINTAAN USER):
@@ -767,17 +766,8 @@
       </nav>
     </div>
 
-    <!-- Bagian Bawah Sidebar: XAMPP Indicator & Utility -->
+    <!-- Bagian Bawah Sidebar: Utility -->
     <div class="p-3 border-t border-emerald-800/60 bg-black/25 space-y-2">
-      <!-- Status XAMPP MySQL Indicator -->
-      <div id="sidebar-xampp-pill" class="flex items-center justify-between px-3 py-1.5 bg-emerald-950/70 border border-emerald-700/50 rounded-lg text-[10.5px]">
-        <div class="flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="font-medium text-emerald-200">XAMPP MySQL Terhubung</span>
-        </div>
-        <span class="font-mono text-[9px] text-gold font-bold">DB: db_sahabat</span>
-      </div>
-
       <div class="space-y-1.5 px-1 pb-1">
         <button id="sidebar-btn-landing-page" class="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white/10 hover:bg-white/20 text-emerald-100 hover:text-white flex items-center justify-between transition">
           <span class="flex items-center gap-2">
@@ -794,10 +784,6 @@
           <button id="sidebar-btn-upload-logo" class="hover:text-gold flex items-center gap-1 transition" title="Upload/Ganti Logo">
             <i class="fa-solid fa-image text-xs text-gold"></i>
             <span>Logo</span>
-          </button>
-          <button id="sidebar-btn-login" class="hover:text-gold flex items-center gap-1 transition" title="Ganti Akun">
-            <i class="fa-solid fa-repeat text-xs text-gold"></i>
-            <span>Akun</span>
           </button>
           <button id="sidebar-btn-logout" class="text-red-300 hover:text-red-200 flex items-center gap-1 transition" title="Keluar / Logout">
             <i class="fa-solid fa-right-from-bracket text-xs text-red-400"></i>
