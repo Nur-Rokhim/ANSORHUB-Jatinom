@@ -770,11 +770,11 @@ require_once __DIR__ . '/config.php';
                     <input type="text" id="input-no-urut" class="w-full mt-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-ansor focus:border-ansor" value="001">
                   </div>
                   <div>
-                    <span class="text-[11px] font-medium text-slate-500">Kode Wilayah</span>
+                    <span id="label-kode-wilayah" class="text-[11px] font-medium text-slate-500">Kode Wilayah</span>
                     <input type="text" id="input-kode-wilayah" class="w-full mt-1 px-3 py-1.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-semibold text-slate-600" value="PR-XII-11-07-02" readonly>
                   </div>
-                  <div>
-                    <span class="text-[11px] font-medium text-slate-500">Sifat Surat</span>
+                  <div id="container-sifat-surat">
+                    <span id="label-sifat-surat" class="text-[11px] font-medium text-slate-500">Sifat Surat</span>
                     <select id="input-sifat-surat" class="w-full mt-1 px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-ansor focus:border-ansor">
                       <option value="01">01 : Internal</option>
                       <option value="02">02 : External</option>
@@ -2105,7 +2105,7 @@ require_once __DIR__ . '/config.php';
       <div id="print-area-surat" class="surat-paper bg-white p-8 sm:p-12 border border-slate-300 text-slate-900">
         
         <!-- KOP SURAT RESMI -->
-        <div class="kop-surat-container flex items-center justify-between mb-6">
+        <div id="print-kop-container" class="kop-surat-container flex items-center justify-between mb-2">
           <div class="kop-logo-box shrink-0 flex flex-col items-center">
             <div class="kop-logo" id="print-kop-logo-left">
               <!-- Injected via JS -->
@@ -2114,7 +2114,7 @@ require_once __DIR__ . '/config.php';
               XII-11-07-02
             </div>
           </div>
-          <div class="kop-teks text-right flex-1 pl-6">
+          <div id="print-kop-teks" class="kop-teks text-right flex-1 pl-6">
             <h1 id="print-kop-subheading" class="text-xs sm:text-sm font-bold text-ansor uppercase tracking-wide">PIMPINAN RANTING</h1>
             <h2 id="print-kop-title" class="text-base sm:text-xl font-black text-ansor uppercase tracking-wider">GERAKAN PEMUDA ANSOR</h2>
             <h3 id="print-kop-unit" class="text-xs sm:text-sm font-bold text-slate-800 uppercase tracking-wide">DESA JATINOM KECAMATAN KANIGORO</h3>
@@ -2126,6 +2126,8 @@ require_once __DIR__ . '/config.php';
             <!-- Injected via JS -->
           </div>
         </div>
+        <!-- Pembatas Bawah KOP Surat (Garis Ganda Tebal-Tipis untuk Banser) -->
+        <div id="print-kop-divider" class="kop-banser-divider hidden"></div>
 
         <!-- HEADER DATA SURAT (Nomor, Lampiran, Hal & Tanggal) -->
         <div class="flex justify-between items-start text-xs leading-relaxed mb-6">

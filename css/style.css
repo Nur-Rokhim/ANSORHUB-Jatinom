@@ -401,6 +401,62 @@ body {
   display: none !important;
 }
 
+/* Styling KOP Banser (Rata Tengah, Logo Banser Kiri, Logo Perisai Kanan) */
+.kop-teks.banser-mode {
+  text-align: center !important;
+  padding: 0 16px !important;
+}
+
+.kop-teks.banser-mode h1 {
+  font-family: 'Arial', sans-serif !important;
+  font-size: 14pt !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.kop-teks.banser-mode h2 {
+  font-family: 'Arial', sans-serif !important;
+  font-size: 18pt !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+  margin: 2px 0 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+}
+
+.kop-teks.banser-mode h3 {
+  font-family: 'Arial', sans-serif !important;
+  font-size: 14pt !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  margin: 0 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.kop-teks.banser-mode p {
+  font-family: 'Arial', sans-serif !important;
+  font-size: 9pt !important;
+  color: #334155 !important;
+  margin-top: 6px !important;
+  line-height: 1.3 !important;
+}
+
+/* Garis Ganda Pembatas Bawah KOP Banser (Tebal Tipis) */
+.kop-banser-divider {
+  border-top: 3.5px solid #0f172a;
+  border-bottom: 1.2px solid #0f172a;
+  height: 5px;
+  margin-top: 8px;
+  margin-bottom: 22px;
+}
+
 .kop-logo-box {
   display: flex;
   flex-direction: column;

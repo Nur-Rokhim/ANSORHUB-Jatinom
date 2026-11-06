@@ -184,7 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const printKopLogoKiri = document.getElementById("print-kop-logo-left");
     if (printKopLogoKiri) printKopLogoKiri.innerHTML = getLogoHTML("ansor");
     const printKopLogoKanan = document.getElementById("print-kop-logo-right");
-    if (printKopLogoKanan) printKopLogoKanan.innerHTML = "";
+    if (printKopLogoKanan) {
+      printKopLogoKanan.innerHTML = "";
+      printKopLogoKanan.classList.add("hidden");
+    }
+    const printKopDivider = document.getElementById("print-kop-divider");
+    if (printKopDivider) printKopDivider.classList.add("hidden");
     const printKopKodeWil = document.getElementById("print-kop-kode-wilayah");
     if (printKopKodeWil) printKopKodeWil.textContent = "XII-11-07-02";
 
@@ -957,13 +962,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getGeneratedNomorSurat() {
     const noUrut = document.getElementById("input-no-urut")?.value.trim() || "001";
-    const kodeWilayah = document.getElementById("input-kode-wilayah")?.value.trim() || "PR-XII-11-07-02";
     const jenisSurat = state.currentTemplate || "SU";
-    const sifatSurat = document.getElementById("input-sifat-surat")?.value || "01";
     const bulanRomawi = document.getElementById("input-bulan-romawi")?.value || "XI";
     const tahun = document.getElementById("input-tahun-surat")?.value || "2026";
+    const isBanser = state.activeSubSurat === "banser";
 
-    return `${noUrut}/${kodeWilayah}/${jenisSurat}-${sifatSurat}/${bulanRomawi}/${tahun}`;
+    if (isBanser) {
+      // Format Banser: No/SKK-(JenisSurat)/Bulan(Romawi)/Tahun
+      return `${noUrut}/SKK-${jenisSurat}/${bulanRomawi}/${tahun}`;
+    } else {
+      // Format Ansor: No/PR-XII-11-07-02/JenisSurat-Sifat/Bulan/Tahun
+      const kodeWilayah = document.getElementById("input-kode-wilayah")?.value.trim() || "PR-XII-11-07-02";
+      const sifatSurat = document.getElementById("input-sifat-surat")?.value || "01";
+      return `${noUrut}/${kodeWilayah}/${jenisSurat}-${sifatSurat}/${bulanRomawi}/${tahun}`;
+    }
   }
 
   function refreshNomorSuratDisplay() {
@@ -1031,6 +1043,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       renderTemplateButtons();
       applyTemplate("SPH"); // Default Banser: SPH
+
+      // --- KOP Banser ---
+      // Sembunyikan Sifat Surat (tidak dipakai Banser)
+      const sifatContainer = document.getElementById("container-sifat-surat");
+      if (sifatContainer) sifatContainer.classList.add("hidden");
+      // Update banner format yang benar
+      if (bannerFormat) bannerFormat.textContent = "[No]/SKK-[JenisSurat]/[Bulan(Romawi)]/[Tahun]";
+      // Toggle class banser-mode pada teks KOP
+      const kopTeksEl = document.getElementById("print-kop-teks");
+      if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
+      // Logo Perisai di kanan
+      const logoKananEl = document.getElementById("print-kop-logo-right");
+      if (logoKananEl) {
+        logoKananEl.classList.remove("hidden");
+        logoKananEl.innerHTML = `<img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" />`;
+      }
+      // Tampilkan garis divider Banser
+      const dividerEl = document.getElementById("print-kop-divider");
+      if (dividerEl) dividerEl.classList.remove("hidden");
     } else {
       // Styling Subtabs
       if (btnAnsor) {
@@ -1064,7 +1095,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       renderTemplateButtons();
       applyTemplate("SU"); // Default Ansor: SU
+
+      // --- KOP Ansor: kembalikan ke default ---
+      const sifatContainer = document.getElementById("container-sifat-surat");
+      if (sifatContainer) sifatContainer.classList.remove("hidden");
+      const kopTeksEl = document.getElementById("print-kop-teks");
+      if (kopTeksEl) { kopTeksEl.classList.remove("banser-mode"); kopTeksEl.classList.add("text-right"); }
+      const logoKananEl = document.getElementById("print-kop-logo-right");
+      if (logoKananEl) { logoKananEl.classList.add("hidden"); logoKananEl.innerHTML = ""; }
+      const dividerEl = document.getElementById("print-kop-divider");
+      if (dividerEl) dividerEl.classList.add("hidden");
     }
+
+    refreshNomorSuratDisplay();
   }
 
   function renderTemplateButtons() {
@@ -1260,7 +1303,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (inputIsi) inputIsi.value = htmlBody;
   }
 
-  ["input-no-urut", "input-sifat-surat"].forEach((id) => {
+  ["input-no-urut", "input-sifat-surat", "input-bulan-romawi", "input-tahun-surat", "input-kode-wilayah"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.addEventListener("input", refreshNomorSuratDisplay);
     if (el) el.addEventListener("change", refreshNomorSuratDisplay);
@@ -1349,8 +1392,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const kopTitle = document.getElementById("print-kop-title");
     const kopUnit = document.getElementById("print-kop-unit");
     const ttdHeading = document.getElementById("print-ttd-heading");
+    const kopTeksEl = document.getElementById("print-kop-teks");
+    const dividerEl = document.getElementById("print-kop-divider");
 
-    if (logoKanan) logoKanan.innerHTML = "";
+    // Reset default KOP (Ansor: Rata Kanan, tanpa logo kanan, tanpa divider)
+    if (logoKanan) {
+      logoKanan.innerHTML = "";
+      logoKanan.classList.add("hidden");
+    }
+    if (kopTeksEl) {
+      kopTeksEl.classList.remove("banser-mode");
+      kopTeksEl.classList.add("text-right");
+    }
+    if (dividerEl) {
+      dividerEl.classList.add("hidden");
+    }
 
     // Kode Wilayah tepat di bawah Logo
     const elPrintKodeWil = document.getElementById("print-kop-kode-wilayah");
@@ -1363,10 +1419,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isBanser) {
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("banser");
+      // Logo Perisai di kanan KOP
+      if (logoKanan) {
+        logoKanan.classList.remove("hidden");
+        logoKanan.innerHTML = `<img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" />`;
+      }
+      // Teks KOP Banser — rata tengah (banser-mode)
+      if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
+      // 3 Baris header KOP Banser
       if (kopSubhead) kopSubhead.textContent = "SATUAN KOORDINASI KELOMPOK";
-      if (kopTitle) kopTitle.textContent = "BARISAN AN-SOR SERBAGUNA (BANSER)";
-      if (kopUnit) kopUnit.textContent = "DESA JATINOM KECAMATAN KANIGORO";
+      if (kopTitle) kopTitle.textContent = "BARISAN ANSOR SERBAGUNA";
+      if (kopUnit) kopUnit.textContent = "(SATKORKEL BANSER)";
       if (ttdHeading) ttdHeading.textContent = "SATUAN KOORDINASI KELOMPOK BANSER JATINOM";
+      // Alamat Sekretariat Banser
+      if (elPrintAlamat) {
+        const prefix = alamatKop.toLowerCase().includes("sekretariat") ? "" : "Sekretariat: ";
+        elPrintAlamat.textContent = prefix + alamatKop;
+      }
+      // Tampilkan garis divider Banser
+      if (dividerEl) dividerEl.classList.remove("hidden");
     } else if (kopLembaga === "rijalul") {
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("rijalul");
       if (kopSubhead) kopSubhead.textContent = "PIMPINAN RANTING";
