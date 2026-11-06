@@ -3108,12 +3108,19 @@ _Wassalamu'alaikum Wr. Wb._
     document.getElementById("login-error-msg")?.classList.add("hidden");
     const pinInput = document.getElementById("login-pin");
     if (pinInput) pinInput.value = "";
-    modalLoginPortal?.classList.remove("hidden");
+    if (modalLoginPortal) {
+      modalLoginPortal.classList.remove("hidden");
+      modalLoginPortal.style.display = "flex";
+    }
+    renderLoginRoleButtons();
     pinInput?.focus();
   }
 
   function closeLoginModal() {
-    modalLoginPortal?.classList.add("hidden");
+    if (modalLoginPortal) {
+      modalLoginPortal.classList.add("hidden");
+      modalLoginPortal.style.display = "";
+    }
   }
 
   function logoutSession() {
@@ -3355,9 +3362,11 @@ _Wassalamu'alaikum Wr. Wb._
 
   // Inisialisasi Tampilan: Cek Sesi Aktif Pengurus vs Landing Page Publik
   const isSessionActive = sessionStorage.getItem("sahabat_session_active") === "true";
-  if (isSessionActive && state.currentUser && state.currentUser.id !== "GUEST") {
+  const hasValidUser = state.currentUser && state.currentUser.pin;
+  if (isSessionActive && hasValidUser) {
     switchToAppMode();
   } else {
+    sessionStorage.removeItem("sahabat_session_active");
     switchToLandingMode();
   }
 

@@ -285,7 +285,7 @@ body {
   background-size: 36px 36px;
   mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
   -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
-  pointer-events-none;
+  pointer-events: none;
 }
 
 /* Digital Glowing Ambient Orbs */
@@ -299,7 +299,7 @@ body {
   height: 600px;
   background: radial-gradient(circle, rgba(0, 255, 150, 0.12) 0%, rgba(255, 199, 44, 0.06) 40%, transparent 70%);
   filter: blur(60px);
-  pointer-events-none;
+  pointer-events: none;
   animation: pulse-glow 7s ease-in-out infinite alternate;
 }
 
@@ -314,6 +314,11 @@ body {
 }
 
 /* Mode Landing Page vs Mode Admin App Switching */
+/* Default: sembunyikan landing page sampai JS menentukan mode */
+#view-landing-page {
+  display: none;
+}
+
 body.viewing-landing #app-sidebar,
 body.viewing-landing .main-content-layout,
 body.viewing-landing #sidebar-backdrop {
@@ -322,9 +327,26 @@ body.viewing-landing #sidebar-backdrop {
 
 body.viewing-landing #view-landing-page {
   display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 body.viewing-app #view-landing-page {
+  display: none !important;
+}
+
+/* Modal Login Portal: selalu di atas semua layer */
+#modal-login-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+#modal-login-portal.hidden {
   display: none !important;
 }
 
