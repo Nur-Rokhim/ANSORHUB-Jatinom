@@ -1030,16 +1030,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (kodeWilInput) kodeWilInput.value = "SKK-XII-11-07-02";
       if (kopLembagaSelect) kopLembagaSelect.value = "banser";
 
-      // Penandatangan Banser (Kasatkorkel & Kasetma)
-      if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Kasetma):";
-      if (ttd1Nama) ttd1Nama.value = state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO";
-      if (ttd1Jab) ttd1Jab.value = "Kepala Sekretariat Markas (Kasetma)";
-      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.kasetmaNia || "11.07.02.005");
+      // Penandatangan Banser (Kasatkorkel di kiri, Kasetma di kanan)
+      if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Kasatkorkel):";
+      if (ttd1Nama) ttd1Nama.value = state.settings.kasatkorkelNama || "SUBHAN MUBAROK";
+      if (ttd1Jab) ttd1Jab.value = "Kepala Satkorkel (Kasatkorkel)";
+      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.kasatkorkelNia || "11.07.02.003");
 
-      if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Kasatkorkel):";
-      if (ttd2Nama) ttd2Nama.value = state.settings.kasatkorkelNama || "SUBHAN MUBAROK";
-      if (ttd2Jab) ttd2Jab.value = "Kepala Satkorkel (Kasatkorkel)";
-      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.kasatkorkelNia || "11.07.02.003");
+      if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Kasetma):";
+      if (ttd2Nama) ttd2Nama.value = state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO";
+      if (ttd2Jab) ttd2Jab.value = "Kepala Sekretariat Markas (Kasetma)";
+      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.kasetmaNia || "11.07.02.005");
 
       renderTemplateButtons();
       applyTemplate("SPH"); // Default Banser: SPH
@@ -1053,11 +1053,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Toggle class banser-mode pada teks KOP
       const kopTeksEl = document.getElementById("print-kop-teks");
       if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
-      // Logo Perisai di kanan
+      // Logo Perisai di kanan (ukuran disamakan logo banser kiri)
       const logoKananEl = document.getElementById("print-kop-logo-right");
       if (logoKananEl) {
         logoKananEl.classList.remove("hidden");
-        logoKananEl.innerHTML = `<img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" />`;
+        logoKananEl.innerHTML = `<div class="kop-logo"><img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" /></div><div class="kop-kode-wilayah text-[11px] font-bold text-transparent tracking-wider text-center mt-1 select-none">&nbsp;</div>`;
       }
       // Tampilkan garis divider Banser
       const dividerEl = document.getElementById("print-kop-divider");
@@ -1419,18 +1419,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isBanser) {
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("banser");
-      // Logo Perisai di kanan KOP
+      // Logo Perisai di kanan KOP (ukuran disamakan dengan logo banser kiri)
       if (logoKanan) {
         logoKanan.classList.remove("hidden");
-        logoKanan.innerHTML = `<img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" />`;
+        logoKanan.innerHTML = `<div class="kop-logo"><img src="img/logo-perisai-banser.png" alt="Logo Perisai Banser" class="w-full h-full object-contain" /></div><div class="kop-kode-wilayah text-[11px] font-bold text-transparent tracking-wider text-center mt-1 select-none">&nbsp;</div>`;
       }
       // Teks KOP Banser — rata tengah (banser-mode)
       if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
       // 3 Baris header KOP Banser
       if (kopSubhead) kopSubhead.textContent = "SATUAN KOORDINASI KELOMPOK";
-      if (kopTitle) kopTitle.textContent = "BARISAN ANSOR SERBAGUNA";
+      if (kopTitle) {
+        kopTitle.textContent = "BARISAN ANSOR SERBAGUNA";
+        kopTitle.style.color = "#c02626";
+      }
       if (kopUnit) kopUnit.textContent = "(SATKORKEL BANSER)";
-      if (ttdHeading) ttdHeading.textContent = "SATUAN KOORDINASI KELOMPOK BANSER JATINOM";
+      // Tulisan di atas Tanda Tangan (3 baris rata tengah)
+      if (ttdHeading) {
+        ttdHeading.className = "text-center font-bold mb-4 tracking-wider text-slate-800 leading-snug";
+        ttdHeading.innerHTML = `<div>SATUAN KOORDINASI KELOMPOK</div><div>BARISAN ANSOR SERBAGUNA</div><div>DESA JATINOM</div>`;
+      }
       // Alamat Sekretariat Banser
       if (elPrintAlamat) {
         const prefix = alamatKop.toLowerCase().includes("sekretariat") ? "" : "Sekretariat: ";
@@ -1439,23 +1446,35 @@ document.addEventListener("DOMContentLoaded", () => {
       // Tampilkan garis divider Banser
       if (dividerEl) dividerEl.classList.remove("hidden");
     } else if (kopLembaga === "rijalul") {
+      if (kopTitle) kopTitle.style.color = "";
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("rijalul");
       if (kopSubhead) kopSubhead.textContent = "PIMPINAN RANTING";
       if (kopTitle) kopTitle.textContent = "MDS RIJALUL ANSOR JATINOM";
       if (kopUnit) kopUnit.textContent = "DESA JATINOM KECAMATAN KANIGORO";
-      if (ttdHeading) ttdHeading.textContent = "MAJELIS DZIKIR DAN SHOLAWAT RIJALUL ANSOR";
+      if (ttdHeading) {
+        ttdHeading.className = "text-center font-bold mb-4 uppercase tracking-wider text-slate-800";
+        ttdHeading.innerHTML = "MAJELIS DZIKIR DAN SHOLAWAT RIJALUL ANSOR";
+      }
     } else if (kopLembaga === "siber") {
+      if (kopTitle) kopTitle.style.color = "";
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("siber");
       if (kopSubhead) kopSubhead.textContent = "PIMPINAN RANTING";
       if (kopTitle) kopTitle.textContent = "BADAN SIBER ANSOR JATINOM";
       if (kopUnit) kopUnit.textContent = "DESA JATINOM KECAMATAN KANIGORO";
-      if (ttdHeading) ttdHeading.textContent = "BADAN SIBER ANSOR PR JATINOM";
+      if (ttdHeading) {
+        ttdHeading.className = "text-center font-bold mb-4 uppercase tracking-wider text-slate-800";
+        ttdHeading.innerHTML = "BADAN SIBER ANSOR PR JATINOM";
+      }
     } else {
+      if (kopTitle) kopTitle.style.color = "";
       if (logoKiri) logoKiri.innerHTML = getLogoHTML("ansor");
       if (kopSubhead) kopSubhead.textContent = "PIMPINAN RANTING";
       if (kopTitle) kopTitle.textContent = "GERAKAN PEMUDA ANSOR";
       if (kopUnit) kopUnit.textContent = "DESA JATINOM KECAMATAN KANIGORO";
-      if (ttdHeading) ttdHeading.textContent = "PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM";
+      if (ttdHeading) {
+        ttdHeading.className = "text-center font-bold mb-4 uppercase tracking-wider text-slate-800";
+        ttdHeading.innerHTML = "PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM";
+      }
     }
 
     // Injeksi TTD & Stempel
@@ -1466,8 +1485,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (isSematkan) {
       if (isBanser) {
-        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdKasetma", "ttdKasatkorkel");
-        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdKasatkorkel", "ttdKetua");
+        // Kasatkorkel di sebelah kiri, Kasetma & Stempel di sebelah kanan
+        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdKasatkorkel", "ttdKasatkorkel");
+        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdKasetma", "ttdKasetma");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelBanser", "stempelBanser");
       } else if (kopLembaga === "rijalul") {
         if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
