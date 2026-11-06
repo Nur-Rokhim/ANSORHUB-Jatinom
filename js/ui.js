@@ -1082,16 +1082,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (kodeWilInput) kodeWilInput.value = "PR-XII-11-07-02";
       if (kopLembagaSelect) kopLembagaSelect.value = "ansor";
 
-      // Penandatangan Ansor (Ketua & Sekretaris)
-      if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Sekretaris):";
-      if (ttd1Nama) ttd1Nama.value = state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN";
-      if (ttd1Jab) ttd1Jab.value = "Sekretaris";
-      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.sekretarisNia || "11.07.02.002");
+      // Penandatangan Ansor (Ketua di kiri, Sekretaris di kanan)
+      if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Ketua):";
+      if (ttd1Nama) ttd1Nama.value = state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN";
+      if (ttd1Jab) ttd1Jab.value = "Ketua Pimpinan Ranting";
+      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.ketuaNia || "11.07.02.001");
 
-      if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Ketua):";
-      if (ttd2Nama) ttd2Nama.value = state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN";
-      if (ttd2Jab) ttd2Jab.value = "Ketua Pimpinan Ranting";
-      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.ketuaNia || "11.07.02.001");
+      if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Sekretaris):";
+      if (ttd2Nama) ttd2Nama.value = state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN";
+      if (ttd2Jab) ttd2Jab.value = "Sekretaris";
+      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.sekretarisNia || "11.07.02.002");
 
       renderTemplateButtons();
       applyTemplate("SU"); // Default Ansor: SU
@@ -1331,13 +1331,22 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const isiHTML = document.getElementById("input-isi-surat")?.value || document.getElementById("editor-isi-surat")?.innerHTML || "";
     
-    const ttd1Nama = document.getElementById("setting-ttd1-nama")?.value || document.getElementById("input-ttd-sekretaris")?.value || state.settings.sekretarisNama;
-    const ttd1Jabatan = document.getElementById("setting-ttd1-jabatan")?.value || "Sekretaris";
-    const ttd1Nia = document.getElementById("setting-ttd1-nia")?.value || "NIA: " + state.settings.sekretarisNia;
+    const isBanserMode = state.activeSubSurat === "banser";
+    const defaultTtd1Nama = isBanserMode ? (state.settings.kasatkorkelNama || "SUBHAN MUBAROK") : (state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN");
+    const defaultTtd1Jabatan = isBanserMode ? "Kepala Satkorkel (Kasatkorkel)" : "Ketua Pimpinan Ranting";
+    const defaultTtd1Nia = "NIA: " + (isBanserMode ? (state.settings.kasatkorkelNia || "11.07.02.003") : (state.settings.ketuaNia || "11.07.02.001"));
+
+    const defaultTtd2Nama = isBanserMode ? (state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO") : (state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN");
+    const defaultTtd2Jabatan = isBanserMode ? "Kepala Sekretariat Markas (Kasetma)" : "Sekretaris";
+    const defaultTtd2Nia = "NIA: " + (isBanserMode ? (state.settings.kasetmaNia || "11.07.02.005") : (state.settings.sekretarisNia || "11.07.02.002"));
+
+    const ttd1Nama = document.getElementById("setting-ttd1-nama")?.value || defaultTtd1Nama;
+    const ttd1Jabatan = document.getElementById("setting-ttd1-jabatan")?.value || defaultTtd1Jabatan;
+    const ttd1Nia = document.getElementById("setting-ttd1-nia")?.value || defaultTtd1Nia;
     
-    const ttd2Nama = document.getElementById("setting-ttd2-nama")?.value || document.getElementById("input-ttd-ketua")?.value || state.settings.ketuaNama;
-    const ttd2Jabatan = document.getElementById("setting-ttd2-jabatan")?.value || "Ketua Pimpinan Ranting";
-    const ttd2Nia = document.getElementById("setting-ttd2-nia")?.value || "NIA: " + state.settings.ketuaNia;
+    const ttd2Nama = document.getElementById("setting-ttd2-nama")?.value || defaultTtd2Nama;
+    const ttd2Jabatan = document.getElementById("setting-ttd2-jabatan")?.value || defaultTtd2Jabatan;
+    const ttd2Nia = document.getElementById("setting-ttd2-nia")?.value || defaultTtd2Nia;
 
     const kopLembaga = document.getElementById("setting-kop-lembaga")?.value || "ansor";
     const alamatKop = document.getElementById("setting-alamat-kop")?.value || state.settings.alamatSekretariat;
@@ -1472,8 +1481,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (kopTitle) kopTitle.textContent = "GERAKAN PEMUDA ANSOR";
       if (kopUnit) kopUnit.textContent = "DESA JATINOM KECAMATAN KANIGORO";
       if (ttdHeading) {
-        ttdHeading.className = "text-center font-bold mb-4 uppercase tracking-wider text-slate-800";
-        ttdHeading.innerHTML = "PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM";
+        ttdHeading.className = "text-center font-bold mb-4 tracking-wider text-slate-800 leading-snug";
+        ttdHeading.innerHTML = `<div>PIMPINAN RANTING</div><div>GERAKAN PEMUDA ANSOR</div><div>DESA JATINOM</div>`;
       }
     }
 
@@ -1490,12 +1499,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdKasetma", "ttdKasetma");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelBanser", "stempelBanser");
       } else if (kopLembaga === "rijalul") {
-        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
-        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdMds", "ttdSekretaris");
+        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdKetua", "ttdKetua");
+        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelMds", "stempelRijalul");
       } else {
-        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
-        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdKetua", "ttdKetua");
+        // Ketua di sebelah kiri, Sekretaris & Stempel di sebelah kanan
+        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdKetua", "ttdKetua");
+        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelAnsor", "stempelAnsor");
       }
     } else {

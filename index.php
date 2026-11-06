@@ -2171,15 +2171,17 @@ require_once __DIR__ . '/config.php';
 
         <!-- TANDA TANGAN & STEMPEL RESMI -->
         <div class="mt-10 pt-4 text-xs">
-          <p class="text-center font-bold mb-4 uppercase tracking-wider text-slate-800" id="print-ttd-heading">
-            PIMPINAN RANTING GERAKAN PEMUDA ANSOR JATINOM
-          </p>
+          <div class="text-center font-bold mb-4 tracking-wider text-slate-800 leading-snug" id="print-ttd-heading">
+            <div>PIMPINAN RANTING</div>
+            <div>GERAKAN PEMUDA ANSOR</div>
+            <div>DESA JATINOM</div>
+          </div>
 
           <div class="grid grid-cols-2 gap-8 text-center relative mt-6">
             
-            <!-- Kolom Kiri: Sekretaris -->
+            <!-- Kolom Kiri: Ketua (Ansor) / Kasatkorkel (Banser) -->
             <div class="flex flex-col items-center justify-between h-40">
-              <span id="print-ttd1-jabatan" class="font-bold text-slate-800">Sekretaris,</span>
+              <span id="print-ttd1-jabatan" class="font-bold text-slate-800">Ketua Pimpinan Ranting,</span>
               
               <!-- Signature Area Kiri -->
               <div class="relative w-full h-24 flex items-center justify-center">
@@ -2189,14 +2191,14 @@ require_once __DIR__ . '/config.php';
               </div>
 
               <div>
-                <h4 id="print-ttd1-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">AHMAD NUR SHOLIHIN</h4>
-                <p id="print-ttd1-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.002</p>
+                <h4 id="print-ttd1-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">MUHAMMAD ZAINAL ARIFIN</h4>
+                <p id="print-ttd1-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.001</p>
               </div>
             </div>
 
-            <!-- Kolom Kanan: Ketua + Stempel Basah -->
+            <!-- Kolom Kanan: Sekretaris (Ansor) / Kasetma (Banser) + Stempel Basah -->
             <div class="flex flex-col items-center justify-between h-40 relative">
-              <span id="print-ttd2-jabatan" class="font-bold text-slate-800">Ketua,</span>
+              <span id="print-ttd2-jabatan" class="font-bold text-slate-800">Sekretaris,</span>
               
               <!-- Signature & Stempel Area Kanan -->
               <div class="relative w-full h-24 flex items-center justify-center">
@@ -2211,8 +2213,8 @@ require_once __DIR__ . '/config.php';
               </div>
 
               <div>
-                <h4 id="print-ttd2-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">MUHAMMAD ZAINAL ARIFIN</h4>
-                <p id="print-ttd2-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.001</p>
+                <h4 id="print-ttd2-nama" class="font-bold text-slate-900 uppercase underline tracking-wide">AHMAD NUR SHOLIHIN</h4>
+                <p id="print-ttd2-nia" class="text-[10px] font-mono text-slate-600">NIA: 11.07.02.002</p>
               </div>
             </div>
 
