@@ -1225,6 +1225,14 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: "dyn-tempat", label: "Tempat / Lokasi", placeholder: "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan", default: "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan" },
         { id: "dyn-acara", label: "Rangkaian Acara", placeholder: "Pembacaan Maulid Diba', Yasin Tahlil, & Pleno", default: "Pembacaan Maulid Diba', Yasin Tahlil, & Pleno" }
       ];
+    } else if (tplCode === "SPH") {
+      fields = [
+        { id: "dyn-acara", label: "Nama Kegiatan / Acara", placeholder: "Apel Kesetiaan Personel, Refreshing PBB, dan Koordinasi Pengamanan", default: "Apel Kesetiaan Personel, Refreshing PBB, dan Koordinasi Pengamanan" },
+        { id: "dyn-korlap", label: "Korlap (Koordinator Lapangan)", placeholder: "Subhan Mubarok (Kasatkorkel BANSER Jatinom)", default: "Subhan Mubarok (Kasatkorkel BANSER Jatinom)" },
+        { id: "dyn-hari-tgl", label: "Hari & Tanggal", placeholder: "Jum'at Kliwon, 20 November 2026", default: "Jum'at Kliwon, 20 November 2026" },
+        { id: "dyn-waktu", label: "Pukul / Waktu", placeholder: "19.30 WIB (Ba'da Isya) s.d Selesai", default: "19.30 WIB (Ba'da Isya) s.d Selesai" },
+        { id: "dyn-tempat", label: "Tempat / Lokasi", placeholder: "Markas Satkorkel BANSER Jatinom / Balai Desa Jatinom", default: "Markas Satkorkel BANSER Jatinom / Balai Desa Jatinom" }
+      ];
     } else if (tplCode === "SK") {
       fields = [
         { id: "dyn-tentang", label: "Tentang Surat Keputusan", placeholder: "PENGESAHAN SUSUNAN PANITIA HARLAH", default: "PENGESAHAN SUSUNAN PANITIA HARLAH GP ANSOR RANTING JATINOM" },
@@ -1281,6 +1289,7 @@ document.addEventListener("DOMContentLoaded", () => {
       waktu: document.getElementById("dyn-waktu")?.value || "19.30 WIB (Ba'da Isya) s.d Selesai",
       tempat: document.getElementById("dyn-tempat")?.value || "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom",
       acara: document.getElementById("dyn-acara")?.value || "Pembacaan Maulid Diba', Yasin Tahlil, & Pleno",
+      korlap: document.getElementById("dyn-korlap")?.value || "Subhan Mubarok (Kasatkorkel BANSER Jatinom)",
       kegiatan: document.getElementById("dyn-kegiatan")?.value || "Kegiatan Organisasi PR GP Ansor Jatinom",
       tentang: document.getElementById("dyn-tentang")?.value,
       tanggalRapat: document.getElementById("dyn-tgl-rapat")?.value,
@@ -1549,11 +1558,35 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("mode-print-single-page", "mode-print-multi-page");
   }
 
+  function triggerPrintSurat() {
+    const isBanser = state.activeSubSurat === "banser";
+    const currentTpl = (state.currentTemplate || "").toUpperCase();
+    const printArea = document.getElementById("print-area-surat");
+
+    if (currentTpl === "SK" && !isBanser) {
+      document.body.classList.remove("mode-print-single-page");
+      document.body.classList.add("mode-print-multi-page");
+      if (printArea) {
+        printArea.classList.remove("print-exact-single-page");
+        printArea.classList.add("print-multi-page");
+      }
+    } else {
+      document.body.classList.add("mode-print-single-page");
+      document.body.classList.remove("mode-print-multi-page");
+      if (printArea) {
+        printArea.classList.add("print-exact-single-page");
+        printArea.classList.remove("print-multi-page");
+      }
+    }
+
+    window.print();
+  }
+
   document.getElementById("btn-preview-surat")?.addEventListener("click", openPreviewSurat);
   document.getElementById("btn-preview-cetak")?.addEventListener("click", openPreviewSurat);
   document.getElementById("btn-close-preview")?.addEventListener("click", closePreviewSurat);
-  document.getElementById("btn-print-surat")?.addEventListener("click", () => window.print());
-  document.getElementById("btn-do-print")?.addEventListener("click", () => window.print());
+  document.getElementById("btn-print-surat")?.addEventListener("click", triggerPrintSurat);
+  document.getElementById("btn-do-print")?.addEventListener("click", triggerPrintSurat);
 
   // Simpan Surat ke Arsip
   function simpanSuratKeArsip() {

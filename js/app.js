@@ -911,6 +911,7 @@ const TEMPLATES_BANSER_MAP = {
 <p>Untuk hadir dan melaksanakan instruksi kesiapsiagaan pada agenda:</p>
 <table style="width: 100%; margin: 12px 0 14px 20px; border-collapse: collapse;">
   <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.acara || d.kegiatan || "Apel Kesetiaan Personel, Refreshing PBB, dan Koordinasi Pengamanan"}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Korlap</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.korlap || "Subhan Mubarok (Kasatkorkel BANSER Jatinom)"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Jum'at Kliwon, 20 November 2026"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Pukul / Waktu</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB (Ba'da Isya) s.d Selesai"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Markas Satkorkel BANSER Jatinom / Balai Desa Jatinom"}</td></tr>

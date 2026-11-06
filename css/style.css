@@ -623,16 +623,21 @@ body.viewing-app #view-landing-page {
 
 /* Print Only Stylesheet */
 @media print {
-  body {
+  html, body {
     background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
   }
 
   .no-print,
   #app-header,
-  #app-nav,
+  #app-sidebar,
+  #sidebar-backdrop,
   #app-footer,
+  #view-landing-page,
+  .main-content-layout,
   #tab-warta,
   #tab-surat,
   #tab-kader,
@@ -644,21 +649,26 @@ body.viewing-app #view-landing-page {
   #modal-baca-berita,
   .form-container,
   .action-buttons,
-  .modal-backdrop,
+  .modal-backdrop:not(#modal-preview-surat),
   header,
   footer,
-  nav {
+  nav,
+  aside {
     display: none !important;
   }
 
   #modal-preview-surat {
     position: static !important;
+    inset: auto !important;
     background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
     display: block !important;
     box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    z-index: auto !important;
   }
 
   #modal-preview-surat .modal-content-box {
@@ -673,12 +683,16 @@ body.viewing-app #view-landing-page {
 
   .surat-paper {
     box-shadow: none !important;
+    border: none !important;
     border-radius: 0 !important;
     padding: 0 !important;
-    margin: 0 !important;
-    max-width: 100% !important;
+    margin: 0 auto !important;
     width: 100% !important;
+    max-width: 100% !important;
     min-height: auto !important;
+    font-size: 11pt !important;
+    line-height: 1.45 !important;
+    color: #000000 !important;
   }
 
   /* 1 Lembar A4 (Single Page Strict) untuk Non-SK Ansor & Semua Surat Banser */
@@ -686,15 +700,35 @@ body.viewing-app #view-landing-page {
   .surat-paper.print-exact-single-page {
     page-break-inside: avoid !important;
     page-break-after: avoid !important;
+    page-break-before: avoid !important;
     break-inside: avoid !important;
     break-after: avoid !important;
-    max-height: 25.5cm !important;
+    break-before: avoid !important;
+    height: auto !important;
+    max-height: 25.8cm !important;
+    overflow: hidden !important;
   }
 
   body.mode-print-single-page .surat-paper #print-isi-surat,
   .surat-paper.print-exact-single-page #print-isi-surat {
     font-size: 10.5pt !important;
-    line-height: 1.45 !important;
+    line-height: 1.4 !important;
+  }
+
+  body.mode-print-single-page .surat-paper .kop-surat-container,
+  .surat-paper.print-exact-single-page .kop-surat-container {
+    margin-bottom: 0.25rem !important;
+  }
+
+  body.mode-print-single-page .surat-paper .mt-10,
+  .surat-paper.print-exact-single-page .mt-10 {
+    margin-top: 1rem !important;
+    padding-top: 0.25rem !important;
+  }
+
+  body.mode-print-single-page .surat-paper .h-40,
+  .surat-paper.print-exact-single-page .h-40 {
+    height: 7rem !important;
   }
 
   /* Multi-page dinamis untuk Surat Keputusan (SK) */
@@ -703,6 +737,7 @@ body.viewing-app #view-landing-page {
     page-break-after: auto !important;
     break-after: auto !important;
     max-height: none !important;
+    overflow: visible !important;
   }
 
   @page {
