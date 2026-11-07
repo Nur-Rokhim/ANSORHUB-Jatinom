@@ -907,7 +907,7 @@ const TEMPLATES_BANSER_MAP = {
 <p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
 <p>Salam silaturrahim teriring salam komando kami sampaikan, semoga Sahabat jajaran personel BANSER senantiasa dalam lindungan Allah SWT serta istiqomah menjalankan amanah Aswaja An-Nahdliyyah.</p>
 <p>Dalam rangka konsolidasi kesiapsiagaan korps dan pengamanan kegiatan, Kepala Satkorkel BANSER Desa Jatinom menginstruksikan kepada seluruh personel untuk hadir pada:</p>
-<table style="width: 100%; margin: 8px 0 10px 15px; border-collapse: collapse;">
+<table style="width: 100%; margin: 4px 0 6px 15px; border-collapse: collapse;">
   <tr><td style="width: 130px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.acara || d.kegiatan || "Apel Kesetiaan & Koordinasi Pengamanan"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Korlap</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.korlap || "Subhan Mubarok (Kasatkorkel BANSER Jatinom)"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Jum'at Kliwon, 20 November 2026"}</strong></td></tr>
@@ -917,7 +917,7 @@ const TEMPLATES_BANSER_MAP = {
 </table>
 <p>Seluruh anggota Banser Desa Jatinom diwajibkan hadir tepat waktu dan menjunjung tinggi doktrin <em>Nawa Prasetya Banser</em>. Demikian Perintah Harian ini dibuat untuk dilaksanakan dengan penuh tanggung jawab.</p>
 <p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
-<p style="text-align: right; margin-top: 8px; font-weight: bold; font-style: italic;">Satu Komando, Satu Barisan! Banser Maju Terus Pantang Mundur!</p>
+<p style="text-align: right; margin-top: 4px; font-weight: bold; font-style: italic;">Satu Komando, Satu Barisan! Banser Maju Terus Pantang Mundur!</p>
 `
   },
   ST: {
@@ -925,12 +925,12 @@ const TEMPLATES_BANSER_MAP = {
     kode: "ST",
     defaultPerihal: "Surat Tugas Pengamanan dan Pengawalan Kegiatan",
     generateBody: (d) => `
-<div style="text-align: center; margin-bottom: 12px;">
-  <strong style="font-size: 12pt; letter-spacing: 0.5px;">SURAT TUGAS PENGAMANAN</strong><br>
-  <span style="font-size: 9.5pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/ST-01/XI/2026"}</span>
+<div style="text-align: center; margin-bottom: 8px;">
+  <strong style="font-size: 11pt; letter-spacing: 0.5px;">SURAT TUGAS PENGAMANAN</strong><br>
+  <span style="font-size: 9pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/ST-01/XI/2026"}</span>
 </div>
 <p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna (BANSER) Desa Jatinom dengan ini MENUGASKAN kepada nama-nama personel Banser:</p>
-<div style="margin: 8px 0 10px 15px; line-height: 1.5;">
+<div style="margin: 4px 0 6px 15px; line-height: 1.15;">
   ${d.daftarPetugas || `
   1. <strong>Subhan Mubarok</strong> (Kasatkorkel / Koordinator Lapangan)<br>
   2. <strong>Bambang Tri Sutrisno</strong> (Kasetma / Unit Dalmas)<br>
@@ -939,7 +939,7 @@ const TEMPLATES_BANSER_MAP = {
   `}
 </div>
 <p>Untuk melaksanakan tugas pengamanan, pengawalan para Masyayikh, serta ketertiban pada:</p>
-<table style="width: 100%; margin: 8px 0 10px 15px; border-collapse: collapse;">
+<table style="width: 100%; margin: 4px 0 6px 15px; border-collapse: collapse;">
   <tr><td style="width: 130px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.kegiatan || "Pengajian Akbar & Peringatan Maulid Nabi"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td>${d.hariTanggal || "Ahad Pon, 15 November 2026"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Waktu / Jam</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.00 WIB s.d Selesai"}</td></tr>
@@ -957,7 +957,7 @@ const TEMPLATES_BANSER_MAP = {
 <p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
 <p>Salam silaturrahim teriring salam komando kami sampaikan, semoga Sahabat seluruh jajaran personel Banser senantiasa dalam limpahan taufiq Allah SWT.</p>
 <p>Dalam rangka konsolidasi internal dan evaluasi pengamanan, Kepala SATKORKEL BANSER Desa Jatinom mengundang Sahabat pada:</p>
-<table style="width: 100%; margin: 10px 0 12px 15px; border-collapse: collapse;">
+<table style="width: 100%; margin: 4px 0 6px 15px; border-collapse: collapse;">
   <tr><td style="width: 130px; vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.hariTanggal || "Jum'at Kliwon, 20 November 2026"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Waktu / Jam</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.30 WIB s.d Selesai"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Markas Satkorkel BANSER Jatinom / Balai Desa"}</td></tr>

@@ -2771,7 +2771,7 @@
         <div id="print-kop-divider" class="kop-banser-divider hidden"></div>
 
         <!-- HEADER DATA SURAT (Nomor, Lampiran, Hal & Tanggal) -->
-        <div class="flex justify-between items-start text-xs leading-relaxed mb-6">
+        <div class="flex justify-between items-start text-xs leading-normal mb-3 print-header-meta">
           <table class="w-auto">
             <tr>
               <td class="pr-2 font-semibold">Nomor</td>
@@ -2797,7 +2797,7 @@
         </div>
 
         <!-- KEPADA YTH / TUJUAN SURAT -->
-        <div class="text-xs leading-relaxed mb-6">
+        <div class="text-xs leading-normal mb-3 print-tujuan-box">
           <p class="font-semibold">Kepada Yang Terhormat:</p>
           <div id="print-tujuan-surat" class="font-bold pl-0 mt-1 whitespace-pre-line text-slate-800">
             Seluruh Sahabat Pengurus & Anggota PR GP Ansor Jatinom
@@ -2806,22 +2806,22 @@
         </div>
 
         <!-- ISI REDAKSI SURAT -->
-        <div id="print-isi-surat" class="text-xs leading-relaxed text-justify space-y-3 font-serif">
+        <div id="print-isi-surat" class="text-xs leading-normal text-justify space-y-1.5 font-serif">
           <!-- Injected via JS -->
         </div>
 
         <!-- TANDA TANGAN & STEMPEL RESMI -->
-        <div class="mt-10 pt-4 text-xs">
-          <div class="text-center font-bold mb-4 tracking-wider text-slate-800 leading-snug" id="print-ttd-heading">
+        <div class="mt-4 pt-1 text-xs print-ttd-container">
+          <div class="text-center font-bold mb-2 tracking-wider text-slate-800 leading-tight" id="print-ttd-heading">
             <div>PIMPINAN RANTING</div>
             <div>GERAKAN PEMUDA ANSOR</div>
             <div>DESA JATINOM</div>
           </div>
 
-          <div class="grid grid-cols-2 gap-8 text-center relative mt-6">
+          <div class="grid grid-cols-2 gap-8 text-center relative mt-2 print-ttd-grid">
             
             <!-- Kolom Kiri: Ketua (Ansor) / Kasatkorkel (Banser) -->
-            <div class="flex flex-col items-center justify-between h-40">
+            <div class="flex flex-col items-center justify-start print-col-ttd">
               <span id="print-ttd1-jabatan" class="font-bold text-slate-800">Ketua Pimpinan Ranting,</span>
               
               <!-- Signature Area Kiri -->
@@ -2838,7 +2838,7 @@
             </div>
 
             <!-- Kolom Kanan: Sekretaris (Ansor) / Kasetma (Banser) + Stempel Basah -->
-            <div class="flex flex-col items-center justify-between h-40 relative">
+            <div class="flex flex-col items-center justify-start relative print-col-ttd">
               <span id="print-ttd2-jabatan" class="font-bold text-slate-800">Sekretaris,</span>
               
               <!-- Signature & Stempel Area Kanan -->
