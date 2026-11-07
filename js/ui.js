@@ -1077,6 +1077,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Toggle class banser-mode pada teks KOP
       const kopTeksEl = document.getElementById("print-kop-teks");
       if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
+      const kopContainerEl = document.getElementById("print-kop-container");
+      if (kopContainerEl) kopContainerEl.classList.add("banser-mode");
       // Logo Perisai di kanan (ukuran disamakan logo banser kiri)
       const logoKananEl = document.getElementById("print-kop-logo-right");
       if (logoKananEl) {
@@ -1125,6 +1127,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sifatContainer) sifatContainer.classList.remove("hidden");
       const kopTeksEl = document.getElementById("print-kop-teks");
       if (kopTeksEl) { kopTeksEl.classList.remove("banser-mode"); kopTeksEl.classList.add("text-right"); }
+      const kopContainerEl = document.getElementById("print-kop-container");
+      if (kopContainerEl) kopContainerEl.classList.remove("banser-mode");
       const logoKananEl = document.getElementById("print-kop-logo-right");
       if (logoKananEl) { logoKananEl.classList.add("hidden"); logoKananEl.innerHTML = ""; }
       const dividerEl = document.getElementById("print-kop-divider");
@@ -1436,6 +1440,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ttdHeading = document.getElementById("print-ttd-heading");
     const kopTeksEl = document.getElementById("print-kop-teks");
     const dividerEl = document.getElementById("print-kop-divider");
+    const kopContainerEl = document.getElementById("print-kop-container");
 
     // Reset default KOP (Ansor: Rata Kanan, tanpa logo kanan, tanpa divider)
     if (logoKanan) {
@@ -1445,6 +1450,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (kopTeksEl) {
       kopTeksEl.classList.remove("banser-mode");
       kopTeksEl.classList.add("text-right");
+    }
+    if (kopContainerEl) {
+      kopContainerEl.classList.remove("banser-mode");
     }
     if (dividerEl) {
       dividerEl.classList.add("hidden");
@@ -1468,6 +1476,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       // Teks KOP Banser — rata tengah (banser-mode)
       if (kopTeksEl) { kopTeksEl.classList.add("banser-mode"); kopTeksEl.classList.remove("text-right"); }
+      if (kopContainerEl) kopContainerEl.classList.add("banser-mode");
       // 3 Baris header KOP Banser
       if (kopSubhead) kopSubhead.textContent = "SATUAN KOORDINASI KELOMPOK";
       if (kopTitle) {

@@ -494,7 +494,7 @@ body.viewing-app #view-landing-page {
   font-family: 'Arial', sans-serif !important;
   font-size: 14pt !important;
   font-weight: 800 !important;
-  color: #0f172a !important;
+  color: #000000 !important;
   margin: 0 !important;
   line-height: 1.25 !important;
   letter-spacing: 0.5px !important;
@@ -516,7 +516,7 @@ body.viewing-app #view-landing-page {
   font-family: 'Arial', sans-serif !important;
   font-size: 14pt !important;
   font-weight: 800 !important;
-  color: #0f172a !important;
+  color: #000000 !important;
   margin: 0 !important;
   line-height: 1.25 !important;
   letter-spacing: 0.5px !important;
@@ -526,18 +526,23 @@ body.viewing-app #view-landing-page {
 .kop-teks.banser-mode p {
   font-family: 'Arial', sans-serif !important;
   font-size: 9pt !important;
-  color: #334155 !important;
+  color: #000000 !important;
   margin-top: 6px !important;
   line-height: 1.3 !important;
 }
 
 /* Garis Ganda Pembatas Bawah KOP Banser (Tebal Tipis) */
 .kop-banser-divider {
-  border-top: 3.5px solid #0f172a;
-  border-bottom: 1.2px solid #0f172a;
-  height: 5px;
+  border-top: 3.5px solid #000000 !important;
+  border-bottom: 1.2px solid #000000 !important;
+  height: 4px;
   margin-top: 8px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
+  background: transparent !important;
+}
+
+.kop-banser-divider.hidden {
+  display: none !important;
 }
 
 .kop-logo-box {
@@ -807,35 +812,44 @@ body.viewing-app #view-landing-page {
     font-size: 11pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
-    color: #000 !important;
+    color: #000000 !important;
   }
 
   .kop-teks.banser-mode h2 {
     font-size: 15pt !important;
+    font-weight: 900 !important;
     line-height: 1.1 !important;
     margin: 1pt 0 !important;
-    color: #000 !important;
+    color: #c02626 !important; /* Tulisan BARISAN ANSOR SERBAGUNA: Warna Merah */
   }
 
   .kop-teks.banser-mode h3 {
     font-size: 11pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
-    color: #000 !important;
+    color: #000000 !important;
   }
 
   .kop-teks.banser-mode p {
     font-size: 8pt !important;
     line-height: 1.2 !important;
     margin-top: 2pt !important;
+    color: #000000 !important;
   }
 
-  /* Garis KOP Banser */
+  /* Garis Ganda Pembatas Bawah KOP Banser (Tebal Tipis) saat Cetak */
   .kop-banser-divider {
-    height: 4px !important;
+    border-top: 2.8pt solid #000000 !important;
+    border-bottom: 0.9pt solid #000000 !important;
+    height: 2pt !important;
     margin-top: 4pt !important;
     margin-bottom: 8pt !important;
-    background: linear-gradient(to right, #166534, #dc2626) !important;
+    background: transparent !important;
+  }
+
+  .kop-banser-divider.hidden,
+  #print-kop-divider.hidden {
+    display: none !important;
   }
 
   /* Garis bawah KOP Ansor */
@@ -843,6 +857,14 @@ body.viewing-app #view-landing-page {
     border-bottom: 3px solid #166534 !important;
     padding-bottom: 6pt !important;
     margin-bottom: 8pt !important;
+  }
+
+  /* Hilangkan garis hijau KOP Ansor saat mode Banser aktif */
+  #print-kop-container.banser-mode,
+  #print-kop-container:has(.banser-mode) {
+    border-bottom: none !important;
+    padding-bottom: 2pt !important;
+    margin-bottom: 0 !important;
   }
 
   /* ============================================================
