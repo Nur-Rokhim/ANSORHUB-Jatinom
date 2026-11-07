@@ -1570,7 +1570,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove("mode-print-single-page", "mode-print-multi-page");
   }
 
-  function triggerPrintSurat() {
+  function applyPrintModeClasses() {
     const isBanser = state.activeSubSurat === "banser";
     const currentTpl = (state.currentTemplate || "").toUpperCase();
     const printArea = document.getElementById("print-area-surat");
@@ -1590,7 +1590,12 @@ document.addEventListener("DOMContentLoaded", () => {
         printArea.classList.remove("print-multi-page");
       }
     }
+  }
 
+  window.addEventListener("beforeprint", applyPrintModeClasses);
+
+  function triggerPrintSurat() {
+    applyPrintModeClasses();
     window.print();
   }
 
