@@ -240,12 +240,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const bTtdKasat = document.getElementById("box-preview-ttd-kasatkorkel");
     if (bTtdKasat) bTtdKasat.innerHTML = getSignatureOrStampHTML("ttdKasatkorkel", "ttdKetua");
 
+    const bTtdKasetma = document.getElementById("box-preview-ttd-kasetma");
+    if (bTtdKasetma) bTtdKasetma.innerHTML = getSignatureOrStampHTML("ttdKasetma", "ttdKasetma");
+
     const bStempelBanser = document.getElementById("box-preview-stempel-banser");
     if (bStempelBanser) bStempelBanser.innerHTML = getSignatureOrStampHTML("stempelBanser", "stempelBanser");
 
     // MDS
     const bTtdMds = document.getElementById("box-preview-ttd-mds");
     if (bTtdMds) bTtdMds.innerHTML = getSignatureOrStampHTML("ttdMds", "ttdSekretaris");
+
+    const bTtdSekMds = document.getElementById("box-preview-ttd-sekretaris-mds");
+    if (bTtdSekMds) bTtdSekMds.innerHTML = getSignatureOrStampHTML("ttdSekretarisMds", "ttdSekretaris");
 
     const bStempelMds = document.getElementById("box-preview-stempel-mds");
     if (bStempelMds) bStempelMds.innerHTML = getSignatureOrStampHTML("stempelMds", "stempelRijalul");
@@ -1526,8 +1532,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdKasetma", "ttdKasetma");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelBanser", "stempelBanser");
       } else if (kopLembaga === "rijalul") {
-        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdKetua", "ttdKetua");
-        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdSekretaris", "ttdSekretaris");
+        if (imgTtd1) imgTtd1.innerHTML = getSignatureOrStampHTML("ttdMds", "ttdKetua");
+        if (imgTtd2) imgTtd2.innerHTML = getSignatureOrStampHTML("ttdSekretarisMds", "ttdSekretaris");
         if (imgStempel) imgStempel.innerHTML = getSignatureOrStampHTML("stempelMds", "stempelRijalul");
       } else {
         // Ketua di sebelah kiri, Sekretaris & Stempel di sebelah kanan
@@ -2612,8 +2618,10 @@ _Wassalamu'alaikum Wr. Wb._
   setupUploadSignatureInput("upload-ttd-sekretaris", "ttdSekretaris");
   setupUploadSignatureInput("upload-stempel-ansor", "stempelAnsor");
   setupUploadSignatureInput("upload-ttd-kasatkorkel", "ttdKasatkorkel");
+  setupUploadSignatureInput("upload-ttd-kasetma", "ttdKasetma");
   setupUploadSignatureInput("upload-stempel-banser", "stempelBanser");
   setupUploadSignatureInput("upload-ttd-mds", "ttdMds");
+  setupUploadSignatureInput("upload-ttd-sekretaris-mds", "ttdSekretarisMds");
   setupUploadSignatureInput("upload-stempel-mds", "stempelMds");
 
   // --- NAMA-NAMA PENGURUS RANTING JATINOM (TAB 5) ---

@@ -2317,7 +2317,7 @@
               </div>
             </div>
 
-            <!-- Box 2: BANSER (TTD Kasatkorkel, Stempel Banser) -->
+            <!-- Box 2: BANSER (TTD Kasatkorkel, TTD Kasetma, Stempel Banser) -->
             <div class="p-5 bg-red-50/50 rounded-2xl border-2 border-red-200 space-y-4 shadow-sm">
               <div class="flex items-center gap-2 border-b border-red-200 pb-2.5">
                 <div class="w-8 h-8 rounded-xl bg-banser text-white flex items-center justify-center text-sm shadow">
@@ -2325,7 +2325,7 @@
                 </div>
                 <div>
                   <h4 class="font-black text-red-800 text-xs uppercase tracking-wide">2. Satkorkel BANSER Jatinom</h4>
-                  <p class="text-[10px] text-slate-500">Kasatkorkel & Stempel Satkorkel</p>
+                  <p class="text-[10px] text-slate-500">Kasatkorkel, Kasetma & Stempel Satkorkel</p>
                 </div>
               </div>
 
@@ -2336,6 +2336,15 @@
                   <!-- Injected via JS -->
                 </div>
                 <input type="file" id="upload-ttd-kasatkorkel" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-red-100 file:text-red-700 file:font-bold hover:file:bg-red-200 cursor-pointer">
+              </div>
+
+              <!-- TTD Kasetma -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Kasetma (Bambang T.S.):</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-red-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-kasetma">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-kasetma" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-red-100 file:text-red-700 file:font-bold hover:file:bg-red-200 cursor-pointer">
               </div>
 
               <!-- Stempel Banser -->
@@ -2352,7 +2361,7 @@
               </div>
             </div>
 
-            <!-- Box 3: MDS Rijalul Ansor (TTD Ketua MDS, Stempel MDS) -->
+            <!-- Box 3: MDS Rijalul Ansor (TTD Ketua MDS, TTD Sekretaris MDS, Stempel MDS) -->
             <div class="p-5 bg-blue-50/50 rounded-2xl border-2 border-blue-200 space-y-4 shadow-sm">
               <div class="flex items-center gap-2 border-b border-blue-200 pb-2.5">
                 <div class="w-8 h-8 rounded-xl bg-blue-900 text-gold flex items-center justify-center text-sm shadow">
@@ -2360,7 +2369,7 @@
                 </div>
                 <div>
                   <h4 class="font-black text-blue-900 text-xs uppercase tracking-wide">3. MDS Rijalul Ansor</h4>
-                  <p class="text-[10px] text-slate-500">Ketua Majelis & Stempel MDS RA</p>
+                  <p class="text-[10px] text-slate-500">Ketua, Sekretaris & Stempel MDS RA</p>
                 </div>
               </div>
 
@@ -2371,6 +2380,15 @@
                   <!-- Injected via JS -->
                 </div>
                 <input type="file" id="upload-ttd-mds" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-800 file:font-bold hover:file:bg-blue-200 cursor-pointer">
+              </div>
+
+              <!-- TTD Sekretaris MDS -->
+              <div class="space-y-1.5">
+                <label class="font-bold text-slate-700 block">Tanda Tangan Sekretaris MDS:</label>
+                <div class="h-16 bg-white rounded-xl border border-dashed border-blue-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-sekretaris-mds">
+                  <!-- Injected via JS -->
+                </div>
+                <input type="file" id="upload-ttd-sekretaris-mds" accept="image/*" class="w-full text-[10px] text-slate-500 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:bg-blue-100 file:text-blue-800 file:font-bold hover:file:bg-blue-200 cursor-pointer">
               </div>
 
               <!-- Stempel MDS -->
@@ -2844,7 +2862,7 @@
               <!-- Signature & Stempel Area Kanan -->
               <div class="relative w-full h-24 flex items-center justify-center">
                 <!-- Stempel Ranting Menimpa TTD -->
-                <div id="print-img-stempel" class="absolute -left-6 sm:left-2 top-0 w-24 h-24 pointer-events-none opacity-85 z-10 transform -rotate-12">
+                <div id="print-img-stempel" class="absolute top-0 w-20 h-20 pointer-events-none opacity-85 z-10 transform -rotate-12 stempel-overlap-left">
                   <!-- Injected via JS -->
                 </div>
 
