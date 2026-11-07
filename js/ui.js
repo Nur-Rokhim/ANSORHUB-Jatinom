@@ -2002,7 +2002,17 @@ document.addEventListener("DOMContentLoaded", () => {
       cb.checked = listFormal.includes(cb.value);
     });
 
-    document.getElementById("kader-jabatan").value = k.jabatan || "";
+    const selJabatan = document.getElementById("kader-jabatan");
+    if (selJabatan) {
+      selJabatan.value = k.jabatan || "Anggota";
+      if (!selJabatan.value && k.jabatan) {
+        const customOpt = document.createElement("option");
+        customOpt.value = k.jabatan;
+        customOpt.textContent = k.jabatan;
+        selJabatan.appendChild(customOpt);
+        selJabatan.value = k.jabatan;
+      }
+    }
 
     document.querySelectorAll("input[name='kader-lembaga']").forEach((cb) => {
       cb.checked = k.lembaga ? k.lembaga.includes(cb.value) : false;
