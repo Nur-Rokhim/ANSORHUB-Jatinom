@@ -1917,8 +1917,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const wa = document.getElementById("kader-wa").value.trim();
       const email = document.getElementById("kader-email")?.value.trim() || "";
       const pekerjaan = document.getElementById("kader-pekerjaan")?.value || "Lainnya";
-      const kaderisasiKhusus = document.getElementById("kader-kaderisasi-khusus")?.value || "Belum Ada";
-      const kaderisasi = document.getElementById("kader-kaderisasi").value;
+
+      // Pengkaderan Khusus (Multi-Select Checkboxes)
+      const khususChecked = [];
+      document.querySelectorAll("input[name='kader-kaderisasi-khusus']:checked").forEach((cb) => {
+        khususChecked.push(cb.value);
+      });
+      const kaderisasiKhusus = khususChecked.length > 0 ? khususChecked.join(", ") : "Belum Ada";
+
+      // Jenjang Kaderisasi Formal (Multi-Select Checkboxes)
+      const formalChecked = [];
+      document.querySelectorAll("input[name='kader-kaderisasi']:checked").forEach((cb) => {
+        formalChecked.push(cb.value);
+      });
+      const kaderisasi = formalChecked.length > 0 ? formalChecked.join(", ") : "Belum Kaderisasi";
+
       const jabatan = document.getElementById("kader-jabatan").value.trim();
 
       const lembagaChecked = [];
@@ -1976,8 +1989,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("kader-wa").value = k.wa;
     if (document.getElementById("kader-email")) document.getElementById("kader-email").value = k.email || "";
     if (document.getElementById("kader-pekerjaan")) document.getElementById("kader-pekerjaan").value = k.pekerjaan || "Lainnya";
-    if (document.getElementById("kader-kaderisasi-khusus")) document.getElementById("kader-kaderisasi-khusus").value = k.kaderisasiKhusus || "Belum Ada";
-    document.getElementById("kader-kaderisasi").value = k.kaderisasi || "Belum Kaderisasi";
+
+    // Populate Checkbox Kaderisasi Khusus
+    const listKhusus = (k.kaderisasiKhusus || "").split(",").map(s => s.trim());
+    document.querySelectorAll("input[name='kader-kaderisasi-khusus']").forEach((cb) => {
+      cb.checked = listKhusus.includes(cb.value);
+    });
+
+    // Populate Checkbox Kaderisasi Formal
+    const listFormal = (k.kaderisasi || "").split(",").map(s => s.trim());
+    document.querySelectorAll("input[name='kader-kaderisasi']").forEach((cb) => {
+      cb.checked = listFormal.includes(cb.value);
+    });
+
     document.getElementById("kader-jabatan").value = k.jabatan || "";
 
     document.querySelectorAll("input[name='kader-lembaga']").forEach((cb) => {

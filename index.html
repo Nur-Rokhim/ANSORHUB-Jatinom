@@ -226,8 +226,9 @@
             <div class="flex items-center gap-1.5">
               <span class="font-black text-white text-base tracking-tight leading-none group-hover:text-gold transition-colors">ANSOR JATINOM</span>
               <span class="text-[9.5px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-emerald-900/90 text-emerald-300 border border-emerald-700/60">Ranting</span>
+              <span class="text-[9px] font-mono font-bold bg-gold/20 text-gold px-1.5 py-0.5 rounded border border-gold/40">XII-11-07-02</span>
             </div>
-            <p class="text-[11px] text-emerald-300/80 font-medium">Kec. Kanigoro &bull; Kab. Blitar</p>
+            <p class="text-[11px] text-emerald-300/80 font-medium">Kode Wilayah: XII-11-07-02 &bull; Kanigoro, Blitar</p>
           </div>
         </a>
 
@@ -272,9 +273,10 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
         
         <!-- Badge Status Digital Resmi -->
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold tracking-wide shadow-inner">
+        <div class="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold tracking-wide shadow-inner">
           <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-          <span>Portal Informasi & Administrasi Resmi PR GP Ansor Jatinom</span>
+          <span>Portal Resmi PR GP Ansor Jatinom</span>
+          <span class="text-gold font-mono bg-black/40 px-2 py-0.5 rounded border border-gold/40">KODE WILAYAH: XII-11-07-02</span>
         </div>
 
         <!-- Headline Utama -->
@@ -687,7 +689,10 @@
               <span class="text-sm font-black tracking-wide text-white truncate">SAHABAT JATINOM</span>
             </div>
             <p class="text-[11px] text-emerald-200 font-semibold truncate">PR GP ANSOR JATINOM</p>
-            <p class="text-[9.5px] text-emerald-300/70 truncate">Kanigoro, Kab. Blitar</p>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="text-[9px] font-mono font-bold bg-gold/20 text-gold px-1.5 py-0.2 rounded border border-gold/30">XII-11-07-02</span>
+              <span class="text-[9.5px] text-emerald-300/70 truncate">Kanigoro, Blitar</span>
+            </div>
           </div>
         </div>
 
@@ -863,12 +868,15 @@
           
           <div>
             <div class="flex items-center gap-2">
-              <span id="page-active-title" class="text-base sm:text-lg font-black tracking-tight text-white">1. Warta Ansor</span>
+              <span id="page-active-title" class="text-base sm:text-lg font-black tracking-tight text-white">Dashboard Ranting</span>
               <span class="hidden sm:inline-block text-[11px] bg-gold/20 border border-gold/40 text-gold px-2 py-0.5 rounded-full font-bold">
                 PR GP Ansor Jatinom
               </span>
+              <span class="hidden md:inline-block text-[10px] bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-mono font-bold px-2 py-0.5 rounded-full">
+                KODE: XII-11-07-02
+              </span>
             </div>
-            <p class="text-[11px] text-emerald-200 hidden sm:block">Kecamatan Kanigoro &bull; Kabupaten Blitar</p>
+            <p class="text-[11px] text-emerald-200 hidden sm:block">Kode Wilayah: XII-11-07-02 &bull; Kec. Kanigoro &bull; Kab. Blitar</p>
           </div>
         </div>
 
@@ -1638,19 +1646,48 @@
                   </select>
                 </div>
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Jenjang Pengkaderan Khusus / Kursus:</label>
-                  <select id="kader-kaderisasi-khusus" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
-                    <option value="Belum Ada" selected>Belum Ada</option>
-                    <option value="Provost">Provost</option>
-                    <option value="Protokoler">Protokoler</option>
-                    <option value="Bagana">Bagana</option>
-                    <option value="Balantas">Balantas</option>
-                    <option value="Basada">Basada</option>
-                    <option value="Balakar">Balakar</option>
-                    <option value="Baritim">Baritim</option>
-                    <option value="Suspelat 1">Suspelat 1</option>
-                    <option value="Suspelat 2">Suspelat 2</option>
-                  </select>
+                  <label class="block font-medium text-slate-700 mb-1 flex items-center justify-between">
+                    <span>Jenjang Pengkaderan Khusus / Kursus:</span>
+                    <span class="text-[10px] text-slate-400 font-normal">Dapat pilih &gt; 1</span>
+                  </label>
+                  <div class="p-2.5 bg-slate-50 border border-slate-300 rounded-lg max-h-36 overflow-y-auto space-y-1.5 text-xs" id="container-kaderisasi-khusus-checkboxes">
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Provost" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Provost</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Protokoler" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Protokoler</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Bagana" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Bagana (Banser Tanggap Bencana)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Balantas" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Balantas (Banser Lalu Lintas)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Basada" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Basada (Banser Husada)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Balakar" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Balakar (Banser Relawan Kebakaran)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Baritim" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Baritim (Banser Maritim)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Suspelat 1" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Suspelat 1 (Kursus Pelatih 1)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi-khusus" value="Suspelat 2" class="rounded text-red-600 focus:ring-red-500">
+                      <span>Suspelat 2 (Kursus Pelatih 2)</span>
+                    </label>
+                  </div>
                 </div>
               </div>
 
@@ -1674,16 +1711,36 @@
                 </div>
 
                 <div>
-                  <label class="block font-medium text-slate-700 mb-1">Jenjang Kaderisasi Terakhir:</label>
-                  <select id="kader-kaderisasi" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
-                    <option value="Belum Kaderisasi">Belum Kaderisasi Formal</option>
-                    <option value="PKD">PKD (Pelatihan Kepemimpinan Dasar)</option>
-                    <option value="PKL">PKL (Pelatihan Kepemimpinan Lanjutan)</option>
-                    <option value="PKN">PKN (Pelatihan Kepemimpinan Nasional)</option>
-                    <option value="DIKLATSAR">DIKLATSAR (Banser)</option>
-                    <option value="SUSBALAN">SUSBALAN (Banser Lanjutan)</option>
-                    <option value="SUSBANPIM">SUSBANPIM (Banser Pimpinan)</option>
-                  </select>
+                  <label class="block font-medium text-slate-700 mb-1 flex items-center justify-between">
+                    <span>Jenjang Kaderisasi Formal:</span>
+                    <span class="text-[10px] text-slate-400 font-normal">Dapat pilih &gt; 1</span>
+                  </label>
+                  <div class="p-2.5 bg-slate-50 border border-slate-300 rounded-lg max-h-36 overflow-y-auto space-y-1.5 text-xs" id="container-kaderisasi-formal-checkboxes">
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="PKD" class="rounded text-ansor focus:ring-ansor">
+                      <span>PKD (Pelatihan Kepemimpinan Dasar)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="PKL" class="rounded text-ansor focus:ring-ansor">
+                      <span>PKL (Pelatihan Kepemimpinan Lanjutan)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-ansor cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="PKN" class="rounded text-ansor focus:ring-ansor">
+                      <span>PKN (Pelatihan Kepemimpinan Nasional)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-red-700 cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="DIKLATSAR" class="rounded text-red-600 focus:ring-red-500">
+                      <span>DIKLATSAR (Banser)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-red-700 cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="SUSBALAN" class="rounded text-red-600 focus:ring-red-500">
+                      <span>SUSBALAN (Banser Lanjutan)</span>
+                    </label>
+                    <label class="flex items-center gap-2 hover:text-red-700 cursor-pointer">
+                      <input type="checkbox" name="kader-kaderisasi" value="SUSBANPIM" class="rounded text-red-600 focus:ring-red-500">
+                      <span>SUSBANPIM (Banser Pimpinan)</span>
+                    </label>
+                  </div>
                 </div>
 
                 <div>
