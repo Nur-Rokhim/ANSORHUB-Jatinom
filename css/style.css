@@ -623,6 +623,11 @@ body.viewing-app #view-landing-page {
 
 /* Print Only Stylesheet */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 1cm 2cm 1cm 2cm !important;
+  }
+
   html, body {
     background: transparent !important;
     padding: 0 !important;
@@ -690,8 +695,8 @@ body.viewing-app #view-landing-page {
     width: 100% !important;
     max-width: 100% !important;
     min-height: auto !important;
-    font-size: 11pt !important;
-    line-height: 1.45 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.4 !important;
     color: #000000 !important;
   }
 
@@ -705,30 +710,50 @@ body.viewing-app #view-landing-page {
     break-after: avoid !important;
     break-before: avoid !important;
     height: auto !important;
-    max-height: 25.8cm !important;
+    max-height: 27.5cm !important;
     overflow: hidden !important;
   }
 
   body.mode-print-single-page .surat-paper #print-isi-surat,
   .surat-paper.print-exact-single-page #print-isi-surat {
-    font-size: 10.5pt !important;
-    line-height: 1.4 !important;
+    font-size: 10pt !important;
+    line-height: 1.35 !important;
+  }
+
+  body.mode-print-single-page .surat-paper #print-isi-surat p,
+  .surat-paper.print-exact-single-page #print-isi-surat p {
+    margin-bottom: 0.35rem !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-surat-container,
   .surat-paper.print-exact-single-page .kop-surat-container {
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 0.15rem !important;
+  }
+
+  body.mode-print-single-page .surat-paper .kop-banser-divider,
+  .surat-paper.print-exact-single-page .kop-banser-divider {
+    margin-bottom: 0.5rem !important;
+  }
+
+  body.mode-print-single-page .surat-paper .mb-6,
+  .surat-paper.print-exact-single-page .mb-6 {
+    margin-bottom: 0.5rem !important;
   }
 
   body.mode-print-single-page .surat-paper .mt-10,
   .surat-paper.print-exact-single-page .mt-10 {
-    margin-top: 1rem !important;
-    padding-top: 0.25rem !important;
+    margin-top: 0.5rem !important;
+    padding-top: 0.15rem !important;
   }
 
   body.mode-print-single-page .surat-paper .h-40,
   .surat-paper.print-exact-single-page .h-40 {
-    height: 7rem !important;
+    height: 5.5rem !important;
+  }
+
+  body.mode-print-single-page .surat-paper .h-24,
+  .surat-paper.print-exact-single-page .h-24 {
+    height: 3.5rem !important;
   }
 
   /* Pastikan area tanda tangan dan stempel selalu tampil saat print */
@@ -768,11 +793,6 @@ body.viewing-app #view-landing-page {
     break-after: auto !important;
     max-height: none !important;
     overflow: visible !important;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 1.5cm 2cm 1.5cm 2cm;
   }
 }
 
