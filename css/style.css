@@ -1,4 +1,4 @@
-/* SAHABAT JATINOM - Styling & Print Sheet
+﻿/* SAHABAT JATINOM - Styling & Print Sheet
    Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor
    GP Ansor Ranting Jatinom, Kec. Kanigoro, Kab. Blitar
    Versi 2.2 - Login Portal, Multi-Role User, E-Stempel & E-Signature */
@@ -460,8 +460,8 @@ body.viewing-app #view-landing-page {
 
 /* Penyesuaian Jarak Spasi Standar Persuratan untuk Mode 1 Lembar Single-Page */
 .surat-paper.print-exact-single-page {
-  padding: 24px 36px !important;
-  font-size: 9.5pt !important;
+  padding: 28px !important;
+  font-size: 9pt !important;
   line-height: 1.15 !important;
 }
 
@@ -470,33 +470,33 @@ body.viewing-app #view-landing-page {
 }
 
 .surat-paper.print-exact-single-page .kop-surat-container {
-  margin-bottom: 4px !important;
+  margin-bottom: 2px !important;
   line-height: 1.1 !important;
 }
 
 .surat-paper.print-exact-single-page .kop-logo-box {
-  width: 60px !important;
-  min-width: 60px !important;
+  width: 58px !important;
+  min-width: 58px !important;
 }
 
 .surat-paper.print-exact-single-page .kop-logo {
-  width: 54px !important;
-  height: 54px !important;
+  width: 52px !important;
+  height: 52px !important;
 }
 
 .surat-paper.print-exact-single-page .kop-logo img,
 .surat-paper.print-exact-single-page .kop-logo svg {
-  max-width: 54px !important;
-  max-height: 54px !important;
+  max-width: 52px !important;
+  max-height: 52px !important;
 }
 
 .surat-paper.print-exact-single-page .kop-kode-wilayah {
-  font-size: 8pt !important;
+  font-size: 7.5pt !important;
   margin-top: 1px !important;
 }
 
 .surat-paper.print-exact-single-page .kop-teks.banser-mode h1 {
-  font-size: 11pt !important;
+  font-size: 10.5pt !important;
   line-height: 1.1 !important;
   margin: 0 !important;
 }
@@ -508,20 +508,20 @@ body.viewing-app #view-landing-page {
 }
 
 .surat-paper.print-exact-single-page .kop-teks.banser-mode h3 {
-  font-size: 11pt !important;
+  font-size: 10.5pt !important;
   line-height: 1.1 !important;
   margin: 0 !important;
 }
 
 .surat-paper.print-exact-single-page .kop-teks.banser-mode p {
-  font-size: 8pt !important;
+  font-size: 7.5pt !important;
   line-height: 1.1 !important;
-  margin-top: 2px !important;
+  margin-top: 1px !important;
 }
 
 .surat-paper.print-exact-single-page .kop-banser-divider {
-  margin-top: 3px !important;
-  margin-bottom: 6px !important;
+  margin-top: 2px !important;
+  margin-bottom: 5px !important;
   height: 3px !important;
 }
 
@@ -534,8 +534,9 @@ body.viewing-app #view-landing-page {
 }
 
 .surat-paper.print-exact-single-page #print-isi-surat {
-  font-size: 9.5pt !important;
+  font-size: 9pt !important;
   line-height: 1.15 !important;
+  text-align: justify !important;
 }
 
 .surat-paper.print-exact-single-page #print-isi-surat > * + * {
@@ -546,11 +547,17 @@ body.viewing-app #view-landing-page {
   margin-top: 0 !important;
   margin-bottom: 4px !important;
   line-height: 1.15 !important;
+  text-indent: 1.5em !important;
+}
+
+.surat-paper.print-exact-single-page #print-isi-surat p:first-child {
+  text-indent: 0 !important;
 }
 
 .surat-paper.print-exact-single-page #print-isi-surat table {
   margin-top: 4px !important;
   margin-bottom: 5px !important;
+  margin-left: 1.5em !important;
   line-height: 1.15 !important;
 }
 
@@ -559,23 +566,24 @@ body.viewing-app #view-landing-page {
   padding-bottom: 1.5px !important;
   font-size: 9pt !important;
   line-height: 1.15 !important;
+  vertical-align: top !important;
 }
 
 .surat-paper.print-exact-single-page .print-ttd-container,
 .surat-paper.print-exact-single-page .mt-10 {
-  margin-top: 8px !important;
+  margin-top: 6px !important;
   padding-top: 0 !important;
 }
 
 .surat-paper.print-exact-single-page #print-ttd-heading {
-  margin-bottom: 3px !important;
-  font-size: 9.5pt !important;
+  margin-bottom: 2px !important;
+  font-size: 9pt !important;
   line-height: 1.1 !important;
 }
 
 .surat-paper.print-exact-single-page .print-ttd-grid,
 .surat-paper.print-exact-single-page .mt-6 {
-  margin-top: 4px !important;
+  margin-top: 2px !important;
 }
 
 .surat-paper.print-exact-single-page .print-col-ttd,
@@ -583,12 +591,12 @@ body.viewing-app #view-landing-page {
   height: auto !important;
   min-height: 0 !important;
   justify-content: flex-start !important;
-  gap: 2px !important;
+  gap: 1px !important;
 }
 
 .surat-paper.print-exact-single-page .h-24 {
-  height: 46px !important;
-  margin: 2px 0 !important;
+  height: 44px !important;
+  margin: 1px 0 !important;
 }
 
 .surat-paper.print-exact-single-page #print-ttd1-jabatan,
@@ -599,7 +607,7 @@ body.viewing-app #view-landing-page {
 
 .surat-paper.print-exact-single-page #print-ttd1-nama,
 .surat-paper.print-exact-single-page #print-ttd2-nama {
-  font-size: 9.5pt !important;
+  font-size: 9pt !important;
   font-weight: bold !important;
   text-decoration: underline !important;
   line-height: 1.1 !important;
@@ -607,22 +615,22 @@ body.viewing-app #view-landing-page {
 
 .surat-paper.print-exact-single-page #print-ttd1-nia,
 .surat-paper.print-exact-single-page #print-ttd2-nia {
-  font-size: 8pt !important;
+  font-size: 7.5pt !important;
   line-height: 1.1 !important;
   margin-top: 1px !important;
 }
 
 .surat-paper.print-exact-single-page #print-img-ttd-sekretaris,
 .surat-paper.print-exact-single-page #print-img-ttd-ketua {
-  width: 100px !important;
-  height: 50px !important;
+  width: 95px !important;
+  height: 46px !important;
   display: flex !important;
 }
 
 /* Stempel menempel di sisi kiri TTD kanan */
 .surat-paper.print-exact-single-page #print-img-stempel {
-  width: 58px !important;
-  height: 58px !important;
+  width: 54px !important;
+  height: 54px !important;
   right: 54% !important;
   left: auto !important;
   top: -4px !important;
@@ -797,7 +805,7 @@ body.viewing-app #view-landing-page {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1cm 2cm 1cm 2cm !important;
+    margin: 2cm !important;
   }
 
   html, body {
@@ -867,7 +875,7 @@ body.viewing-app #view-landing-page {
     width: 100% !important;
     max-width: 100% !important;
     min-height: auto !important;
-    font-size: 10pt !important;
+    font-size: 9pt !important;
     line-height: 1.15 !important;
     color: #000000 !important;
   }
@@ -884,8 +892,9 @@ body.viewing-app #view-landing-page {
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
+    padding: 0 !important;
+    font-size: 9pt !important;
     line-height: 1.15 !important;
-    font-size: 9.5pt !important;
   }
 
   body.mode-print-single-page .surat-paper *,
@@ -896,62 +905,62 @@ body.viewing-app #view-landing-page {
   /* KOP Surat Khusus Print */
   body.mode-print-single-page .surat-paper .kop-surat-container,
   .surat-paper.print-exact-single-page .kop-surat-container {
-    margin-bottom: 0.15rem !important;
+    margin-bottom: 2px !important;
     line-height: 1.1 !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-logo-box,
   .surat-paper.print-exact-single-page .kop-logo-box {
-    width: 62px !important;
-    min-width: 62px !important;
+    width: 58px !important;
+    min-width: 58px !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-logo,
   .surat-paper.print-exact-single-page .kop-logo {
-    width: 56px !important;
-    height: 56px !important;
+    width: 52px !important;
+    height: 52px !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-logo img,
   body.mode-print-single-page .surat-paper .kop-logo svg,
   .surat-paper.print-exact-single-page .kop-logo img,
   .surat-paper.print-exact-single-page .kop-logo svg {
-    max-width: 56px !important;
-    max-height: 56px !important;
+    max-width: 52px !important;
+    max-height: 52px !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-kode-wilayah,
   .surat-paper.print-exact-single-page .kop-kode-wilayah {
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
     margin-top: 1px !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-teks.banser-mode h1,
   .surat-paper.print-exact-single-page .kop-teks.banser-mode h1 {
-    font-size: 11pt !important;
+    font-size: 10.5pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-teks.banser-mode h2,
   .surat-paper.print-exact-single-page .kop-teks.banser-mode h2 {
-    font-size: 13.5pt !important;
+    font-size: 13pt !important;
     line-height: 1.1 !important;
     margin: 1px 0 !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-teks.banser-mode h3,
   .surat-paper.print-exact-single-page .kop-teks.banser-mode h3 {
-    font-size: 11pt !important;
+    font-size: 10.5pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-teks.banser-mode p,
   .surat-paper.print-exact-single-page .kop-teks.banser-mode p {
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
     line-height: 1.1 !important;
-    margin-top: 2px !important;
+    margin-top: 1px !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-teks:not(.banser-mode) h1,
@@ -962,7 +971,7 @@ body.viewing-app #view-landing-page {
 
   body.mode-print-single-page .surat-paper .kop-teks:not(.banser-mode) h2,
   .surat-paper.print-exact-single-page .kop-teks:not(.banser-mode) h2 {
-    font-size: 13.5pt !important;
+    font-size: 13pt !important;
     line-height: 1.1 !important;
   }
 
@@ -974,25 +983,25 @@ body.viewing-app #view-landing-page {
 
   body.mode-print-single-page .surat-paper .kop-teks:not(.banser-mode) p,
   .surat-paper.print-exact-single-page .kop-teks:not(.banser-mode) p {
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
     line-height: 1.1 !important;
   }
 
   body.mode-print-single-page .surat-paper .kop-banser-divider,
   .surat-paper.print-exact-single-page .kop-banser-divider {
-    margin-top: 3px !important;
-    margin-bottom: 6px !important;
+    margin-top: 2px !important;
+    margin-bottom: 5px !important;
     height: 3px !important;
   }
 
-  /* Data Surat & Kepada YTH */
+  /* Data Surat (Nomor, Lamp, Hal) & Kepada YTH */
   body.mode-print-single-page .surat-paper .print-header-meta,
   body.mode-print-single-page .surat-paper .print-tujuan-box,
   body.mode-print-single-page .surat-paper .mb-6,
   .surat-paper.print-exact-single-page .print-header-meta,
   .surat-paper.print-exact-single-page .print-tujuan-box,
   .surat-paper.print-exact-single-page .mb-6 {
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 4px !important;
     line-height: 1.15 !important;
     font-size: 9pt !important;
   }
@@ -1000,26 +1009,34 @@ body.viewing-app #view-landing-page {
   /* Isi Redaksi Surat */
   body.mode-print-single-page .surat-paper #print-isi-surat,
   .surat-paper.print-exact-single-page #print-isi-surat {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     line-height: 1.15 !important;
+    text-align: justify !important;
   }
 
   body.mode-print-single-page .surat-paper #print-isi-surat > * + *,
   .surat-paper.print-exact-single-page #print-isi-surat > * + * {
-    margin-top: 0.2rem !important;
+    margin-top: 4px !important;
   }
 
   body.mode-print-single-page .surat-paper #print-isi-surat p,
   .surat-paper.print-exact-single-page #print-isi-surat p {
-    margin-bottom: 0.2rem !important;
+    margin-bottom: 4px !important;
     margin-top: 0 !important;
     line-height: 1.15 !important;
+    text-indent: 1.5em !important;
+  }
+
+  body.mode-print-single-page .surat-paper #print-isi-surat p:first-child,
+  .surat-paper.print-exact-single-page #print-isi-surat p:first-child {
+    text-indent: 0 !important;
   }
 
   body.mode-print-single-page .surat-paper #print-isi-surat table,
   .surat-paper.print-exact-single-page #print-isi-surat table {
-    margin-top: 0.2rem !important;
-    margin-bottom: 0.25rem !important;
+    margin-top: 4px !important;
+    margin-bottom: 5px !important;
+    margin-left: 1.5em !important;
     line-height: 1.15 !important;
   }
 
@@ -1027,8 +1044,9 @@ body.viewing-app #view-landing-page {
   .surat-paper.print-exact-single-page #print-isi-surat table td {
     padding-top: 1.5px !important;
     padding-bottom: 1.5px !important;
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     line-height: 1.15 !important;
+    vertical-align: top !important;
   }
 
   /* Bagian Tanda Tangan & Stempel Resmi */
@@ -1036,14 +1054,14 @@ body.viewing-app #view-landing-page {
   body.mode-print-single-page .surat-paper .mt-10,
   .surat-paper.print-exact-single-page .print-ttd-container,
   .surat-paper.print-exact-single-page .mt-10 {
-    margin-top: 0.35rem !important;
+    margin-top: 6px !important;
     padding-top: 0 !important;
   }
 
   body.mode-print-single-page .surat-paper #print-ttd-heading,
   .surat-paper.print-exact-single-page #print-ttd-heading {
-    margin-bottom: 0.15rem !important;
-    font-size: 9.5pt !important;
+    margin-bottom: 2px !important;
+    font-size: 9pt !important;
     line-height: 1.1 !important;
   }
 
@@ -1051,7 +1069,7 @@ body.viewing-app #view-landing-page {
   body.mode-print-single-page .surat-paper .mt-6,
   .surat-paper.print-exact-single-page .print-ttd-grid,
   .surat-paper.print-exact-single-page .mt-6 {
-    margin-top: 0.2rem !important;
+    margin-top: 2px !important;
   }
 
   body.mode-print-single-page .surat-paper .print-col-ttd,
@@ -1061,13 +1079,13 @@ body.viewing-app #view-landing-page {
     height: auto !important;
     min-height: 0 !important;
     justify-content: flex-start !important;
-    gap: 2px !important;
+    gap: 1px !important;
   }
 
   body.mode-print-single-page .surat-paper .h-24,
   .surat-paper.print-exact-single-page .h-24 {
-    height: 48px !important;
-    margin: 2px 0 !important;
+    height: 44px !important;
+    margin: 1px 0 !important;
   }
 
   body.mode-print-single-page .surat-paper #print-ttd1-jabatan,
@@ -1082,7 +1100,7 @@ body.viewing-app #view-landing-page {
   body.mode-print-single-page .surat-paper #print-ttd2-nama,
   .surat-paper.print-exact-single-page #print-ttd1-nama,
   .surat-paper.print-exact-single-page #print-ttd2-nama {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     font-weight: bold !important;
     text-decoration: underline !important;
     line-height: 1.1 !important;
@@ -1092,7 +1110,7 @@ body.viewing-app #view-landing-page {
   body.mode-print-single-page .surat-paper #print-ttd2-nia,
   .surat-paper.print-exact-single-page #print-ttd1-nia,
   .surat-paper.print-exact-single-page #print-ttd2-nia {
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
     line-height: 1.1 !important;
     margin-top: 1px !important;
   }
@@ -1110,15 +1128,15 @@ body.viewing-app #view-landing-page {
   body.mode-print-single-page .surat-paper #print-img-ttd-ketua,
   .surat-paper.print-exact-single-page #print-img-ttd-sekretaris,
   .surat-paper.print-exact-single-page #print-img-ttd-ketua {
-    width: 100px !important;
-    height: 50px !important;
+    width: 95px !important;
+    height: 46px !important;
   }
 
   /* Stempel menempel sisi kiri TTD (kanan stempel menyentuh kiri TTD) */
   body.mode-print-single-page .surat-paper #print-img-stempel,
   .surat-paper.print-exact-single-page #print-img-stempel {
-    width: 58px !important;
-    height: 58px !important;
+    width: 54px !important;
+    height: 54px !important;
     right: 54% !important;
     left: auto !important;
     top: -4px !important;
