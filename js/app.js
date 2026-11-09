@@ -6,204 +6,11 @@
  */
 
 // --- DATA INITIAL SEED (PR GP ANSOR JATINOM) ---
-const INITIAL_KADER = [
-  {
-    id: "KDR-001",
-    nama: "Muhammad Zainal Arifin",
-    nik: "3505071205930001",
-    nia: "11.07.02.001",
-    tempatLahir: "Blitar",
-    tglLahir: "1993-05-12",
-    alamat: "RT 01 / RW 01 Dsn. Jatinom Krajan",
-    wa: "081234567890",
-    email: "ketua.jatinom@ansor.id",
-    pekerjaan: "Pedagang/Wirausaha",
-    kaderisasiKhusus: "Belum Ada",
-    lembaga: ["Ansor", "Rijalul Ansor"],
-    kaderisasi: "PKD",
-    jabatan: "Ketua PR GP Ansor"
-  },
-  {
-    id: "KDR-002",
-    nama: "Ahmad Nur Sholihin",
-    nik: "3505072008950002",
-    nia: "11.07.02.002",
-    tempatLahir: "Blitar",
-    tglLahir: "1995-08-20",
-    alamat: "RT 02 / RW 01 Dsn. Jatinom Krajan",
-    wa: "081398765432",
-    email: "sekretaris.jatinom@ansor.id",
-    pekerjaan: "Guru/Tenaga Pendidik",
-    kaderisasiKhusus: "Belum Ada",
-    lembaga: ["Ansor"],
-    kaderisasi: "PKD",
-    jabatan: "Sekretaris PR GP Ansor"
-  },
-  {
-    id: "KDR-003",
-    nama: "Subhan Mubarok",
-    nik: "3505071501910003",
-    nia: "11.07.02.003",
-    tempatLahir: "Blitar",
-    tglLahir: "1991-01-15",
-    alamat: "RT 03 / RW 02 Dsn. Wonorejo Jatinom",
-    wa: "082155443322",
-    email: "banser.jatinom@ansor.id",
-    pekerjaan: "Pedagang/Wirausaha",
-    kaderisasiKhusus: "Suspelat 1",
-    lembaga: ["Ansor", "Banser"],
-    kaderisasi: "SUSBALAN",
-    jabatan: "Kasatkorkel Banser Jatinom"
-  },
-  {
-    id: "KDR-004",
-    nama: "Gus M. Fahmi Ilham",
-    nik: "3505070904940004",
-    nia: "11.07.02.004",
-    tempatLahir: "Blitar",
-    tglLahir: "1994-04-09",
-    alamat: "RT 01 / RW 03 Dsn. Jatinom Kulon",
-    wa: "085733221144",
-    email: "rijalul.jatinom@ansor.id",
-    pekerjaan: "Guru/Tenaga Pendidik",
-    kaderisasiKhusus: "Belum Ada",
-    lembaga: ["Ansor", "Rijalul Ansor"],
-    kaderisasi: "PKD",
-    jabatan: "Ketua MDS Rijalul Ansor"
-  },
-  {
-    id: "KDR-005",
-    nama: "Bambang Tri Sutrisno",
-    nik: "3505071811980005",
-    nia: "11.07.02.005",
-    tempatLahir: "Blitar",
-    tglLahir: "1998-11-18",
-    alamat: "RT 02 / RW 02 Dsn. Wonorejo",
-    wa: "089677889900",
-    email: "kasetma.jatinom@ansor.id",
-    pekerjaan: "Karyawan Swasta",
-    kaderisasiKhusus: "Balantas",
-    lembaga: ["Banser"],
-    kaderisasi: "DIKLATSAR",
-    jabatan: "Kasetma & Wakasatkorkel Banser"
-  },
-  {
-    id: "KDR-006",
-    nama: "Rizky Dwi Kurniawan",
-    nik: "3505072512000006",
-    nia: "11.07.02.006",
-    tempatLahir: "Blitar",
-    tglLahir: "2000-12-25",
-    alamat: "RT 04 / RW 01 Dsn. Jatinom Krajan",
-    wa: "087811223344",
-    email: "rizky.provos@ansor.id",
-    pekerjaan: "Karyawan Swasta",
-    kaderisasiKhusus: "Provost",
-    lembaga: ["Ansor", "Banser"],
-    kaderisasi: "DIKLATSAR",
-    jabatan: "Unit Provos Banser"
-  }
-];
-
-const INITIAL_AGENDA = [
-  {
-    id: "AGD-001",
-    judul: "Rutinan Selapanan Malam Ahad Pon MDS Rijalul Ansor",
-    kategori: "Rijalul Ansor",
-    tanggal: "2026-11-14",
-    waktu: "19.30 WIB (Ba'da Isya)",
-    tempat: "Musholla Baitur Muttaqin RT 02 / RW 01 Dsn. Krajan Jatinom",
-    tuanRumah: "Sahabat Ahmad Nur Sholihin",
-    keterangan: "Pembacaan Diba' Al-Barzanji dilanjutkan Kajian Kitab Risalah Ahlussunnah Wal Jama'ah KH. Hasyim Asy'ari.",
-    status: "Mendatang"
-  },
-  {
-    id: "AGD-002",
-    judul: "Pam Pengamanan Pengajian Akbar Maulid Nabi Muhammad SAW",
-    kategori: "Banser",
-    tanggal: "2026-11-20",
-    waktu: "18.30 WIB - Selesai",
-    tempat: "Masjid Jami' Darussalam Jatinom",
-    tuanRumah: "Ta'mir Masjid & PR Nahdlatul Ulama Jatinom",
-    keterangan: "Pemberangkatan apel koordinasi di Posko Banser jam 18.00 WIB. Seragam PDL Banser Lengkap + Baret.",
-    status: "Mendatang"
-  },
-  {
-    id: "AGD-003",
-    judul: "Rapat Pleno & Evaluasi Program Kerja Semester Akhir",
-    kategori: "Ansor",
-    tanggal: "2026-11-28",
-    waktu: "20.00 WIB",
-    tempat: "Gedung Serbaguna Ranting NU Jatinom",
-    tuanRumah: "Pengurus Harian PR GP Ansor",
-    keterangan: "Laporan pertanggungjawaban divisi persuratan, kaderisasi, satkorkel Banser, dan kas organisasi.",
-    status: "Mendatang"
-  }
-];
-
-const INITIAL_ARSIP_SURAT = [
-  {
-    id: "ARS-001",
-    nomorSurat: "001/PR-XII-11-07-02/SU-01/XI/2026",
-    jenis: "SU",
-    sifat: "01",
-    tglSurat: "2026-11-04",
-    tujuan: "Seluruh Pengurus dan Anggota PR GP Ansor Jatinom",
-    perihal: "Undangan Rutinan Selapanan MDS Rijalul Ansor",
-    tipe: "Keluar"
-  },
-  {
-    id: "ARS-002",
-    nomorSurat: "045/PAC-XII-11-07/SE-01/X/2026",
-    jenis: "SE",
-    sifat: "01",
-    tglSurat: "2026-10-25",
-    tujuan: "Ketua PR GP Ansor Jatinom",
-    perihal: "Instruksi Apel Hari Santri Nasional Tingkat Kecamatan Kanigoro",
-    tipe: "Masuk"
-  }
-];
-
-const INITIAL_BERITA = [
-  {
-    id: "NWS-001",
-    judul: "Rutinan Selapanan MDS Rijalul Ansor Ranting Jatinom Istiqomah Rawat Tradisi Aswaja",
-    kategori: "Rijalul Ansor",
-    tanggal: "2026-11-02",
-    penulis: "Biro Infokom Ansor Jatinom",
-    ringkasan: "Majelis Dzikir dan Sholawat Rijalul Ansor Desa Jatinom sukses menggelar pembacaan Maulid Diba' dan kajian fiqih Aswaja bergiliran di Dusun Krajan.",
-    isi: `Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom melalui Majelis Dzikir dan Sholawat (MDS) Rijalul Ansor terus konsisten menggemakan syiar shalawat dan tradisi Ahlussunnah Wal Jama'ah An-Nahdliyyah.
-
-Dalam acara yang bertempat di Musholla Baitur Muttaqin RT 02 / RW 01 Dusun Krajan, puluhan pemuda dan kader Ansor-Banser tampak khusyuk melantunkan bait-bait shalawat Diba' karya Syaikh Abdurrahman Ad-Diba'i.
-
-Ketua MDS Rijalul Ansor Jatinom, Gus M. Fahmi Ilham menuturkan, kegiatan ini menjadi benteng spiritual generasi muda dari arus degradasi moral dan sarana mempererat persaudaraan antarwarga Desa Jatinom.`,
-    gambar: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: "NWS-002",
-    judul: "Siaga Satu Komando, Satkorkel BANSER Jatinom Sukseskan Pengamanan Pengajian Akbar",
-    kategori: "Banser",
-    tanggal: "2026-10-28",
-    penulis: "Satkorkel Banser Jatinom",
-    ringkasan: "Sebanyak 15 personel Barisan Ansor Serbaguna (BANSER) Satkorkel Jatinom dikerahkan membantu kelancaran dan pengamanan pengajian akbar warga NU.",
-    isi: `Menjaga marwah para ulama dan kenyamanan ummat merupakan doktrin utama Banser. Hal ini dibuktikan oleh jajaran Satuan Koordinasi Kelompok (Satkorkel) BANSER Ranting Jatinom, Kecamatan Kanigoro.
-
-Kasatkorkel Banser Jatinom, Sahabat Subhan Mubarok, menegaskan bahwa seluruh personel bertugas dengan penuh keikhlasan di bawah komando Pimpinan Ranting. Pengaturan arus lalu lintas, sterilisasi area pengajian, serta pengawalan para Masyayikh berlangsung aman, tertib, dan kondusif.`,
-    gambar: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: "NWS-003",
-    judul: "Resmi Diluncurkan, Web Portal 'SAHABAT Jatinom' Siap Akselerasi Digitalisasi Ranting",
-    kategori: "Ansor",
-    tanggal: "2026-11-04",
-    penulis: "Badan Siber Ansor Jatinom",
-    ringkasan: "PR GP Ansor Jatinom meluncurkan platform terintegrasi untuk persuratan digital, pendataan kader e-Kader, dan manajemen agenda jam'iyyah.",
-    isi: `Sebagai langkah strategis menjawab tantangan zaman di era digitalisasi organisasi, Pimpinan Ranting Gerakan Pemuda Ansor Desa Jatinom resmi memperkenalkan portal SAHABAT Jatinom (Sistem Administrasi Hubungan Anggota Banser, Ansor, & Tradisi Rijalul Ansor).
-
-Aplikasi ini memuat generator persuratan standar Peraturan Organisasi, pendataan database kader multi-banom, serta kalender kegiatan terpadu yang memudahkan seluruh kader dan masyarakat mengakses informasi resmi organisasi secara transparan dan akuntabel.`,
-    gambar: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
-  }
-];
+// Kosongkan Data Dummy agar pengguna dapat mengisi ulang mulai dari Nol
+const INITIAL_KADER = [];
+const INITIAL_AGENDA = [];
+const INITIAL_ARSIP_SURAT = [];
+const INITIAL_BERITA = [];
 
 const INITIAL_USERS = [
   {
@@ -296,54 +103,8 @@ const INITIAL_USERS = [
   }
 ];
 
-// DATA KEUANGAN / PEMBUKUAN KAS RANTING
-const INITIAL_KEUANGAN = [
-  {
-    id: "TRX-001",
-    tanggal: "2026-11-01",
-    kategori: "Saldo Awal",
-    keterangan: "Saldo awal kas Pimpinan Ranting GP Ansor Jatinom",
-    jenis: "pemasukan",
-    jumlah: 3500000,
-    pj: "Abdul Wahid (Bendahara)"
-  },
-  {
-    id: "TRX-002",
-    tanggal: "2026-11-02",
-    kategori: "Infaq Rutinan",
-    keterangan: "Infaq Koin Mandiri Rutinan Selapanan MDS Rijalul Ansor Krajan",
-    jenis: "pemasukan",
-    jumlah: 750000,
-    pj: "Arif Munandar (Bendahara MDS)"
-  },
-  {
-    id: "TRX-003",
-    tanggal: "2026-11-03",
-    kategori: "Operasional",
-    keterangan: "Pembelian ATK, Kertas Kop Surat, & Tinta Printer Sekretariat",
-    jenis: "pengeluaran",
-    jumlah: 275000,
-    pj: "Ahmad Nur Sholihin (Sekretaris)"
-  },
-  {
-    id: "TRX-004",
-    tanggal: "2026-11-04",
-    kategori: "Logistik",
-    keterangan: "Dukungan logistik & konsumsi pengamanan apel Banser",
-    jenis: "pengeluaran",
-    jumlah: 350000,
-    pj: "Subhan Mubarok (Kasatkorkel)"
-  },
-  {
-    id: "TRX-005",
-    tanggal: "2026-11-05",
-    kategori: "Donatur",
-    keterangan: "Infaq donatur pengembangan dakwah & kaderisasi ranting",
-    jenis: "pemasukan",
-    jumlah: 1000000,
-    pj: "M. Zainal Arifin (Ketua)"
-  }
-];
+// DATA KEUANGAN / PEMBUKUAN KAS RANTING - Siap Diisi Mulai dari Nol
+const INITIAL_KEUANGAN = [];
 
 // DAFTAR LENGKAP NAMA-NAMA PENGURUS RESMI PR GP ANSOR JATINOM
 const INITIAL_PENGURUS = [
@@ -424,40 +185,8 @@ const INITIAL_SETTINGS = {
   }
 };
 
-const INITIAL_NOTIFIKASI = [
-  {
-    id: "NTF-001",
-    judul: "Pengingat Rutinan Selapanan Malam Ahad Pon",
-    pesan: "Agenda MDS Rijalul Ansor terdekat akan dilaksanakan di Musholla Baitur Muttaqin Dsn. Krajan.",
-    waktu: "Baru saja",
-    dibaca: false,
-    kategori: "agenda"
-  },
-  {
-    id: "NTF-002",
-    judul: "Arsip Surat Keluar Tercatat",
-    pesan: "Surat Undangan No. 001/PR-XII-11-07-02/SU-01/XI/2026 telah tersimpan ke buku arsip.",
-    waktu: "1 jam yang lalu",
-    dibaca: false,
-    kategori: "surat"
-  },
-  {
-    id: "NTF-003",
-    judul: "Pembukuan Kas Ranting Terbaru",
-    pesan: "Catatan transaksi kas bulan berjalan telah diperbarui oleh Bendahara.",
-    waktu: "2 jam yang lalu",
-    dibaca: false,
-    kategori: "keuangan"
-  },
-  {
-    id: "NTF-004",
-    judul: "Database Kader Baru Ditambahkan",
-    pesan: "Sahabat Rizky Dwi Kurniawan (Unit Provos) telah terverifikasi dalam basis data kader.",
-    waktu: "Kemarin",
-    dibaca: true,
-    kategori: "kader"
-  }
-];
+// NOTIFIKASI AWAL - Siap Diisi Mulai dari Nol
+const INITIAL_NOTIFIKASI = [];
 
 // Romawi Bulan Helper
 const ROMAN_MONTHS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"];
@@ -490,9 +219,26 @@ function getIndonesianDate(dateObj) {
 
 // --- STATE MANAGEMENT ---
 class AnsorStore {
+  // Method untuk mengosongkan seluruh data dummy (Kader, Agenda, Arsip, Berita, Keuangan, Notifikasi)
+  static resetAllDataToZero() {
+    localStorage.setItem("sahabat_kader", "[]");
+    localStorage.setItem("sahabat_agenda", "[]");
+    localStorage.setItem("sahabat_arsip", "[]");
+    localStorage.setItem("sahabat_berita", "[]");
+    localStorage.setItem("sahabat_keuangan", "[]");
+    localStorage.setItem("sahabat_notifikasi", "[]");
+    localStorage.setItem("sahabat_surat_counter", "1");
+  }
+
   static getKader() {
     const data = localStorage.getItem("sahabat_kader");
-    return data ? JSON.parse(data) : INITIAL_KADER;
+    if (!data) return [];
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
   }
   static saveKader(list) {
     localStorage.setItem("sahabat_kader", JSON.stringify(list));
@@ -500,7 +246,13 @@ class AnsorStore {
 
   static getAgenda() {
     const data = localStorage.getItem("sahabat_agenda");
-    return data ? JSON.parse(data) : INITIAL_AGENDA;
+    if (!data) return [];
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
   }
   static saveAgenda(list) {
     localStorage.setItem("sahabat_agenda", JSON.stringify(list));
@@ -508,7 +260,13 @@ class AnsorStore {
 
   static getArsip() {
     const data = localStorage.getItem("sahabat_arsip");
-    return data ? JSON.parse(data) : INITIAL_ARSIP_SURAT;
+    if (!data) return [];
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
   }
   static saveArsip(list) {
     localStorage.setItem("sahabat_arsip", JSON.stringify(list));
@@ -525,7 +283,13 @@ class AnsorStore {
 
   static getBerita() {
     const data = localStorage.getItem("sahabat_berita");
-    return data ? JSON.parse(data) : INITIAL_BERITA;
+    if (!data) return [];
+    try {
+      const parsed = JSON.parse(data);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
   }
   static saveBerita(list) {
     localStorage.setItem("sahabat_berita", JSON.stringify(list));
@@ -541,28 +305,12 @@ class AnsorStore {
 
   static getNotifikasi() {
     const data = localStorage.getItem("sahabat_notifikasi");
-    if (!data) return INITIAL_NOTIFIKASI;
+    if (!data) return [];
     try {
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        // Jika semua sudah dibaca di localstorage lama pengguna, tambahkan notifikasi baru agar lonceng aktif
-        const hasUnread = parsed.some((n) => !n.dibaca);
-        if (!hasUnread) {
-          parsed.unshift({
-            id: "NTF-" + Date.now().toString().slice(-4),
-            judul: "Pusat Notifikasi Aktif",
-            pesan: "Sistem Administrasi SAHABAT Jatinom v2.5 siap digunakan.",
-            waktu: "Baru saja",
-            dibaca: false,
-            kategori: "info"
-          });
-          localStorage.setItem("sahabat_notifikasi", JSON.stringify(parsed));
-        }
-        return parsed;
-      }
-      return INITIAL_NOTIFIKASI;
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
-      return INITIAL_NOTIFIKASI;
+      return [];
     }
   }
   static saveNotifikasi(list) {
@@ -571,12 +319,12 @@ class AnsorStore {
 
   static getKeuangan() {
     const data = localStorage.getItem("sahabat_keuangan");
-    if (!data) return INITIAL_KEUANGAN;
+    if (!data) return [];
     try {
       const parsed = JSON.parse(data);
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : INITIAL_KEUANGAN;
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
-      return INITIAL_KEUANGAN;
+      return [];
     }
   }
   static saveKeuangan(list) {
@@ -681,8 +429,15 @@ class AnsorStore {
     localStorage.setItem("sahabat_current_user", JSON.stringify(INITIAL_USERS[0]));
     localStorage.setItem("sahabat_notifikasi", JSON.stringify(INITIAL_NOTIFIKASI));
     localStorage.setItem("sahabat_keuangan", JSON.stringify(INITIAL_KEUANGAN));
-    localStorage.setItem("sahabat_surat_counter", "2");
+    localStorage.setItem("sahabat_surat_counter", "1");
   }
+}
+
+// Auto-migrasi ke data bersih (kosong/mulai dari nol) untuk pengguna lama yang masih menyimpan dummy di localStorage
+const DUMMY_RESET_KEY = "sahabat_dummy_cleared_v4";
+if (!localStorage.getItem(DUMMY_RESET_KEY)) {
+  AnsorStore.resetAllDataToZero();
+  localStorage.setItem(DUMMY_RESET_KEY, "true");
 }
 
 // --- TEMPLATES CONTENT GENERATOR ---

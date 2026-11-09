@@ -140,6 +140,26 @@ switch ($action) {
         $response = ['success' => true, 'data' => $data];
         break;
 
+    case 'update_user_pin':
+        $userId = $conn->real_escape_string($input['user_id'] ?? '');
+        $newPin = $conn->real_escape_string($input['new_pin'] ?? '');
+        $callerRole = $input['caller_role'] ?? '';
+        if ($callerRole !== 'Super Admin') {
+            $response = ['success' => false, 'message' => 'Hanya Super Admin yang memiliki hak akses untuk mengubah sandi/PIN akun pengguna.'];
+            break;
+        }
+        if (!$userId || !$newPin) {
+            $response = ['success' => false, 'message' => 'Data User ID atau Sandi/PIN baru tidak valid.'];
+            break;
+        }
+        $q = "UPDATE `users` SET `pin`='$newPin' WHERE `user_id`='$userId'";
+        if ($conn->query($q)) {
+            $response = ['success' => true, 'message' => 'Sandi/PIN akun pengguna berhasil diperbarui oleh Super Admin.'];
+        } else {
+            $response = ['success' => false, 'message' => 'Gagal memperbarui sandi: ' . $conn->error];
+        }
+        break;
+
     default:
         $response = ['success' => false, 'message' => 'Aksi ' . htmlspecialchars($action) . ' belum didukung'];
         break;

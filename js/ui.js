@@ -170,6 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (custom && custom.startsWith("data:")) {
       return `<img src="${custom}" alt="Logo ${type}" class="${customClass}" />`;
     }
+    if (type === "sahabat") {
+      return `<img src="img/logo-sahabat.png" alt="Logo SAHABAT Jatinom" class="${customClass} filter drop-shadow-sm" />`;
+    }
     return LOGOS[type] || LOGOS.ansor;
   }
 
@@ -185,13 +188,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render semua logo di antarmuka
   function renderAllLogos() {
     const headerLogoEl = document.getElementById("header-logo-container");
-    if (headerLogoEl) headerLogoEl.innerHTML = getLogoHTML("ansor");
+    if (headerLogoEl) headerLogoEl.innerHTML = getLogoHTML("sahabat");
 
     const sidebarLogoEl = document.getElementById("sidebar-logo-container");
-    if (sidebarLogoEl) sidebarLogoEl.innerHTML = getLogoHTML("ansor");
+    if (sidebarLogoEl) sidebarLogoEl.innerHTML = getLogoHTML("sahabat");
 
     const loginLogoEl = document.getElementById("login-logo-container");
-    if (loginLogoEl) loginLogoEl.innerHTML = getLogoHTML("ansor");
+    if (loginLogoEl) loginLogoEl.innerHTML = getLogoHTML("sahabat");
 
     const printKopLogoKiri = document.getElementById("print-kop-logo-left");
     if (printKopLogoKiri) printKopLogoKiri.innerHTML = getLogoHTML("ansor");
@@ -208,7 +211,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateKopLogos();
 
     const profilBigLogo = document.getElementById("profil-big-logo");
-    if (profilBigLogo) profilBigLogo.innerHTML = getLogoHTML("ansor");
+    if (profilBigLogo) profilBigLogo.innerHTML = getLogoHTML("sahabat");
+
+    const gSahabat = document.getElementById("galeri-logo-sahabat");
+    if (gSahabat) gSahabat.innerHTML = getLogoHTML("sahabat");
 
     const gAnsor = document.getElementById("galeri-logo-ansor");
     if (gAnsor) gAnsor.innerHTML = getLogoHTML("ansor");
@@ -672,7 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Dashboard Logo
     const dashLogo = el("dash-logo-container");
-    if (dashLogo) dashLogo.innerHTML = getLogoHTML("ansor");
+    if (dashLogo) dashLogo.innerHTML = getLogoHTML("sahabat");
 
     // Warta Terbaru (3 terakhir)
     const wartaEl = el("dash-warta-list");
@@ -2791,6 +2797,8 @@ _Wassalamu'alaikum Wr. Wb._
     if (!container) return;
     container.innerHTML = "";
 
+    const isSuperAdmin = Boolean(state.currentUser && state.currentUser.role === "Super Admin");
+
     state.usersList.forEach((u) => {
       const isCurrent = state.currentUser && state.currentUser.id === u.id;
 
@@ -2812,14 +2820,22 @@ _Wassalamu'alaikum Wr. Wb._
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between">
+        <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between gap-2">
           <button data-id="${u.id}" class="btn-switch-user text-xs font-bold ${isCurrent ? "text-emerald-700 font-extrabold" : "text-ansor hover:underline"} flex items-center gap-1">
             <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i>
             <span>${isCurrent ? "Akun Anda Saat Ini" : "Masuk Akun Ini"}</span>
           </button>
-          <button data-id="${u.id}" class="btn-edit-user-pin text-xs text-slate-500 hover:text-slate-800" title="Ubah PIN">
-            <i class="fa-solid fa-key"></i>
+          ${isSuperAdmin ? `
+          <button data-id="${u.id}" class="btn-edit-user-pin text-xs px-2.5 py-1 rounded bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 font-semibold flex items-center gap-1 transition" title="Ubah Sandi / PIN Akun (Khusus Super Admin)">
+            <i class="fa-solid fa-key text-[10px]"></i>
+            <span>Ubah PIN</span>
           </button>
+          ` : `
+          <span class="text-[11px] text-slate-400 font-medium flex items-center gap-1 px-2 py-0.5 rounded bg-slate-50 border border-slate-200 select-none cursor-not-allowed" title="Pengaturan kata sandi/PIN hanya dapat dilakukan oleh Super Admin">
+            <i class="fa-solid fa-lock text-[10px] text-slate-400"></i>
+            <span>Sandi Terkunci</span>
+          </span>
+          `}
         </div>
       `;
       container.appendChild(card);
@@ -2838,19 +2854,40 @@ _Wassalamu'alaikum Wr. Wb._
       });
     });
 
-    // Edit User PIN
+    // Edit User PIN (Khusus Super Admin)
     document.querySelectorAll(".btn-edit-user-pin").forEach((b) => {
-      b.addEventListener("click", () => {
+      b.addEventListener("click", async () => {
+        if (!state.currentUser || state.currentUser.role !== "Super Admin") {
+          alert("Akses Ditolak: Pengaturan dan perubahan kata sandi/PIN hanya berhak dilakukan oleh Super Admin!");
+          return;
+        }
+
         const id = b.getAttribute("data-id");
         const found = state.usersList.find((x) => x.id === id);
         if (!found) return;
 
-        const newPin = prompt(`Masukkan PIN baru untuk akun ${found.role} (${found.nama}):`, found.pin);
+        const newPin = prompt(`[Khusus Super Admin]\nMasukkan PIN / Kata Sandi baru untuk akun ${found.role} (${found.nama}):`, found.pin);
         if (newPin && newPin.trim()) {
           found.pin = newPin.trim();
           AnsorStore.saveUsers(state.usersList);
+
+          // Update ke backend MySQL jika terhubung
+          try {
+            await fetch("api.php?action=update_user_pin", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: found.user_id || found.id,
+                new_pin: newPin.trim(),
+                caller_role: state.currentUser.role
+              })
+            });
+          } catch (e) {
+            // mode offline browser
+          }
+
           renderUserCards();
-          alert(`PIN untuk ${found.role} berhasil diperbarui!`);
+          alert(`Kata Sandi / PIN untuk akun ${found.role} (${found.nama}) berhasil diperbarui oleh Super Admin!`);
         }
       });
     });
@@ -2983,6 +3020,43 @@ _Wassalamu'alaikum Wr. Wb._
 
   document.getElementById("form-settings-umum")?.addEventListener("submit", handleSettingSubmit);
   document.getElementById("form-setting-identitas")?.addEventListener("submit", handleSettingSubmit);
+
+  // Reset Data Dummy ke Nol (Mulai dari Awal) - Khusus Super Admin
+  document.getElementById("btn-reset-data-nol")?.addEventListener("click", () => {
+    if (!state.currentUser || state.currentUser.role !== "Super Admin") {
+      alert("Akses Ditolak: Fitur pengosongan data dummy hanya dapat dilakukan oleh Super Admin.");
+      return;
+    }
+    const konfirmasi = confirm(
+      "PERINGATAN MANAJEMEN DATA:\n\n" +
+      "Apakah Anda yakin ingin MENGOSONGKAN seluruh data dummy (Kader, Agenda Kegiatan, Arsip Surat, Warta Berita, Keuangan, dan Riwayat Notifikasi)?\n\n" +
+      "Setelah dikosongkan, seluruh data akan bernilai 0 (nol) agar siap diinput data riil dari awal.\n" +
+      "Catatan: 6 Akun Pengurus resmi dan Pengaturan Ranting TIDAK akan terhapus."
+    );
+    if (!konfirmasi) return;
+
+    AnsorStore.resetAllDataToZero();
+
+    // Perbarui state in-memory
+    state.kaderList = AnsorStore.getKader();
+    state.agendaList = AnsorStore.getAgenda();
+    state.arsipList = AnsorStore.getArsip();
+    state.beritaList = AnsorStore.getBerita();
+    state.notifikasiList = AnsorStore.getNotifikasi();
+    state.keuanganList = AnsorStore.getKeuangan();
+
+    // Render ulang seluruh tampilan
+    renderDashboard();
+    renderKaderTable();
+    updateKaderStats();
+    renderAgendaCards();
+    renderArsipTable();
+    renderBeritaGrid();
+    renderKeuangan();
+    updateNotificationBell();
+
+    alert("Berhasil! Seluruh data dummy telah dikosongkan ke 0 (nol). Sistem SAHABAT Jatinom kini bersih dan siap diisi data riil ranting.");
+  });
 
   // --- NOTIFIKASI SYSTEM ---
   function addNotification(judul, pesan, kategori = "info") {

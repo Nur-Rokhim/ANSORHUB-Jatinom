@@ -1,9 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SAHABAT Jatinom - Sistem Administrasi GP Ansor Ranting Jatinom</title>
+  <link rel="icon" type="image/png" href="img/logo-sahabat.png">
+  <link rel="apple-touch-icon" href="img/logo-sahabat.png">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -219,8 +221,8 @@
         
         <!-- Logo & Identitas Brand -->
         <a href="#landing-hero" class="flex items-center gap-3 group">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-1.5 border border-gold/60 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-            <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-950 p-1 border border-gold/60 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <img src="img/logo-sahabat.png" alt="Logo SAHABAT Jatinom" class="w-full h-full object-contain filter drop-shadow-sm">
           </div>
           <div>
             <div class="flex items-center gap-1.5">
@@ -629,8 +631,8 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-emerald-900 p-1 border border-gold/50 flex items-center justify-center">
-              <img src="img/logo-ansor.png" alt="Logo GP Ansor" class="w-full h-full object-contain">
+            <div class="w-8 h-8 rounded-lg bg-emerald-900 p-0.5 border border-gold/50 flex items-center justify-center">
+              <img src="img/logo-sahabat.png" alt="Logo SAHABAT Jatinom" class="w-full h-full object-contain filter drop-shadow-sm">
             </div>
             <div>
               <p class="text-white font-bold text-xs">PR GP Ansor & Satkorkel BANSER Desa Jatinom</p>
@@ -2472,12 +2474,22 @@
           <div class="border-b pb-3">
             <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-shapes text-gold"></i>
-              <span>4 Identitas & Lambang Resmi di Ranting Jatinom</span>
+              <span>5 Identitas & Lambang Resmi di Ranting Jatinom</span>
             </h3>
-            <p class="text-xs text-slate-500">Makna dan filosofi lambang yang digunakan pada surat dan kegiatan organisasi</p>
+            <p class="text-xs text-slate-500">Makna dan filosofi lambang aplikasi dan lembaga yang digunakan pada surat serta kegiatan organisasi</p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- Logo 0: Aplikasi SAHABAT Jatinom -->
+            <div class="p-4 bg-gradient-to-b from-emerald-50/70 to-white rounded-xl border-2 border-emerald-300 text-center flex flex-col items-center shadow-xs">
+              <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-sahabat">
+                <!-- Rendered via JS -->
+              </div>
+              <h4 class="font-bold text-emerald-900 text-xs uppercase tracking-wide">Logo SAHABAT Jatinom</h4>
+              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                Emblem integrasi tiga pilar: Ansor, Banser, dan MDS Rijalul Ansor sebagai pusat administrasi modern Ranting Jatinom.
+              </p>
+            </div>
             <!-- Logo 1: GP Ansor -->
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 text-center flex flex-col items-center">
               <div class="w-20 h-20 mb-3 flex items-center justify-center" id="galeri-logo-ansor">
@@ -2546,12 +2558,17 @@
 
         <!-- 6 KARTU USER ROLES RESMI GP ANSOR JATINOM -->
         <div class="space-y-4">
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-users text-ansor"></i>
               <span>Daftar 6 Akun Pengurus Ranting Terdaftar:</span>
             </h3>
-            <span class="text-xs text-slate-500">Klik "Masuk Akun" untuk beralih peran kerja</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[11px] text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 font-medium">
+                <i class="fa-solid fa-user-shield text-[10px] mr-1"></i> Pengaturan Sandi/PIN Khusus Super Admin
+              </span>
+              <span class="text-xs text-slate-500 hidden md:inline">&bull; Klik "Masuk Akun" untuk beralih</span>
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="container-user-cards">
@@ -2624,6 +2641,34 @@
               </button>
             </div>
           </form>
+        </div>
+
+        <!-- Zona Administratif: Reset Data Riil ke Nol -->
+        <div class="bg-white rounded-2xl shadow-sm border border-rose-200/80 p-6 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-rose-100 pb-3">
+            <h3 class="text-sm font-bold text-rose-900 flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+              <span>Manajemen Data Riil (Mulai dari Nol)</span>
+            </h3>
+            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+              <i class="fa-solid fa-user-shield mr-1"></i> Khusus Super Admin
+            </span>
+          </div>
+
+          <div class="space-y-2 text-xs text-slate-600 leading-relaxed">
+            <p>Fitur ini digunakan untuk memastikan seluruh data simulasi dummy (daftar kader, agenda kegiatan, arsip surat, warta berita, catatan kas, dan notifikasi) telah dikosongkan menjadi <strong>0 (nol)</strong> agar Anda dapat mengisi data riil Pimpinan Ranting Desa Jatinom dari awal tanpa tercampur data simulasi.</p>
+            <p class="text-slate-500 italic"><i class="fa-solid fa-shield-halved text-emerald-600 mr-1"></i> 6 Akun Pengurus resmi, pengaturan ranting, dan struktur organisasi tetap aman dan tidak akan terhapus.</p>
+          </div>
+
+          <div class="pt-2 flex flex-wrap items-center justify-between gap-3">
+            <div class="text-[11px] text-slate-500">
+              <span class="font-semibold text-slate-700">Status Data:</span> Bersih &bull; Siap diisi data riil
+            </div>
+            <button id="btn-reset-data-nol" type="button" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold flex items-center gap-2 text-xs shadow transition">
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Kosongkan Semua Data Dummy (Mulai dari Nol)</span>
+            </button>
+          </div>
         </div>
 
       </section>
