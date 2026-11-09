@@ -315,20 +315,29 @@ body {
 
 /* Mode Landing Page vs Mode Admin App Switching */
 /* Anti-Flicker: Sembunyikan elemen sebelum JS siap jika belum ada session */
-html.initial-landing #app-sidebar,
-html.initial-landing .main-content-layout,
-html.initial-landing #sidebar-backdrop {
+html.initial-landing:not(.initial-app) body:not(.viewing-app) #app-sidebar,
+html.initial-landing:not(.initial-app) body:not(.viewing-app) .main-content-layout,
+html.initial-landing:not(.initial-app) body:not(.viewing-app) #sidebar-backdrop {
   display: none !important;
 }
 
-html.initial-landing #view-landing-page {
+html.initial-landing:not(.initial-app) body:not(.viewing-app) #view-landing-page {
   display: flex !important;
   flex-direction: column;
   min-height: 100vh;
 }
 
-html.initial-app #view-landing-page {
+html.initial-app #view-landing-page,
+body.viewing-app #view-landing-page {
   display: none !important;
+}
+
+body.viewing-app #app-sidebar {
+  display: flex !important;
+}
+
+body.viewing-app .main-content-layout {
+  display: block !important;
 }
 
 /* Default: sembunyikan landing page jika tanpa class */

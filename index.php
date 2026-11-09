@@ -802,13 +802,12 @@ require_once __DIR__ . '/config.php';
           <span class="flex-1">Keuangan</span>
         </a>
 
-        <!-- Laporan Pertanggung Jawaban (LPJ F4) -->
+        <!-- Laporan LPJ -->
         <a data-tab="tab-lpj" class="sidebar-nav-item" id="sidebar-nav-lpj">
           <span class="icon-box text-emerald-300">
             <i class="fa-solid fa-file-invoice"></i>
           </span>
-          <span class="flex-1">Laporan LPJ (F4)</span>
-          <span class="text-[9.5px] px-1.5 py-0.5 rounded-full bg-emerald-800/80 text-emerald-200 border border-emerald-600/50 font-mono font-bold">F4</span>
+          <span class="flex-1">Laporan LPJ</span>
         </a>
 
         <!-- Profil Ranting -->

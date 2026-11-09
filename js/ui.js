@@ -549,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "tab-kader": "3. E-Kader",
     "tab-agenda": "4. Agenda",
     "tab-keuangan": "Keuangan Ranting",
-    "tab-lpj": "Laporan Pertanggung Jawaban (LPJ F4)",
+    "tab-lpj": "Laporan LPJ",
     "tab-profil": "5. Profil Ranting",
     "tab-pengaturan": "6. Pengaturan"
   };
@@ -3907,9 +3907,14 @@ _Wassalamu'alaikum Wr. Wb._
   let landingActivePengurusBanom = "semua";
 
   function switchToLandingMode() {
+    document.documentElement.classList.remove("initial-app");
+    document.documentElement.classList.add("initial-landing");
     document.body.classList.add("viewing-landing");
     document.body.classList.remove("viewing-app");
-    modalLoginPortal?.classList.add("hidden");
+    if (modalLoginPortal) {
+      modalLoginPortal.classList.add("hidden");
+      modalLoginPortal.style.display = "";
+    }
 
     // Admin bar di atas landing page (muncul jika sudah login)
     const adminBar = document.getElementById("landing-admin-bar");
@@ -3933,11 +3938,19 @@ _Wassalamu'alaikum Wr. Wb._
   }
 
   function switchToAppMode() {
+    document.documentElement.classList.remove("initial-landing");
+    document.documentElement.classList.add("initial-app");
     document.body.classList.remove("viewing-landing");
     document.body.classList.add("viewing-app");
-    modalLoginPortal?.classList.add("hidden");
+    if (modalLoginPortal) {
+      modalLoginPortal.classList.add("hidden");
+      modalLoginPortal.style.display = "";
+    }
     const adminBar = document.getElementById("landing-admin-bar");
     if (adminBar) adminBar.classList.add("hidden");
+
+    if (typeof renderDashboard === "function") renderDashboard();
+    window.scrollTo({ top: 0, behavior: "instant" });
   }
 
   function openLoginModal(targetUsername = null) {
