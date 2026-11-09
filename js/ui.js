@@ -3256,6 +3256,12 @@ _Wassalamu'alaikum Wr. Wb._
           state.pengurusList = state.pengurusList.filter((p) => p.id !== id);
           AnsorStore.savePengurus(state.pengurusList);
           renderPengurusTable();
+          renderLandingStats();
+          fetch("api.php?action=delete_pengurus", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
+          }).catch(() => {});
         }
       });
     });
@@ -3304,21 +3310,32 @@ _Wassalamu'alaikum Wr. Wb._
     const kontak = document.getElementById("edit-pengurus-kontak").value.trim() || "-";
     const urutan = parseInt(document.getElementById("edit-pengurus-urutan").value) || 10;
 
+    let savedItem = null;
     if (idVal) {
       const id = parseInt(idVal);
       const idx = state.pengurusList.findIndex((p) => p.id === id);
+      savedItem = { id, lembaga, jabatan, nama, nia, kontak, urutan };
       if (idx !== -1) {
-        state.pengurusList[idx] = { id, lembaga, jabatan, nama, nia, kontak, urutan };
+        state.pengurusList[idx] = savedItem;
       }
     } else {
       const newId = Date.now();
-      state.pengurusList.push({ id: newId, lembaga, jabatan, nama, nia, kontak, urutan });
+      savedItem = { id: newId, lembaga, jabatan, nama, nia, kontak, urutan };
+      state.pengurusList.push(savedItem);
     }
 
     // Urutkan pengurus
     state.pengurusList.sort((a, b) => (a.urutan || 99) - (b.urutan || 99));
     AnsorStore.savePengurus(state.pengurusList);
     renderPengurusTable();
+    renderLandingStats();
+    if (savedItem) {
+      fetch("api.php?action=save_pengurus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(savedItem)
+      }).catch(() => {});
+    }
     modalPengurus?.classList.add("hidden");
     alert("Data pengurus ranting berhasil disimpan!");
   });
@@ -3998,15 +4015,15 @@ _Wassalamu'alaikum Wr. Wb._
 
     const elKader = document.getElementById("landing-stat-kader");
     const totalKader = (state.kaderList || []).length;
-    if (elKader) elKader.textContent = totalKader > 0 ? `${totalKader}+` : "48+";
+    if (elKader) elKader.textContent = totalKader;
 
     const elPengurus = document.getElementById("landing-stat-pengurus");
-    const pengurusList = AnsorStore.getPengurus();
+    const pengurusList = (state.pengurusList && state.pengurusList.length > 0) ? state.pengurusList : AnsorStore.getPengurus();
     if (elPengurus) elPengurus.textContent = pengurusList.length;
 
     const elAgenda = document.getElementById("landing-stat-agenda");
     const totalAgenda = (state.agendaList || []).length;
-    if (elAgenda) elAgenda.textContent = totalAgenda > 0 ? `${totalAgenda}+` : "12+";
+    if (elAgenda) elAgenda.textContent = totalAgenda;
   }
 
   function renderLandingWarta(kategori = "semua", keyword = "") {
@@ -4095,7 +4112,7 @@ _Wassalamu'alaikum Wr. Wb._
     const container = document.getElementById("landing-pengurus-grid");
     if (!container) return;
 
-    let list = AnsorStore.getPengurus();
+    let list = (state.pengurusList && state.pengurusList.length > 0) ? state.pengurusList : AnsorStore.getPengurus();
 
     if (filterBanom && filterBanom !== "semua") {
       list = list.filter((p) => (p.lembaga || "").toLowerCase() === filterBanom.toLowerCase());
@@ -4103,8 +4120,10 @@ _Wassalamu'alaikum Wr. Wb._
 
     if (list.length === 0) {
       container.innerHTML = `
-        <div class="col-span-full py-8 text-center text-slate-500 italic text-xs">
-          Tidak ada daftar pengurus pada kategori ini.
+        <div class="col-span-full py-10 text-center text-slate-400 bg-slate-900/60 rounded-2xl border border-slate-800">
+          <i class="fa-solid fa-users text-3xl text-slate-600 mb-2"></i>
+          <p class="font-bold text-sm text-slate-300">Belum Ada Susunan Pengurus</p>
+          <p class="text-xs text-slate-500 mt-1">Data susunan pengurus ranting siap diinputkan mulai dari nol melalui Portal Administrasi.</p>
         </div>
       `;
       return;
@@ -4230,8 +4249,8 @@ _Wassalamu'alaikum Wr. Wb._
     switchToLandingMode();
   }
 
-  // XAMPP MySQL Live Check
-  AnsorStore.checkXamppStatus().then((res) => {
+  // XAMPP MySQL Live Check & Auto-Sync Data Real
+  AnsorStore.checkXamppStatus().then(async (res) => {
     const pill = document.getElementById("sidebar-xampp-pill");
     if (pill && res.db_connected) {
       pill.innerHTML = `
@@ -4241,6 +4260,69 @@ _Wassalamu'alaikum Wr. Wb._
         </div>
         <span class="font-mono text-[9px] text-gold font-bold">DB: db_sahabat</span>
       `;
+
+      // Sinkronisasi data Pengurus Real dari database MySQL
+      try {
+        const respP = await fetch("api.php?action=get_pengurus");
+        if (respP.ok) {
+          const jsonP = await respP.json();
+          if (jsonP && jsonP.success && Array.isArray(jsonP.data)) {
+            state.pengurusList = jsonP.data;
+            AnsorStore.savePengurus(state.pengurusList);
+            renderLandingStats();
+            renderLandingPengurus(landingActivePengurusBanom);
+            if (typeof renderPengurusTable === "function") renderPengurusTable();
+          }
+        }
+      } catch (errSync) {
+        // Fallback LocalStorage
+      }
+
+      // Sinkronisasi data Warta Real dari database MySQL
+      try {
+        const respW = await fetch("api.php?action=get_warta");
+        if (respW.ok) {
+          const jsonW = await respW.json();
+          if (jsonW && jsonW.success && Array.isArray(jsonW.data)) {
+            state.beritaList = jsonW.data;
+            AnsorStore.saveBerita(state.beritaList);
+            renderLandingStats();
+            renderLandingWarta(landingActiveWartaKategori, landingSearchWartaKeyword);
+          }
+        }
+      } catch (errW) {
+        // Fallback LocalStorage
+      }
+
+      // Sinkronisasi data Kader Real dari database MySQL
+      try {
+        const respK = await fetch("api.php?action=get_kader");
+        if (respK.ok) {
+          const jsonK = await respK.json();
+          if (jsonK && jsonK.success && Array.isArray(jsonK.data)) {
+            state.kaderList = jsonK.data;
+            AnsorStore.saveKader(state.kaderList);
+            renderLandingStats();
+          }
+        }
+      } catch (errK) {
+        // Fallback LocalStorage
+      }
+
+      // Sinkronisasi data Agenda Real dari database MySQL
+      try {
+        const respA = await fetch("api.php?action=get_agenda");
+        if (respA.ok) {
+          const jsonA = await respA.json();
+          if (jsonA && jsonA.success && Array.isArray(jsonA.data)) {
+            state.agendaList = jsonA.data;
+            AnsorStore.saveAgenda(state.agendaList);
+            renderLandingStats();
+          }
+        }
+      } catch (errA) {
+        // Fallback LocalStorage
+      }
     }
   });
 });

@@ -76,12 +76,26 @@ switch ($action) {
 
             if (isset($input['id']) && $input['id'] > 0) {
                 $id = intval($input['id']);
-                $q = "UPDATE `pengurus` SET `lembaga`='$lembaga', `jabatan`='$jabatan', `nama`='$nama', `nia`='$nia', `kontak`='$kontak', `urutan`=$urutan WHERE `id`=$id";
+                $check = $conn->query("SELECT `id` FROM `pengurus` WHERE `id`=$id");
+                if ($check && $check->num_rows > 0) {
+                    $q = "UPDATE `pengurus` SET `lembaga`='$lembaga', `jabatan`='$jabatan', `nama`='$nama', `nia`='$nia', `kontak`='$kontak', `urutan`=$urutan WHERE `id`=$id";
+                } else {
+                    $q = "INSERT INTO `pengurus` (`id`, `lembaga`, `jabatan`, `nama`, `nia`, `kontak`, `urutan`) VALUES ($id, '$lembaga', '$jabatan', '$nama', '$nia', '$kontak', $urutan)";
+                }
             } else {
                 $q = "INSERT INTO `pengurus` (`lembaga`, `jabatan`, `nama`, `nia`, `kontak`, `urutan`) VALUES ('$lembaga', '$jabatan', '$nama', '$nia', '$kontak', $urutan)";
             }
             $conn->query($q);
             $response = ['success' => true, 'message' => 'Data pengurus berhasil disimpan'];
+        }
+        break;
+
+    case 'delete_pengurus':
+        $input = json_decode(file_get_contents('php://input'), true);
+        if ($input && isset($input['id'])) {
+            $id = intval($input['id']);
+            $conn->query("DELETE FROM `pengurus` WHERE `id` = $id");
+            $response = ['success' => true, 'message' => 'Data pengurus berhasil dihapus'];
         }
         break;
 

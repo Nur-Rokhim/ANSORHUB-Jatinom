@@ -106,35 +106,8 @@ const INITIAL_USERS = [
 // DATA KEUANGAN / PEMBUKUAN KAS RANTING - Siap Diisi Mulai dari Nol
 const INITIAL_KEUANGAN = [];
 
-// DAFTAR LENGKAP NAMA-NAMA PENGURUS RESMI PR GP ANSOR JATINOM
-const INITIAL_PENGURUS = [
-  // Penasehat
-  { id: 1, lembaga: "Penasehat", jabatan: "Rois Syuriyah PR NU Jatinom", nama: "Kyai Manshur Shodiq", nia: "-", kontak: "081234567800", urutan: 1 },
-  { id: 2, lembaga: "Penasehat", jabatan: "Ketua Tanfidziyah PR NU Jatinom", nama: "Ustadz H. Mahfudz", nia: "-", kontak: "081234567801", urutan: 2 },
-  // Pimpinan Ranting GP Ansor
-  { id: 3, lembaga: "Ansor", jabatan: "Ketua PR GP Ansor Jatinom", nama: "Muhammad Zainal Arifin", nia: "11.07.02.001", kontak: "081234567890", urutan: 3 },
-  { id: 4, lembaga: "Ansor", jabatan: "Wakil Ketua GP Ansor", nama: "Imam Baehaqi", nia: "11.07.02.008", kontak: "081233445566", urutan: 4 },
-  { id: 5, lembaga: "Ansor", jabatan: "Sekretaris PR GP Ansor", nama: "Ahmad Nur Sholihin", nia: "11.07.02.002", kontak: "081398765432", urutan: 5 },
-  { id: 6, lembaga: "Ansor", jabatan: "Wakil Sekretaris GP Ansor", nama: "Choirul Anam", nia: "11.07.02.009", kontak: "081355667788", urutan: 6 },
-  { id: 7, lembaga: "Ansor", jabatan: "Bendahara PR GP Ansor", nama: "Abdul Wahid", nia: "11.07.02.007", kontak: "085711223344", urutan: 7 },
-  { id: 8, lembaga: "Ansor", jabatan: "Wakil Bendahara GP Ansor", nama: "M. Nur Huda", nia: "11.07.02.010", kontak: "085799887766", urutan: 8 },
-  // Satkorkel BANSER
-  { id: 9, lembaga: "Banser", jabatan: "Kasatkorkel BANSER Jatinom", nama: "Subhan Mubarok", nia: "11.07.02.003", kontak: "082155443322", urutan: 9 },
-  { id: 10, lembaga: "Banser", jabatan: "Wakasatkorkel BANSER", nama: "Bambang Tri Sutrisno", nia: "11.07.02.005", kontak: "089677889900", urutan: 10 },
-  { id: 11, lembaga: "Banser", jabatan: "Komandan Unit Provos BANSER", nama: "Rizky Dwi Kurniawan", nia: "11.07.02.006", kontak: "087811223344", urutan: 11 },
-  { id: 12, lembaga: "Banser", jabatan: "Komandan Unit Dalmas BANSER", nama: "Agus Setyawan", nia: "11.07.02.011", kontak: "082233445577", urutan: 12 },
-  { id: 13, lembaga: "Banser", jabatan: "Komandan Unit Balantas BANSER", nama: "Wahyu Hidayat", nia: "11.07.02.012", kontak: "082255667788", urutan: 13 },
-  { id: 14, lembaga: "Banser", jabatan: "Komandan Unit Bagana BANSER", nama: "Danang Prasetyo", nia: "11.07.02.013", kontak: "082288990011", urutan: 14 },
-  // MDS Rijalul Ansor
-  { id: 15, lembaga: "Rijalul Ansor", jabatan: "Ketua MDS Rijalul Ansor", nama: "Gus M. Fahmi Ilham", nia: "11.07.02.004", kontak: "085733221144", urutan: 15 },
-  { id: 16, lembaga: "Rijalul Ansor", jabatan: "Wakil Ketua MDS Rijalul Ansor", nama: "Ustadz M. Imron", nia: "11.07.02.014", kontak: "085766778899", urutan: 16 },
-  { id: 17, lembaga: "Rijalul Ansor", jabatan: "Sekretaris MDS Rijalul Ansor", nama: "Lukman Hakim", nia: "11.07.02.015", kontak: "085744556677", urutan: 17 },
-  { id: 18, lembaga: "Rijalul Ansor", jabatan: "Bendahara MDS Rijalul Ansor", nama: "Arif Munandar", nia: "11.07.02.016", kontak: "085733445566", urutan: 18 },
-  { id: 19, lembaga: "Rijalul Ansor", jabatan: "Koordinator Amaliyah & Sholawat", nama: "Ustadz Saiful Anwar", nia: "11.07.02.017", kontak: "085722334455", urutan: 19 },
-  // Biro & Badan
-  { id: 20, lembaga: "Biro", jabatan: "Ketua Badan Siber Ansor PR Jatinom", nama: "Fajar Sidiq", nia: "11.07.02.018", kontak: "081299887766", urutan: 20 },
-  { id: 21, lembaga: "Biro", jabatan: "Koordinator Biro Pengkaderan (PKD)", nama: "Ahmad Basuki", nia: "11.07.02.019", kontak: "081288776655", urutan: 21 }
-];
+// DATA AWAL PENGURUS - Kosong, siap diisi dari data real
+const INITIAL_PENGURUS = [];
 
 const INITIAL_SIGNATURES = {
   // Ansor
@@ -227,6 +200,7 @@ class AnsorStore {
     localStorage.setItem("sahabat_berita", "[]");
     localStorage.setItem("sahabat_keuangan", "[]");
     localStorage.setItem("sahabat_notifikasi", "[]");
+    localStorage.setItem("sahabat_pengurus", "[]");
     localStorage.setItem("sahabat_surat_counter", "1");
   }
 
@@ -434,7 +408,7 @@ class AnsorStore {
 }
 
 // Auto-migrasi ke data bersih (kosong/mulai dari nol) untuk pengguna lama yang masih menyimpan dummy di localStorage
-const DUMMY_RESET_KEY = "sahabat_dummy_cleared_v4";
+const DUMMY_RESET_KEY = "sahabat_dummy_cleared_v5";
 if (!localStorage.getItem(DUMMY_RESET_KEY)) {
   AnsorStore.resetAllDataToZero();
   localStorage.setItem(DUMMY_RESET_KEY, "true");
