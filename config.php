@@ -107,5 +107,30 @@ function verifyTables($db) {
             ('Biro', 'Ketua Badan Siber Ansor PR Jatinom', 'Fajar Sidiq', '11.07.02.018', '081299887766', 20),
             ('Biro', 'Koordinator Biro Pengkaderan (PKD)', 'Ahmad Basuki', '11.07.02.019', '081288776655', 21)");
     }
+
+    // 3. Cek kolom jumlah_peserta di tabel agenda
+    $checkAgenda = $db->query("SHOW TABLES LIKE 'agenda'");
+    if ($checkAgenda && $checkAgenda->num_rows > 0) {
+        $checkCol = $db->query("SHOW COLUMNS FROM `agenda` LIKE 'jumlah_peserta'");
+        if ($checkCol && $checkCol->num_rows == 0) {
+            $db->query("ALTER TABLE `agenda` ADD COLUMN `jumlah_peserta` INT DEFAULT 0 AFTER `tempat`");
+        }
+    }
+
+    // 4. Cek tabel keuangan
+    $checkKeu = $db->query("SHOW TABLES LIKE 'keuangan'");
+    if ($checkKeu && $checkKeu->num_rows == 0) {
+        $db->query("CREATE TABLE IF NOT EXISTS `keuangan` (
+            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `trx_id` VARCHAR(30) NOT NULL UNIQUE,
+            `tanggal` DATE NOT NULL,
+            `jenis` ENUM('pemasukan', 'pengeluaran') NOT NULL,
+            `kategori` VARCHAR(100) NOT NULL,
+            `jumlah` BIGINT NOT NULL,
+            `keterangan` TEXT DEFAULT NULL,
+            `pj` VARCHAR(100) DEFAULT NULL,
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    }
 }
 ?>

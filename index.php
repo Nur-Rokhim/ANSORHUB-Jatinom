@@ -802,6 +802,15 @@ require_once __DIR__ . '/config.php';
           <span class="flex-1">Keuangan</span>
         </a>
 
+        <!-- Laporan Pertanggung Jawaban (LPJ F4) -->
+        <a data-tab="tab-lpj" class="sidebar-nav-item" id="sidebar-nav-lpj">
+          <span class="icon-box text-emerald-300">
+            <i class="fa-solid fa-file-invoice"></i>
+          </span>
+          <span class="flex-1">Laporan LPJ (F4)</span>
+          <span class="text-[9.5px] px-1.5 py-0.5 rounded-full bg-emerald-800/80 text-emerald-200 border border-emerald-600/50 font-mono font-bold">F4</span>
+        </a>
+
         <!-- Profil Ranting -->
         <a data-tab="tab-profil" class="sidebar-nav-item">
           <span class="icon-box text-amber-300">
@@ -2167,6 +2176,177 @@ require_once __DIR__ . '/config.php';
                 <!-- Injected via JS -->
               </tbody>
             </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== 4.6. TAB: LAPORAN PERTANGGUNG JAWABAN (LPJ KERTAS F4) ==================== -->
+      <section id="tab-lpj" class="tab-pane hidden fade-in-tab space-y-6">
+
+        <!-- Banner LPJ Ranting -->
+        <div id="lpj-banner-header" class="bg-gradient-to-r from-emerald-950 via-emerald-800 to-teal-900 text-white rounded-2xl shadow-md p-6 sm:p-7 flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+          <div class="relative z-10 space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold/20 border border-gold/40 text-gold text-xs font-black uppercase tracking-wider">
+              <i class="fa-solid fa-file-invoice"></i>
+              <span>Dokumen Pertanggungjawaban Resmi Ranting</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+              Laporan Pertanggung Jawaban (LPJ) F4
+            </h2>
+            <p class="text-xs sm:text-sm text-emerald-100/90 max-w-2xl leading-relaxed">
+              Rekapitulasi terpadu seluruh roda organisasi: Struktur Organisasi & Pengurus, Basis Data Anggota, Rekapitulasi Kegiatan & Agenda, serta Pembukuan Kas Keuangan dalam satu dokumen cetak standar <strong>Kertas F4 / Folio (215 &times; 330 mm)</strong>.
+            </p>
+          </div>
+          <div class="relative z-10 flex flex-wrap items-center gap-2 shrink-0">
+            <span class="px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-white flex items-center gap-2 shadow-xs">
+              <i class="fa-solid fa-scroll text-gold"></i>
+              <span>Ukuran: F4 / Folio (215&times;330 mm)</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Filter & Konfigurasi Parameter Dokumen LPJ -->
+        <div id="lpj-filter-card" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-ansor"></i>
+              <span>Pengaturan Periode & Data Pengesahan LPJ</span>
+            </h3>
+            <span class="text-xs text-slate-500">Sesuaikan rentang tanggal dan nama pejabat penandatangan sebelum mencetak</span>
+          </div>
+
+          <form id="form-filter-lpj" class="space-y-4 text-xs">
+            <!-- Baris 1: Filter Periode & Tanggal -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Pilihan Cepat Periode:</label>
+                <select id="lpj-filter-preset" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-medium focus:ring-2 focus:ring-ansor focus:bg-white">
+                  <option value="semua" selected>Semua Data Terdata</option>
+                  <option value="bulan_ini">Bulan Ini</option>
+                  <option value="triwulan">Triwulan Berjalan</option>
+                  <option value="semester">Semester Berjalan</option>
+                  <option value="tahun_2026">Tahun Khidmat 2026</option>
+                  <option value="custom">Kustom Rentang Tanggal</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tanggal Mulai:</label>
+                <input type="date" id="lpj-filter-start" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tanggal Selesai:</label>
+                <input type="date" id="lpj-filter-end" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Label Masa Khidmat / Periode:</label>
+                <input type="text" id="lpj-filter-label" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor focus:bg-white" value="Masa Khidmat 2024 - 2026" placeholder="Contoh: Masa Khidmat 2024 - 2026">
+              </div>
+            </div>
+
+            <!-- Baris 2: Pejabat & Legalitas Dokumen -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2 border-t border-slate-100">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nama Ketua / Pimpinan:</label>
+                <input type="text" id="lpj-nama-pimpinan" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor focus:bg-white" value="Muhammad Zainal Arifin">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nama Sekretaris:</label>
+                <input type="text" id="lpj-nama-sekretaris" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor focus:bg-white" value="Ahmad Nur Sholihin">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nama Bendahara:</label>
+                <input type="text" id="lpj-nama-bendahara" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-semibold focus:ring-2 focus:ring-ansor focus:bg-white" value="Abdul Wahid">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Tempat & Tanggal Penetapan:</label>
+                <input type="text" id="lpj-penetapan-tgl" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" value="Jatinom, 09 November 2026">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Lembaga Pihak Terkait (Mengetahui):</label>
+                <input type="text" id="lpj-mengetahui-org" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" value="PIMPINAN ANAK CABANG GP ANSOR KANIGORO">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nama Pihak Mengetahui (Ketua PAC):</label>
+                <input type="text" id="lpj-mengetahui-nama" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-ansor focus:bg-white" value="Sahabat Ahmad Fauzi, S.Pd.I">
+              </div>
+            </div>
+
+            <!-- Baris 3: Teks Redaksi Khusus (Collapsible) -->
+            <div class="pt-2 border-t border-slate-100">
+              <button type="button" id="btn-toggle-redaksi-lpj" class="text-xs font-bold text-ansor hover:underline flex items-center gap-1.5 py-1">
+                <i class="fa-solid fa-pen-to-square text-[11px]"></i>
+                <span id="label-toggle-redaksi">Kustomisasi Redaksi Pendahuluan & Penutup (Klik untuk Membuka)</span>
+              </button>
+
+              <div id="box-kustom-redaksi-lpj" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Teks Redaksi BAB I (Pendahuluan):</label>
+                  <textarea id="lpj-text-bab1" rows="5" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs leading-relaxed" placeholder="Biarkan kosong untuk menggunakan teks pendahuluan baku"></textarea>
+                  <span class="text-[10.5px] text-slate-500">Kosongkan untuk menggunakan narasi pengantar standar AD/ART Ansor.</span>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Teks Redaksi BAB V (Penutup):</label>
+                  <textarea id="lpj-text-bab5" rows="5" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs leading-relaxed" placeholder="Biarkan kosong untuk menggunakan teks penutup baku"></textarea>
+                  <span class="text-[10.5px] text-slate-500">Kosongkan untuk menggunakan narasi penutup dan ucapan terima kasih standar.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Baris 4: Tombol Aksi Kontrol -->
+            <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-2 text-xs text-slate-600">
+                <i class="fa-solid fa-circle-info text-ansor"></i>
+                <span>Format cetak otomatis disesuaikan ke standar kertas <strong>Folio / F4 (215 &times; 330 mm)</strong></span>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2.5">
+                <button type="button" id="btn-preview-lpj" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg flex items-center gap-1.5 shadow transition">
+                  <i class="fa-solid fa-arrows-rotate text-gold text-xs"></i>
+                  <span>Perbarui Pratinjau</span>
+                </button>
+
+                <button type="button" id="btn-print-lpj" class="px-5 py-2 bg-ansor hover:bg-ansor-dark text-white font-bold rounded-lg flex items-center gap-2 shadow transition">
+                  <i class="fa-solid fa-print text-gold"></i>
+                  <span>Cetak Kertas F4 (Browser)</span>
+                </button>
+
+                <button type="button" id="btn-export-pdf-lpj" class="px-4 py-2 bg-rose-700 hover:bg-rose-800 text-white font-bold rounded-lg flex items-center gap-2 shadow transition">
+                  <i class="fa-solid fa-file-pdf text-rose-200"></i>
+                  <span>Unduh PDF Resmi (F4)</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pratinjau Dokumen Cetak LPJ Kertas F4 -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between px-1">
+            <h4 class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-file-lines text-ansor"></i>
+              <span>Lembar Dokumen Laporan Pertanggung Jawaban (Pratinjau Kertas F4):</span>
+            </h4>
+            <span class="text-[11px] text-slate-500 italic">215 mm &times; 330 mm &bull; Margin 20-15-20-25 mm</span>
+          </div>
+
+          <!-- Wrapper Dokumen Kertas F4 -->
+          <div id="lpj-print-wrapper" class="overflow-x-auto pb-4">
+            <div id="lpj-paper" class="lpj-paper-preview space-y-4">
+              <!-- Injected via JavaScript renderLpjDocument() -->
+              <div class="text-center py-12 text-slate-400 italic">
+                <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-ansor"></i>
+                <p>Memuat dan menyusun data Laporan Pertanggung Jawaban...</p>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1157,3 +1157,102 @@ body.viewing-app #view-landing-page {
   color: #3730a3;
   border: 1px solid #c7d2fe;
 }
+
+/* ============================================================
+ * MODUL LAPORAN PERTANGGUNG JAWABAN (LPJ) KERTAS F4 (FOLIO)
+ * Ukuran: 215 mm x 330 mm
+ * ============================================================ */
+.lpj-paper-preview {
+  background: white;
+  width: 100%;
+  max-width: 820px;
+  min-height: 1100px;
+  margin: 0 auto;
+  padding: 40px 35px 40px 45px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-family: 'Times New Roman', Times, serif;
+  color: #111827;
+  font-size: 11.5pt;
+  line-height: 1.4;
+}
+
+.lpj-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10pt;
+  margin: 8px 0 16px 0;
+}
+
+.lpj-table th,
+.lpj-table td {
+  border: 1px solid #334155;
+  padding: 5px 8px;
+  vertical-align: top;
+}
+
+.lpj-table th {
+  background-color: #f1f5f9;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media print {
+  body.printing-lpj {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  body.printing-lpj #view-app,
+  body.printing-lpj #view-landing-page,
+  body.printing-lpj #app-header,
+  body.printing-lpj #app-sidebar,
+  body.printing-lpj #app-footer,
+  body.printing-lpj #modal-login-portal,
+  body.printing-lpj #modal-preview-surat,
+  body.printing-lpj #lpj-filter-card,
+  body.printing-lpj #lpj-banner-header,
+  body.printing-lpj .no-print-lpj {
+    display: none !important;
+  }
+
+  body.printing-lpj #tab-lpj {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  body.printing-lpj .lpj-paper-preview {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    font-size: 11.5pt !important;
+    line-height: 1.35 !important;
+  }
+
+  body.printing-lpj .lpj-table thead {
+    display: table-header-group !important;
+  }
+
+  body.printing-lpj .lpj-table tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  body.printing-lpj .lpj-break-before {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  body.printing-lpj .lpj-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}

@@ -549,6 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "tab-kader": "3. E-Kader",
     "tab-agenda": "4. Agenda",
     "tab-keuangan": "Keuangan Ranting",
+    "tab-lpj": "Laporan Pertanggung Jawaban (LPJ F4)",
     "tab-profil": "5. Profil Ranting",
     "tab-pengaturan": "6. Pengaturan"
   };
@@ -622,6 +623,8 @@ document.addEventListener("DOMContentLoaded", () => {
       renderAgendaCards();
     } else if (tabId === "tab-keuangan") {
       renderKeuangan();
+    } else if (tabId === "tab-lpj") {
+      renderLpjDocument();
     } else if (tabId === "tab-profil") {
       renderProfilDetails();
       renderPengurusTable();
@@ -2530,6 +2533,561 @@ _Wassalamu'alaikum Wr. Wb._
 
   document.getElementById("filter-jenis-kas")?.addEventListener("change", renderKeuangan);
   document.getElementById("search-keuangan")?.addEventListener("input", renderKeuangan);
+
+  // --- TAB: LAPORAN PERTANGGUNG JAWABAN (LPJ KERTAS F4) ---
+  function renderLpjDocument() {
+    const paperEl = document.getElementById("lpj-paper");
+    if (!paperEl) return;
+
+    // 1. Ambil Parameter Filter & Pengesahan
+    const startDate = document.getElementById("lpj-filter-start")?.value || "";
+    const endDate = document.getElementById("lpj-filter-end")?.value || "";
+    const periodeLabel = document.getElementById("lpj-filter-label")?.value.trim() || "Masa Khidmat 2024 - 2026";
+
+    const pimpinanNama = document.getElementById("lpj-nama-pimpinan")?.value.trim() || "Muhammad Zainal Arifin";
+    const sekretarisNama = document.getElementById("lpj-nama-sekretaris")?.value.trim() || "Ahmad Nur Sholihin";
+    const bendaharaNama = document.getElementById("lpj-nama-bendahara")?.value.trim() || "Abdul Wahid";
+    const penetapanTgl = document.getElementById("lpj-penetapan-tgl")?.value.trim() || ("Jatinom, " + getIndonesianDate(todayStr));
+    const mengetahuiOrg = document.getElementById("lpj-mengetahui-org")?.value.trim() || "PIMPINAN ANAK CABANG GP ANSOR KANIGORO";
+    const mengetahuiNama = document.getElementById("lpj-mengetahui-nama")?.value.trim() || "Sahabat Ahmad Fauzi, S.Pd.I";
+
+    const bab1Custom = document.getElementById("lpj-text-bab1")?.value.trim() || "";
+    const bab5Custom = document.getElementById("lpj-text-bab5")?.value.trim() || "";
+
+    // 2. Olah Data Struktur Pengurus & Kader
+    const pengurusList = (state.pengurusList && state.pengurusList.length > 0) ? [...state.pengurusList] : AnsorStore.getPengurus();
+    pengurusList.sort((a, b) => (parseInt(a.urutan) || 99) - (parseInt(b.urutan) || 99));
+
+    const kaderList = state.kaderList || AnsorStore.getKader();
+    const totalPengurus = pengurusList.length;
+    const totalKader = kaderList.length;
+
+    // 3. Olah Data Agenda Kegiatan
+    let agendaList = [...(state.agendaList || AnsorStore.getAgenda())];
+    if (startDate) agendaList = agendaList.filter(a => a.tanggal >= startDate);
+    if (endDate) agendaList = agendaList.filter(a => a.tanggal <= endDate);
+    agendaList.sort((a, b) => (a.tanggal || "").localeCompare(b.tanggal || ""));
+    const totalAgenda = agendaList.length;
+
+    // 4. Olah Data Keuangan Kas Ranting
+    const allKeuangan = state.keuanganList || AnsorStore.getKeuangan();
+    let saldoAwal = 0;
+    if (startDate) {
+      allKeuangan.forEach(k => {
+        if (k.tanggal < startDate) {
+          const jml = parseInt(k.jumlah) || 0;
+          if (k.jenis === "pemasukan") saldoAwal += jml;
+          else if (k.jenis === "pengeluaran") saldoAwal -= jml;
+        }
+      });
+    }
+
+    let filteredKeu = allKeuangan;
+    if (startDate) filteredKeu = filteredKeu.filter(k => k.tanggal >= startDate);
+    if (endDate) filteredKeu = filteredKeu.filter(k => k.tanggal <= endDate);
+    filteredKeu.sort((a, b) => (a.tanggal || "").localeCompare(b.tanggal || ""));
+
+    const pemasukan = filteredKeu.filter(k => k.jenis === "pemasukan");
+    const pengeluaran = filteredKeu.filter(k => k.jenis === "pengeluaran");
+
+    let totalPemasukan = 0;
+    pemasukan.forEach(m => totalPemasukan += (parseInt(m.jumlah) || 0));
+
+    let totalPengeluaran = 0;
+    pengeluaran.forEach(k => totalPengeluaran += (parseInt(k.jumlah) || 0));
+
+    const saldoAkhir = saldoAwal + totalPemasukan - totalPengeluaran;
+
+    // Format label periode
+    let periodeDisplay = periodeLabel;
+    if (startDate && endDate) {
+      periodeDisplay += ` (${getIndonesianDate(startDate)} s/d ${getIndonesianDate(endDate)})`;
+    }
+
+    // Logo Ansor
+    const logoAnsorHTML = getLogoHTML("ansor", "w-16 h-16 object-contain");
+
+    // Bangun HTML Lembar Dokumen
+    let html = `
+      <!-- KOP SURAT RESMI GP ANSOR -->
+      <div class="border-b-2 border-slate-900 pb-2 mb-4">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 4px;">
+          <tr>
+            <td style="width: 75px; vertical-align: middle; text-align: center;">
+              <div class="w-16 h-16 flex items-center justify-center">
+                ${logoAnsorHTML}
+              </div>
+            </td>
+            <td style="text-align: center; vertical-align: middle; padding: 0 10px;">
+              <div style="font-size: 13pt; font-weight: bold; color: #006837; letter-spacing: 0.5px;">PIMPINAN RANTING GERAKAN PEMUDA ANSOR</div>
+              <div style="font-size: 16pt; font-weight: 900; color: #000; letter-spacing: 1px; margin: 1px 0;">DESA JATINOM</div>
+              <div style="font-size: 11pt; font-weight: bold; color: #1e293b;">KECAMATAN KANIGORO KABUPATEN BLITAR</div>
+              <div style="font-size: 9pt; font-style: italic; color: #475569; margin-top: 2px;">
+                Sekretariat: Jl. Raya Jatinom, Kec. Kanigoro, Kab. Blitar 66171 &bull; Email: ansor.jatinom@gmail.com
+              </div>
+            </td>
+          </tr>
+        </table>
+        <div style="border-top: 2px solid #000; border-bottom: 1px solid #000; height: 2px; margin-top: 4px;"></div>
+      </div>
+
+      <!-- JUDUL DOKUMEN -->
+      <div style="text-align: center; margin-bottom: 22px;">
+        <h1 style="font-size: 14pt; font-weight: bold; text-decoration: underline; margin: 0 0 4px 0; letter-spacing: 0.5px;">
+          LAPORAN PERTANGGUNG JAWABAN (LPJ)
+        </h1>
+        <div style="font-size: 11pt; font-weight: bold; margin: 0;">PIMPINAN RANTING GERAKAN PEMUDA ANSOR DESA JATINOM</div>
+        <div style="font-size: 10.5pt; color: #334155; margin-top: 2px;">Periode: <strong>${periodeDisplay}</strong></div>
+      </div>
+
+      <!-- BAB I: PENDAHULUAN -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 11.5pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #64748b; padding-bottom: 3px; margin-bottom: 8px;">
+          BAB I &bull; PENDAHULUAN
+        </div>
+        ${bab1Custom ? `
+        <div style="text-align: justify; text-indent: 28px; line-height: 1.45;">
+          ${bab1Custom.replace(/\n/g, "<br>")}
+        </div>
+        ` : `
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Segala puji dan syukur senantiasa kita panjatkan ke hadirat Allah SWT atas segala limpahan rahmat, hidayah, dan inayah-Nya sehingga seluruh amanah kepengurusan Gerakan Pemuda Ansor Pimpinan Ranting Desa Jatinom dapat terlaksana dengan baik, tertib, dan berkesinambungan dalam bingkai khidmah Aswaja An-Nahdliyyah.
+        </p>
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Shalawat teriring salam semoga senantiasa tercurahkan kepada junjungan kita Baginda Nabi Besar Muhammad SAW, keluarga, sahabat, serta alim ulama muassis Nahdlatul Ulama yang telah mewariskan semangat luhur menjaga marwah Agama, Ulama, dan Keutuhan Bangsa.
+        </p>
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Laporan Pertanggung Jawaban ini disusun sebagai perwujudan transparansi, akuntabilitas, serta evaluasi menyeluruh atas amanah roda organisasi yang telah dijalankan. Melalui dokumen ini disajikan ringkasan susunan organisasi, data keanggotaan kader, rekapitulasi realisasi program kerja, dan pembukuan kas keuangan sebagai dasar pijakan evaluatif demi kemajuan khidmah pada masa khidmat berikutnya.
+        </p>
+        <div style="margin-top: 8px; font-weight: bold;">Dasar Pelaksanaan:</div>
+        <ol style="margin: 4px 0 10px 24px; padding: 0; font-size: 11pt; line-height: 1.4;">
+          <li>Peraturan Dasar dan Peraturan Rumah Tangga (PD/PRT) Gerakan Pemuda Ansor.</li>
+          <li>Hasil Keputusan Konferensi Ranting Gerakan Pemuda Ansor Desa Jatinom.</li>
+          <li>Rencana Strategis dan Program Kerja Ranting GP Ansor Desa Jatinom Periode Berjalan.</li>
+        </ol>
+        `}
+      </div>
+
+      <!-- BAB II: STRUKTUR ORGANISASI & KADERISASI -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 11.5pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #64748b; padding-bottom: 3px; margin-bottom: 8px;">
+          BAB II &bull; STRUKTUR ORGANISASI & KADERISASI
+        </div>
+        <p style="margin: 4px 0 8px 0;">Susunan pengurus Pimpinan Ranting GP Ansor Desa Jatinom beserta banom dan biro kerja berdasarkan hierarki jabatan resmi:</p>
+
+        ${pengurusList.length === 0 ? `
+        <div style="text-align: center; padding: 12px; color: #64748b; font-style: italic; border: 1px dashed #cbd5e1; border-radius: 6px;">
+          Tidak ada data pengurus pada periode ini.
+        </div>
+        ` : `
+        <table class="lpj-table">
+          <thead>
+            <tr>
+              <th style="width: 32px;">No</th>
+              <th>Nama Pengurus</th>
+              <th>Jabatan</th>
+              <th>Lembaga / Banom</th>
+              <th style="width: 110px;">Kontak</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pengurusList.map((p, idx) => `
+            <tr>
+              <td style="text-align: center;">${idx + 1}</td>
+              <td style="font-weight: bold;">${p.nama}</td>
+              <td>${p.jabatan}</td>
+              <td>${p.lembaga}</td>
+              <td style="text-align: center;">${p.kontak || "-"}</td>
+            </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        `}
+
+        <div style="font-size: 10.5pt; margin-top: 6px; padding: 6px 10px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px;">
+          <strong>Rekapitulasi Keanggotaan:</strong> Jumlah Pengurus Terdaftar: <strong>${totalPengurus}</strong> Personil &bull; Jumlah Anggota / Kader Terdata: <strong>${totalKader}</strong> Kader.
+        </div>
+      </div>
+
+      <!-- BAB III: REKAPITULASI AGENDA & KEGIATAN -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 11.5pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #64748b; padding-bottom: 3px; margin-bottom: 8px;">
+          BAB III &bull; REKAPITULASI AGENDA & KEGIATAN
+        </div>
+        <p style="margin: 4px 0 8px 0;">Daftar realisasi program kerja, kegiatan apel, pengamanan, rutinan shalawat, dan konsolidasi organisasi selama periode laporan:</p>
+
+        ${agendaList.length === 0 ? `
+        <div style="text-align: center; padding: 12px; color: #64748b; font-style: italic; border: 1px dashed #cbd5e1; border-radius: 6px;">
+          Tidak ada data agenda / kegiatan pada periode ini.
+        </div>
+        ` : `
+        <table class="lpj-table">
+          <thead>
+            <tr>
+              <th style="width: 28px;">No</th>
+              <th style="width: 80px;">Tanggal</th>
+              <th>Nama Agenda / Kegiatan</th>
+              <th>Tempat Pelaksanaan</th>
+              <th style="width: 75px;">Peserta</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${agendaList.map((ag, i) => `
+            <tr>
+              <td style="text-align: center;">${i + 1}</td>
+              <td style="text-align: center;">${getIndonesianDate(ag.tanggal)}</td>
+              <td style="font-weight: bold;">${ag.judul}</td>
+              <td>${ag.tempat}</td>
+              <td style="text-align: center;">${ag.jumlah_peserta ? ag.jumlah_peserta + ' org' : '-'}</td>
+              <td>${ag.keterangan || (ag.kategori || "-")}</td>
+            </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        <div style="font-size: 10.5pt; margin-top: 4px;">
+          Total Agenda Kegiatan Terlaksana: <strong>${totalAgenda}</strong> Kegiatan.
+        </div>
+        `}
+      </div>
+
+      <!-- BAB IV: LAPORAN KEUANGAN & PEMBUKUAN KAS -->
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 11.5pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #64748b; padding-bottom: 3px; margin-bottom: 8px;">
+          BAB IV &bull; LAPORAN KEUANGAN & PEMBUKUAN KAS
+        </div>
+        <p style="margin: 4px 0 8px 0;">Sirkulasi arus kas, realisasi penerimaan iuran/infaq, serta alokasi belanja operasional kepengurusan:</p>
+
+        <!-- Saldo Awal -->
+        <div style="font-size: 11pt; margin-bottom: 8px;">
+          <strong>Saldo Awal Periode:</strong> <span style="font-weight: bold; color: #006837;">${formatRupiah(saldoAwal)}</span>
+        </div>
+
+        <!-- Rincian Pemasukan -->
+        <div style="font-weight: bold; font-size: 10.5pt; margin-top: 10px;">A. Rincian Pemasukan Kas:</div>
+        ${pemasukan.length === 0 ? `
+        <div style="text-align: center; padding: 8px; color: #64748b; font-style: italic; border: 1px dashed #cbd5e1; border-radius: 6px; margin: 4px 0 10px 0;">
+          Tidak ada data pemasukan pada periode ini.
+        </div>
+        ` : `
+        <table class="lpj-table">
+          <thead>
+            <tr>
+              <th style="width: 30px;">No</th>
+              <th style="width: 80px;">Tanggal</th>
+              <th>Uraian / Sumber Pemasukan</th>
+              <th>Penanggung Jawab</th>
+              <th style="width: 110px;">Jumlah</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pemasukan.map((pm, im) => `
+            <tr>
+              <td style="text-align: center;">${im + 1}</td>
+              <td style="text-align: center;">${getIndonesianDate(pm.tanggal)}</td>
+              <td>${pm.kategori}${pm.keterangan ? ' - ' + pm.keterangan : ''}</td>
+              <td>${pm.pj || "-"}</td>
+              <td style="text-align: right;">${formatRupiah(pm.jumlah)}</td>
+            </tr>
+            `).join("")}
+            <tr style="background: #f8fafc; font-weight: bold;">
+              <td colspan="4" style="text-align: right;">TOTAL PEMASUKAN:</td>
+              <td style="text-align: right; color: #006837;">${formatRupiah(totalPemasukan)}</td>
+            </tr>
+          </tbody>
+        </table>
+        `}
+
+        <!-- Rincian Pengeluaran -->
+        <div style="font-weight: bold; font-size: 10.5pt; margin-top: 10px;">B. Rincian Pengeluaran Kas:</div>
+        ${pengeluaran.length === 0 ? `
+        <div style="text-align: center; padding: 8px; color: #64748b; font-style: italic; border: 1px dashed #cbd5e1; border-radius: 6px; margin: 4px 0 10px 0;">
+          Tidak ada data pengeluaran pada periode ini.
+        </div>
+        ` : `
+        <table class="lpj-table">
+          <thead>
+            <tr>
+              <th style="width: 30px;">No</th>
+              <th style="width: 80px;">Tanggal</th>
+              <th>Uraian / Alokasi Belanja</th>
+              <th>Penanggung Jawab</th>
+              <th style="width: 110px;">Jumlah</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pengeluaran.map((pk, ik) => `
+            <tr>
+              <td style="text-align: center;">${ik + 1}</td>
+              <td style="text-align: center;">${getIndonesianDate(pk.tanggal)}</td>
+              <td>${pk.kategori}${pk.keterangan ? ' - ' + pk.keterangan : ''}</td>
+              <td>${pk.pj || "-"}</td>
+              <td style="text-align: right;">${formatRupiah(pk.jumlah)}</td>
+            </tr>
+            `).join("")}
+            <tr style="background: #f8fafc; font-weight: bold;">
+              <td colspan="4" style="text-align: right;">TOTAL PENGELUARAN:</td>
+              <td style="text-align: right; color: #c02626;">${formatRupiah(totalPengeluaran)}</td>
+            </tr>
+          </tbody>
+        </table>
+        `}
+
+        <!-- Rekapitulasi Kas Akhir -->
+        <div style="border: 1px solid #334155; background: #fdfdfd; padding: 10px 14px; border-radius: 6px; margin-top: 10px; page-break-inside: avoid;">
+          <div style="font-weight: bold; border-bottom: 1px solid #cbd5e1; padding-bottom: 4px; margin-bottom: 6px;">
+            REKAPITULASI KAS AKHIR PERIODE:
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 10.5pt;">
+            <tr>
+              <td style="width: 250px;">Saldo Awal Periode</td>
+              <td style="width: 15px;">:</td>
+              <td style="text-align: right; font-weight: bold;">${formatRupiah(saldoAwal)}</td>
+            </tr>
+            <tr>
+              <td>Total Pemasukan Kas (+)</td>
+              <td>:</td>
+              <td style="text-align: right; font-weight: bold; color: #006837;">${formatRupiah(totalPemasukan)}</td>
+            </tr>
+            <tr>
+              <td>Total Pengeluaran Kas (-)</td>
+              <td>:</td>
+              <td style="text-align: right; font-weight: bold; color: #c02626;">${formatRupiah(totalPengeluaran)}</td>
+            </tr>
+            <tr style="border-top: 1.5px solid #000;">
+              <td style="font-weight: bold; padding-top: 4px;">SALDO KAS AKHIR PERIODE</td>
+              <td style="padding-top: 4px;">:</td>
+              <td style="text-align: right; font-weight: bold; font-size: 11.5pt; padding-top: 4px; color: ${saldoAkhir >= 0 ? '#006837' : '#c02626'};">
+                ${formatRupiah(saldoAkhir)}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- BAB V: PENUTUP -->
+      <div style="margin-bottom: 22px;">
+        <div style="font-size: 11.5pt; font-weight: bold; text-transform: uppercase; border-bottom: 1px solid #64748b; padding-bottom: 3px; margin-bottom: 8px;">
+          BAB V &bull; PENUTUP
+        </div>
+        ${bab5Custom ? `
+        <div style="text-align: justify; text-indent: 28px; line-height: 1.45;">
+          ${bab5Custom.replace(/\n/g, "<br>")}
+        </div>
+        ` : `
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Demikian Laporan Pertanggung Jawaban (LPJ) ini kami susun dengan penuh tanggung jawab, keterbukaan, dan niat tulus berkhidmah kepada Nahdlatul Ulama, Agama, dan Bangsa. Kami menyadari sepenuhnya bahwa dalam perjalanan kepengurusan ini tentu masih terdapat kekurangan yang membutuhkan penyempurnaan di masa mendatang.
+        </p>
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Ucapan terima kasih dan penghargaan yang tulus kami haturkan kepada segenap jajaran Pengurus Ranting NU Desa Jatinom, PAC GP Ansor Kanigoro, para alim ulama, sesepuh, donatur, serta seluruh Sahabat Ansor dan Banser yang telah bahu-membahu menyukseskan setiap agenda keumatan.
+        </p>
+        <p style="text-align: justify; text-indent: 28px; margin: 6px 0; line-height: 1.45;">
+          Semoga Allah Subhanahu Wa Ta'ala senantiasa melimpahkan taufiq, ridha, dan perlindungan-Nya atas seluruh ikhtiar perjuangan kita. Aamiin Yaa Rabbal 'Aalamiin.
+        </p>
+        `}
+      </div>
+
+      <!-- LEMBAR PENGESAHAN TANDA TANGAN -->
+      <div style="margin-top: 25px; page-break-inside: avoid;">
+        <div style="text-align: center; margin-bottom: 8px; font-size: 10.5pt;">
+          Ditetapkan di: <strong>${penetapanTgl.split(",")[0] || "Jatinom"}</strong><br>
+          Pada tanggal: <strong>${penetapanTgl.includes(",") ? penetapanTgl.split(",")[1].trim() : penetapanTgl}</strong>
+        </div>
+
+        <div style="text-align: center; font-weight: bold; font-size: 11pt; margin-bottom: 14px;">
+          PIMPINAN RANTING GERAKAN PEMUDA ANSOR<br>
+          DESA JATINOM KECAMATAN KANIGORO
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 10.5pt;">
+          <tr>
+            <td style="width: 33%;">
+              Bendahara,<br>
+              <div style="height: 65px;"></div>
+              <strong><u>${bendaharaNama}</u></strong><br>
+              <span>NIA. 11.07.02.007</span>
+            </td>
+            <td style="width: 34%;">
+              Sekretaris,<br>
+              <div style="height: 65px;"></div>
+              <strong><u>${sekretarisNama}</u></strong><br>
+              <span>NIA. 11.07.02.002</span>
+            </td>
+            <td style="width: 33%;">
+              Ketua,<br>
+              <div style="height: 65px;"></div>
+              <strong><u>${pimpinanNama}</u></strong><br>
+              <span>NIA. 11.07.02.001</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="padding-top: 28px;">
+              Mengetahui,<br>
+              <strong>${mengetahuiOrg}</strong><br>
+              <div style="height: 65px;"></div>
+              <strong><u>${mengetahuiNama}</u></strong>
+            </td>
+          </tr>
+        </table>
+      </div>
+    `;
+
+    paperEl.innerHTML = html;
+  }
+
+  // Preset Periode LPJ
+  document.getElementById("lpj-filter-preset")?.addEventListener("change", (e) => {
+    const val = e.target.value;
+    const startEl = document.getElementById("lpj-filter-start");
+    const endEl = document.getElementById("lpj-filter-end");
+    const now = new Date();
+    const currYear = now.getFullYear();
+
+    if (val === "semua") {
+      if (startEl) startEl.value = "";
+      if (endEl) endEl.value = "";
+    } else if (val === "bulan_ini") {
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      if (startEl) startEl.value = `${y}-${m}-01`;
+      const lastDay = new Date(y, now.getMonth() + 1, 0).getDate();
+      if (endEl) endEl.value = `${y}-${m}-${lastDay}`;
+    } else if (val === "triwulan") {
+      const qStartMonth = Math.floor(now.getMonth() / 3) * 3;
+      const startD = new Date(currYear, qStartMonth, 1);
+      const endD = new Date(currYear, qStartMonth + 3, 0);
+      if (startEl) startEl.value = startD.toISOString().split("T")[0];
+      if (endEl) endEl.value = endD.toISOString().split("T")[0];
+    } else if (val === "semester") {
+      const sStartMonth = now.getMonth() < 6 ? 0 : 6;
+      const startD = new Date(currYear, sStartMonth, 1);
+      const endD = new Date(currYear, sStartMonth + 6, 0);
+      if (startEl) startEl.value = startD.toISOString().split("T")[0];
+      if (endEl) endEl.value = endD.toISOString().split("T")[0];
+    } else if (val === "tahun_2026") {
+      if (startEl) startEl.value = "2026-01-01";
+      if (endEl) endEl.value = "2026-12-31";
+    }
+
+    renderLpjDocument();
+  });
+
+  // Tombol Refresh Pratinjau
+  document.getElementById("btn-preview-lpj")?.addEventListener("click", () => {
+    renderLpjDocument();
+    alert("Pratinjau Dokumen LPJ Kertas F4 berhasil diperbarui!");
+  });
+
+  // Toggle Box Redaksi Khusus
+  document.getElementById("btn-toggle-redaksi-lpj")?.addEventListener("click", () => {
+    const box = document.getElementById("box-kustom-redaksi-lpj");
+    const label = document.getElementById("label-toggle-redaksi");
+    if (!box) return;
+    if (box.classList.contains("hidden")) {
+      box.classList.remove("hidden");
+      if (label) label.textContent = "Tutup Kustomisasi Redaksi Pendahuluan & Penutup";
+    } else {
+      box.classList.add("hidden");
+      if (label) label.textContent = "Kustomisasi Redaksi Pendahuluan & Penutup (Klik untuk Membuka)";
+    }
+  });
+
+  // Tombol Cetak Dokumen F4 via Browser
+  document.getElementById("btn-print-lpj")?.addEventListener("click", () => {
+    renderLpjDocument();
+
+    // Pasang @page khusus F4 secara dinamis
+    let printStyle = document.getElementById("dynamic-lpj-page-style");
+    if (!printStyle) {
+      printStyle = document.createElement("style");
+      printStyle.id = "dynamic-lpj-page-style";
+      document.head.appendChild(printStyle);
+    }
+    printStyle.innerHTML = `
+      @page {
+        size: 215mm 330mm portrait !important;
+        margin: 20mm 15mm 20mm 25mm !important;
+      }
+    `;
+
+    document.body.classList.add("printing-lpj");
+    window.print();
+  });
+
+  // Bersihkan kelas cetak setelah proses print selesai
+  window.addEventListener("afterprint", () => {
+    document.body.classList.remove("printing-lpj");
+    const printStyle = document.getElementById("dynamic-lpj-page-style");
+    if (printStyle) printStyle.remove();
+  });
+
+  // Tombol Unduh PDF Resmi (F4) via Dompdf Backend
+  document.getElementById("btn-export-pdf-lpj")?.addEventListener("click", () => {
+    const startDate = document.getElementById("lpj-filter-start")?.value || "";
+    const endDate = document.getElementById("lpj-filter-end")?.value || "";
+    const periodeLabel = document.getElementById("lpj-filter-label")?.value.trim() || "Masa Khidmat 2024 - 2026";
+    const namaPimpinan = document.getElementById("lpj-nama-pimpinan")?.value.trim() || "Muhammad Zainal Arifin";
+    const namaSekretaris = document.getElementById("lpj-nama-sekretaris")?.value.trim() || "Ahmad Nur Sholihin";
+    const namaBendahara = document.getElementById("lpj-nama-bendahara")?.value.trim() || "Abdul Wahid";
+    const penetapanTgl = document.getElementById("lpj-penetapan-tgl")?.value.trim() || "Jatinom, " + todayStr;
+    const mengetahuiOrg = document.getElementById("lpj-mengetahui-org")?.value.trim() || "PIMPINAN ANAK CABANG GP ANSOR KANIGORO";
+    const mengetahuiNama = document.getElementById("lpj-mengetahui-nama")?.value.trim() || "Sahabat Ahmad Fauzi, S.Pd.I";
+    const bab1Text = document.getElementById("lpj-text-bab1")?.value.trim() || "";
+    const bab5Text = document.getElementById("lpj-text-bab5")?.value.trim() || "";
+
+    // Data in-memory (fallback bila MySQL offline)
+    const payload = {
+      start_date: startDate,
+      end_date: endDate,
+      periode_label: periodeLabel,
+      nama_pimpinan: namaPimpinan,
+      nama_sekretaris: namaSekretaris,
+      nama_bendahara: namaBendahara,
+      penetapan_kota: penetapanTgl.split(",")[0] || "Jatinom",
+      penetapan_tgl: penetapanTgl.includes(",") ? penetapanTgl.split(",")[1].trim() : todayStr,
+      mengetahui_org: mengetahuiOrg,
+      mengetahui_nama: mengetahuiNama,
+      bab1_text: bab1Text,
+      bab5_text: bab5Text,
+      struktur: state.pengurusList || AnsorStore.getPengurus(),
+      total_kader: (state.kaderList || AnsorStore.getKader()).length,
+      agenda: state.agendaList || AnsorStore.getAgenda(),
+      keuangan: {
+        saldo_awal: 0,
+        pemasukan: (state.keuanganList || AnsorStore.getKeuangan()).filter(x => x.jenis === "pemasukan"),
+        total_pemasukan: (state.keuanganList || AnsorStore.getKeuangan()).filter(x => x.jenis === "pemasukan").reduce((acc, curr) => acc + (parseInt(curr.jumlah) || 0), 0),
+        pengeluaran: (state.keuanganList || AnsorStore.getKeuangan()).filter(x => x.jenis === "pengeluaran"),
+        total_pengeluaran: (state.keuanganList || AnsorStore.getKeuangan()).filter(x => x.jenis === "pengeluaran").reduce((acc, curr) => acc + (parseInt(curr.jumlah) || 0), 0)
+      }
+    };
+
+    // Buat form submission sementara untuk memicu download PDF
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "export_lpj_pdf.php?download=1";
+    form.target = "_blank";
+
+    const inputData = document.createElement("input");
+    inputData.type = "hidden";
+    inputData.name = "payload_json";
+    inputData.value = JSON.stringify(payload);
+    form.appendChild(inputData);
+
+    // Kirim juga parameter POST individual
+    for (const [key, val] of Object.entries(payload)) {
+      if (typeof val !== "object") {
+        const inp = document.createElement("input");
+        inp.type = "hidden";
+        inp.name = key;
+        inp.value = val;
+        form.appendChild(inp);
+      }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  });
 
   // --- TAB 5: PROFIL RANTING & UPLOAD TTD / STEMPEL ---
   function renderProfilDetails() {

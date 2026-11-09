@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `agenda` (
   `tanggal` DATE NOT NULL,
   `waktu` VARCHAR(50) NOT NULL,
   `tempat` VARCHAR(200) NOT NULL,
+  `jumlah_peserta` INT DEFAULT 0,
   `tuan_rumah` VARCHAR(100) DEFAULT NULL,
   `keterangan` TEXT DEFAULT NULL,
   `status` ENUM('Mendatang', 'Selesai') DEFAULT 'Mendatang',
@@ -127,5 +128,18 @@ CREATE TABLE IF NOT EXISTS `surat` (
   `tujuan` VARCHAR(200) NOT NULL,
   `perihal` VARCHAR(255) NOT NULL,
   `tipe` ENUM('Masuk', 'Keluar') NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 7. Tabel Pembukuan Kas & Keuangan Ranting - Siap Diisi Mulai dari Nol
+CREATE TABLE IF NOT EXISTS `keuangan` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `trx_id` VARCHAR(30) NOT NULL UNIQUE,
+  `tanggal` DATE NOT NULL,
+  `jenis` ENUM('pemasukan', 'pengeluaran') NOT NULL,
+  `kategori` VARCHAR(100) NOT NULL,
+  `jumlah` BIGINT NOT NULL,
+  `keterangan` TEXT DEFAULT NULL,
+  `pj` VARCHAR(100) DEFAULT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
