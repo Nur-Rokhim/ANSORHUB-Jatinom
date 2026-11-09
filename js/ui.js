@@ -364,28 +364,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Tombol buka login modal dari header & sidebar (Ganti Akun)
   document.getElementById("btn-buka-login")?.addEventListener("click", () => {
-    document.getElementById("login-error-msg")?.classList.add("hidden");
-    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
-    modalLoginPortal.classList.remove("hidden");
-    document.getElementById("login-pin")?.focus();
+    openLoginModal();
   });
   document.getElementById("badge-active-user-container")?.addEventListener("click", () => {
-    document.getElementById("login-error-msg")?.classList.add("hidden");
-    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
-    modalLoginPortal.classList.remove("hidden");
+    openLoginModal();
   });
   document.getElementById("sidebar-user-card")?.addEventListener("click", () => {
-    document.getElementById("login-error-msg")?.classList.add("hidden");
-    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
-    modalLoginPortal.classList.remove("hidden");
+    openLoginModal();
     closeSidebar();
   });
   document.getElementById("sidebar-btn-login")?.addEventListener("click", () => {
-    document.getElementById("login-error-msg")?.classList.add("hidden");
-    document.getElementById("login-pin") && (document.getElementById("login-pin").value = "");
-    modalLoginPortal.classList.remove("hidden");
+    openLoginModal();
     closeSidebar();
-    document.getElementById("login-pin")?.focus();
   });
   document.getElementById("sidebar-btn-backup")?.addEventListener("click", () => {
     document.getElementById("modal-backup")?.classList.remove("hidden");
@@ -2821,10 +2811,17 @@ _Wassalamu'alaikum Wr. Wb._
         </div>
 
         <div class="pt-3 border-t border-slate-100 mt-3 flex items-center justify-between gap-2">
-          <button data-id="${u.id}" class="btn-switch-user text-xs font-bold ${isCurrent ? "text-emerald-700 font-extrabold" : "text-ansor hover:underline"} flex items-center gap-1">
+          ${isCurrent ? `
+          <span class="text-xs font-extrabold text-emerald-700 flex items-center gap-1.5 py-1">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Akun Aktif Saat Ini</span>
+          </span>
+          ` : `
+          <button data-id="${u.id}" class="btn-switch-user text-xs font-bold text-ansor hover:text-ansor-dark hover:underline flex items-center gap-1.5 py-1" title="Beralih ke akun ini melalui halaman login">
             <i class="fa-solid fa-arrow-right-to-bracket text-[10px]"></i>
-            <span>${isCurrent ? "Akun Anda Saat Ini" : "Masuk Akun Ini"}</span>
+            <span>Beralih ke Akun Ini</span>
           </button>
+          `}
           ${isSuperAdmin ? `
           <button data-id="${u.id}" class="btn-edit-user-pin text-xs px-2.5 py-1 rounded bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 font-semibold flex items-center gap-1 transition" title="Ubah Sandi / PIN Akun (Khusus Super Admin)">
             <i class="fa-solid fa-key text-[10px]"></i>
@@ -2841,16 +2838,20 @@ _Wassalamu'alaikum Wr. Wb._
       container.appendChild(card);
     });
 
-    // Switch User Click
+    // Switch User Click: Wajib melalui modal/halaman login untuk verifikasi PIN / Sandi
     document.querySelectorAll(".btn-switch-user").forEach((b) => {
       b.addEventListener("click", () => {
         const id = b.getAttribute("data-id");
         const found = state.usersList.find((x) => x.id === id);
-        if (found) {
-          applyLoginSession(found);
-          renderUserCards();
-          alert(`Berhasil beralih akun ke: ${found.role} (${found.nama})`);
+        if (!found) return;
+
+        if (state.currentUser && state.currentUser.id === found.id) {
+          alert(`Anda saat ini sudah aktif masuk sebagai: ${found.role} (${found.nama})`);
+          return;
         }
+
+        // Buka halaman/modal login dengan akun tujuan terpilih, wajib verifikasi PIN
+        openLoginModal(found.username);
       });
     });
 
@@ -3381,7 +3382,7 @@ _Wassalamu'alaikum Wr. Wb._
     if (adminBar) adminBar.classList.add("hidden");
   }
 
-  function openLoginModal() {
+  function openLoginModal(targetUsername = null) {
     document.getElementById("login-error-msg")?.classList.add("hidden");
     const pinInput = document.getElementById("login-pin");
     if (pinInput) pinInput.value = "";
@@ -3390,7 +3391,18 @@ _Wassalamu'alaikum Wr. Wb._
       modalLoginPortal.style.display = "flex";
     }
     renderLoginRoleButtons();
-    pinInput?.focus();
+
+    if (targetUsername) {
+      const selectEl = document.getElementById("login-username");
+      if (selectEl) {
+        selectEl.value = targetUsername;
+        selectEl.dispatchEvent(new Event("change"));
+      }
+    }
+
+    setTimeout(() => {
+      pinInput?.focus();
+    }, 80);
   }
 
   function closeLoginModal() {

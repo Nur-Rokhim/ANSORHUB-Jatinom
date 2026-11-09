@@ -2570,7 +2570,7 @@ require_once __DIR__ . '/config.php';
               <span class="text-[11px] text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 font-medium">
                 <i class="fa-solid fa-user-shield text-[10px] mr-1"></i> Pengaturan Sandi/PIN Khusus Super Admin
               </span>
-              <span class="text-xs text-slate-500 hidden md:inline">&bull; Klik "Masuk Akun" untuk beralih</span>
+              <span class="text-xs text-slate-500 hidden md:inline">&bull; Beralih akun wajib melalui verifikasi sandi di Halaman Login</span>
             </div>
           </div>
 
