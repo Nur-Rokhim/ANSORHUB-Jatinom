@@ -1580,6 +1580,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modalPreview?.classList.remove("hidden");
     document.body.style.overflow = "hidden";
+    document.body.classList.add("printing-surat");
 
     // Mode Cetak: Atur kelas single-page A4 vs multi-page SK
     const printArea = document.getElementById("print-area-surat");
@@ -1604,10 +1605,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function closePreviewSurat() {
     modalPreview?.classList.add("hidden");
     document.body.style.overflow = "";
-    document.body.classList.remove("mode-print-single-page", "mode-print-multi-page");
+    document.body.classList.remove("printing-surat", "mode-print-single-page", "mode-print-multi-page");
   }
 
   function applyPrintModeClasses() {
+    const isModalOpen = modalPreview && !modalPreview.classList.contains("hidden");
+    if (!isModalOpen && !document.body.classList.contains("printing-surat")) {
+      return;
+    }
+    document.body.classList.add("printing-surat");
     const isBanser = state.activeSubSurat === "banser";
     const currentTpl = (state.currentTemplate || "").toUpperCase();
     const printArea = document.getElementById("print-area-surat");
@@ -1632,6 +1638,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("beforeprint", applyPrintModeClasses);
 
   function triggerPrintSurat() {
+    document.body.classList.add("printing-surat");
     applyPrintModeClasses();
     const isSingle = document.body.classList.contains("mode-print-single-page");
     let printStyle = document.getElementById("dynamic-surat-page-style");
@@ -1644,7 +1651,7 @@ document.addEventListener("DOMContentLoaded", () => {
       printStyle.innerHTML = `
         @page {
           size: A4 portrait !important;
-          margin: 15mm 15mm 15mm 20mm !important;
+          margin: 12mm 15mm 12mm 20mm !important;
         }
       `;
     } else {
@@ -3061,7 +3068,7 @@ _Wassalamu'alaikum Wr. Wb._
 
   // Bersihkan kelas cetak setelah proses print selesai
   window.addEventListener("afterprint", () => {
-    document.body.classList.remove("printing-lpj");
+    document.body.classList.remove("printing-lpj", "printing-surat");
     const printLpjStyle = document.getElementById("dynamic-lpj-page-style");
     if (printLpjStyle) printLpjStyle.remove();
     const printSuratStyle = document.getElementById("dynamic-surat-page-style");

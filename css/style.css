@@ -656,12 +656,12 @@ body.viewing-app #view-landing-page {
    * @page: Margin Standar Tata Naskah Dinas Persuratan Indonesia
    * Kertas: A4 (210 x 297 mm) Portrait
    * Kiri: 20mm (ruang jilid / perforator arsip)
-   * Kanan: 15mm, Atas: 15mm, Bawah: 15mm
-   * Ruang cetak efektif: Lebar 175mm, Tinggi 267mm (pasti pas 1 lembar utuh)
+   * Kanan: 15mm, Atas: 12mm, Bawah: 12mm
+   * Ruang cetak efektif: Lebar 175mm, Tinggi 273mm (pasti pas 1 lembar utuh)
    * ============================================================ */
   @page {
     size: A4 portrait;
-    margin: 15mm 15mm 15mm 20mm;
+    margin: 12mm 15mm 12mm 20mm;
   }
 
   /* Paksa warna latar & stempel basah tampil tajam walau Background Graphics OFF */
@@ -683,7 +683,87 @@ body.viewing-app #view-landing-page {
     color: #000000 !important;
   }
 
-  /* Sembunyikan seluruh UI aplikasi & backdrop modal */
+  /* ============================================================
+   * ISOLASI TOTAL CETAK SURAT (MUTLAK 1 LEMBAR HALAMAN A4)
+   * Saat body memiliki class .printing-surat:
+   * Sembunyikan semua elemen di bawah body KECUALI #modal-preview-surat.
+   * Nolkan seluruh margin, padding, border, dan shadow.
+   * ============================================================ */
+  body.printing-surat {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  body.printing-surat > *:not(#modal-preview-surat) {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  body.printing-surat #modal-preview-surat {
+    position: static !important;
+    inset: auto !important;
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    z-index: auto !important;
+  }
+
+  body.printing-surat #modal-preview-surat .modal-content-box {
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    background: white !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  body.printing-surat #modal-preview-surat .modal-content-box > *:not(#print-area-surat) {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  body.printing-surat #print-area-surat {
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Sembunyikan seluruh UI aplikasi & backdrop modal (General Fallback) */
   .no-print,
   #app-header,
   #app-sidebar,
@@ -1196,14 +1276,19 @@ body.viewing-app #view-landing-page {
   /* ============================================================
    * SINGLE-PAGE: utuh tanpa terpotong dan tanpa halaman kedua
    * ============================================================ */
-  body.mode-print-single-page {
+  body.mode-print-single-page,
+  body.printing-surat.mode-print-single-page {
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   body.mode-print-single-page .surat-paper,
   body.mode-print-single-page #print-area-surat,
+  body.printing-surat #print-area-surat,
+  body.printing-surat.mode-print-single-page #print-area-surat,
   .surat-paper.print-exact-single-page {
     page-break-inside: avoid !important;
     page-break-after: avoid !important;

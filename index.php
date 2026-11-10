@@ -2966,8 +2966,8 @@ require_once __DIR__ . '/config.php';
   </div>
 
   <!-- ==================== MODAL: PREVIEW & CETAK SURAT (A4 PRINTABLE) ==================== -->
-  <div id="modal-preview-surat" class="modal-backdrop hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 overflow-y-auto p-4 sm:p-6 flex items-start justify-center">
-    <div class="modal-content-box bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-8 space-y-6 shadow-2xl relative my-4">
+  <div id="modal-preview-surat" class="modal-backdrop hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 overflow-y-auto p-4 sm:p-6 flex items-start justify-center print:p-0 print:m-0 print:static print:bg-white print:overflow-visible print:block">
+    <div class="modal-content-box bg-white rounded-2xl max-w-4xl w-full p-4 sm:p-8 space-y-6 shadow-2xl relative my-4 print:p-0 print:m-0 print:border-none print:shadow-none print:space-y-0 print:w-full print:max-w-none print:static">
       
       <!-- Toolbar Aksi Modal Preview -->
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b pb-4 no-print">
@@ -2988,7 +2988,7 @@ require_once __DIR__ . '/config.php';
       </div>
 
       <!-- KERTAS SURAT RESMI (PRINT CANVAS) -->
-      <div id="print-area-surat" class="surat-paper bg-white p-8 sm:p-12 border border-slate-300 text-slate-900">
+      <div id="print-area-surat" class="surat-paper bg-white p-8 sm:p-12 border border-slate-300 text-slate-900 print:p-0 print:m-0 print:border-none print:shadow-none">
         
         <!-- KOP SURAT RESMI -->
         <div id="print-kop-container" class="kop-surat-container flex items-center justify-between mb-2">
