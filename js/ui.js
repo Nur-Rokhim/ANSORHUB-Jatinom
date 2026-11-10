@@ -1407,7 +1407,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elPrintTujuan) elPrintTujuan.textContent = tujuan;
 
     const elPrintIsi = document.getElementById("print-isi-surat");
-    if (elPrintIsi) elPrintIsi.innerHTML = isiHTML;
+    if (elPrintIsi) {
+      elPrintIsi.innerHTML = isiHTML;
+      // Format Standar Penulisan Persuratan:
+      // Salam pembuka, salam penutup, dan motto rata kiri (tanpa indent)
+      // Paragraf alinea isi baru diberi indentasi 1.0 cm
+      elPrintIsi.querySelectorAll("p").forEach((p) => {
+        const txt = p.textContent.trim().toLowerCase();
+        if (
+          txt.startsWith("assalamu'alaikum") ||
+          txt.startsWith("assalamualaikum") ||
+          txt.startsWith("wassalamu'alaikum") ||
+          txt.startsWith("wassalamualaikum") ||
+          txt.startsWith("wallahul muwaffiq") ||
+          txt.startsWith("salam silaturrahim") ||
+          txt.startsWith("bismillahirrahmanirrahim")
+        ) {
+          p.classList.add("salam-text");
+          p.classList.remove("paragraf-isi");
+        } else {
+          p.classList.add("paragraf-isi");
+          p.classList.remove("salam-text");
+        }
+      });
+    }
 
     const elPrintAlamat = document.getElementById("print-kop-alamat");
     if (elPrintAlamat) elPrintAlamat.textContent = alamatKop;
@@ -1621,7 +1644,7 @@ document.addEventListener("DOMContentLoaded", () => {
       printStyle.innerHTML = `
         @page {
           size: A4 portrait !important;
-          margin: 10mm 14mm 10mm 18mm !important;
+          margin: 15mm 15mm 15mm 20mm !important;
         }
       `;
     } else {
