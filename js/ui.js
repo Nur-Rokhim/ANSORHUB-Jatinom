@@ -1610,6 +1610,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function triggerPrintSurat() {
     applyPrintModeClasses();
+    const isSingle = document.body.classList.contains("mode-print-single-page");
+    let printStyle = document.getElementById("dynamic-surat-page-style");
+    if (!printStyle) {
+      printStyle = document.createElement("style");
+      printStyle.id = "dynamic-surat-page-style";
+      document.head.appendChild(printStyle);
+    }
+    if (isSingle) {
+      printStyle.innerHTML = `
+        @page {
+          size: A4 portrait !important;
+          margin: 12mm 15mm 12mm 20mm !important;
+        }
+      `;
+    } else {
+      printStyle.innerHTML = `
+        @page {
+          size: A4 portrait !important;
+          margin: 15mm 15mm 15mm 20mm !important;
+        }
+      `;
+    }
     window.print();
   }
 
@@ -3017,8 +3039,10 @@ _Wassalamu'alaikum Wr. Wb._
   // Bersihkan kelas cetak setelah proses print selesai
   window.addEventListener("afterprint", () => {
     document.body.classList.remove("printing-lpj");
-    const printStyle = document.getElementById("dynamic-lpj-page-style");
-    if (printStyle) printStyle.remove();
+    const printLpjStyle = document.getElementById("dynamic-lpj-page-style");
+    if (printLpjStyle) printLpjStyle.remove();
+    const printSuratStyle = document.getElementById("dynamic-surat-page-style");
+    if (printSuratStyle) printSuratStyle.remove();
   });
 
   // Tombol Unduh PDF Resmi (F4) via Dompdf Backend
