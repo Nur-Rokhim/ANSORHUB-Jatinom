@@ -1621,7 +1621,7 @@ document.addEventListener("DOMContentLoaded", () => {
       printStyle.innerHTML = `
         @page {
           size: A4 portrait !important;
-          margin: 12mm 15mm 12mm 20mm !important;
+          margin: 10mm 14mm 10mm 18mm !important;
         }
       `;
     } else {

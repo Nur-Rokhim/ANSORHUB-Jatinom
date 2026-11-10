@@ -638,16 +638,16 @@ body.viewing-app #view-landing-page {
 /* Print Only Stylesheet */
 @media print {
   /* ============================================================
-   * @page: Margin A4 standar surat dinas Indonesia
-   * Kiri 20mm (ruang jilid/perforator), Kanan 15mm, Atas/Bawah 12mm
-   * Memberikan tinggi vertikal efektif 273mm (leluasa 1 lembar utuh)
+   * @page: Margin A4 Standar Presisi Surat Dinas Indonesia
+   * Kiri 18mm (ruang jilid), Kanan 14mm, Atas/Bawah 10mm
+   * Memberikan tinggi vertikal efektif 277mm (sangat leluasa 1 lembar utuh)
    * ============================================================ */
   @page {
     size: A4 portrait;
-    margin: 12mm 15mm 12mm 20mm;
+    margin: 10mm 14mm 10mm 18mm;
   }
 
-  /* Paksa warna & gambar tampil walau "Background graphics" OFF */
+  /* Paksa warna & gambar/stempel tampil walau "Background graphics" browser OFF */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -659,11 +659,13 @@ body.viewing-app #view-landing-page {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
-    font-size: 11pt !important;
+    height: auto !important;
+    overflow: visible !important;
+    font-size: 10.5pt !important;
     font-family: 'Times New Roman', Times, serif !important;
   }
 
-  /* Sembunyikan seluruh UI aplikasi */
+  /* Sembunyikan seluruh UI aplikasi & backdrop modal */
   .no-print,
   #app-header,
   #app-sidebar,
@@ -688,9 +690,12 @@ body.viewing-app #view-landing-page {
   nav,
   aside {
     display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Modal wrapper: jadikan static agar surat mengisi halaman */
+  /* Modal wrapper: jadikan normal flow tanpa pembungkus yang menambah tinggi */
   #modal-preview-surat {
     position: static !important;
     inset: auto !important;
@@ -714,11 +719,12 @@ body.viewing-app #view-landing-page {
     border: none !important;
     background: white !important;
     border-radius: 0 !important;
+    overflow: visible !important;
   }
 
   /* ============================================================
-   * KERTAS SURAT — Desain proporsional pas 1 lembar A4
-   * Bebas tumpah ke lembar ke-2 & seluruh elemen tampak leluasa
+   * KERTAS SURAT — Desain proporsional pas 1 lembar A4 utuh
+   * Seluruh elemen (KOP, isi, ttd, stempel) tampil utuh tanpa terpotong
    * ============================================================ */
   .surat-paper,
   #print-area-surat {
@@ -729,11 +735,13 @@ body.viewing-app #view-landing-page {
     margin: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    min-height: auto !important;
-    font-size: 11pt !important;
-    line-height: 1.38 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    font-size: 10.5pt !important;
+    line-height: 1.32 !important;
     color: #000000 !important;
     display: block !important;
+    overflow: visible !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
     page-break-after: avoid !important;
@@ -741,34 +749,35 @@ body.viewing-app #view-landing-page {
   }
 
   /* ============================================================
-   * KOP SURAT
+   * KOP SURAT RESMI
    * ============================================================ */
   .kop-surat-container {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
     margin-bottom: 0 !important;
-    padding-bottom: 3pt !important;
+    padding-bottom: 2pt !important;
   }
 
   .kop-logo-box {
-    width: 56pt !important;
-    min-width: 56pt !important;
+    width: 50pt !important;
+    min-width: 50pt !important;
     flex-shrink: 0 !important;
   }
 
   .kop-logo {
-    width: 52pt !important;
-    height: 52pt !important;
+    width: 48pt !important;
+    height: 48pt !important;
   }
 
   .kop-logo img,
   .kop-logo svg {
-    width: 52pt !important;
-    height: 52pt !important;
-    max-width: 52pt !important;
-    max-height: 52pt !important;
+    width: 48pt !important;
+    height: 48pt !important;
+    max-width: 48pt !important;
+    max-height: 48pt !important;
     display: block !important;
+    object-fit: contain !important;
   }
 
   .kop-kode-wilayah {
@@ -780,10 +789,10 @@ body.viewing-app #view-landing-page {
     letter-spacing: 0.04em !important;
   }
 
-  /* Teks KOP (kanan) */
+  /* Teks KOP Ansor */
   .kop-teks h1,
   #print-kop-subheading {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     font-weight: bold !important;
     line-height: 1.15 !important;
     margin: 0 !important;
@@ -792,7 +801,7 @@ body.viewing-app #view-landing-page {
 
   .kop-teks h2,
   #print-kop-title {
-    font-size: 15pt !important;
+    font-size: 14pt !important;
     font-weight: 900 !important;
     line-height: 1.1 !important;
     margin: 1pt 0 !important;
@@ -801,7 +810,7 @@ body.viewing-app #view-landing-page {
 
   .kop-teks h3,
   #print-kop-unit {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     font-weight: bold !important;
     line-height: 1.15 !important;
     margin: 0 !important;
@@ -810,30 +819,30 @@ body.viewing-app #view-landing-page {
 
   .kop-teks p,
   #print-kop-alamat {
-    font-size: 8pt !important;
-    line-height: 1.2 !important;
-    margin-top: 1.5pt !important;
+    font-size: 7.5pt !important;
+    line-height: 1.15 !important;
+    margin-top: 1pt !important;
     color: #475569 !important;
   }
 
   /* KOP mode Banser */
   .kop-teks.banser-mode h1 {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
     color: #000000 !important;
   }
 
   .kop-teks.banser-mode h2 {
-    font-size: 14pt !important;
+    font-size: 13.5pt !important;
     font-weight: 900 !important;
     line-height: 1.1 !important;
     margin: 1pt 0 !important;
-    color: #c02626 !important; /* Tulisan BARISAN ANSOR SERBAGUNA: Warna Merah */
+    color: #c02626 !important;
   }
 
   .kop-teks.banser-mode h3 {
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
     color: #000000 !important;
@@ -841,18 +850,18 @@ body.viewing-app #view-landing-page {
 
   .kop-teks.banser-mode p {
     font-size: 7.5pt !important;
-    line-height: 1.2 !important;
-    margin-top: 1.5pt !important;
+    line-height: 1.15 !important;
+    margin-top: 1pt !important;
     color: #000000 !important;
   }
 
-  /* Garis Ganda Pembatas Bawah KOP Banser (Tebal Tipis) saat Cetak */
+  /* Garis Ganda Pembatas KOP Banser */
   .kop-banser-divider {
-    border-top: 2.2pt solid #000000 !important;
+    border-top: 2pt solid #000000 !important;
     border-bottom: 0.8pt solid #000000 !important;
-    height: 1.8pt !important;
+    height: 1.5pt !important;
     margin-top: 2pt !important;
-    margin-bottom: 5pt !important;
+    margin-bottom: 4pt !important;
     background: transparent !important;
   }
 
@@ -863,12 +872,11 @@ body.viewing-app #view-landing-page {
 
   /* Garis bawah KOP Ansor */
   #print-kop-container {
-    border-bottom: 2.5pt solid #166534 !important;
-    padding-bottom: 3pt !important;
-    margin-bottom: 5pt !important;
+    border-bottom: 2pt solid #166534 !important;
+    padding-bottom: 2pt !important;
+    margin-bottom: 4pt !important;
   }
 
-  /* Hilangkan garis hijau KOP Ansor saat mode Banser aktif */
   #print-kop-container.banser-mode,
   #print-kop-container:has(.banser-mode) {
     border-bottom: none !important;
@@ -883,14 +891,14 @@ body.viewing-app #view-landing-page {
     display: flex !important;
     justify-content: space-between !important;
     align-items: flex-start !important;
-    font-size: 10.5pt !important;
-    line-height: 1.35 !important;
-    margin-bottom: 5pt !important;
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4pt !important;
     color: #000 !important;
   }
 
   .print-header-meta table td {
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
     padding: 0.5pt 4pt 0.5pt 0 !important;
     vertical-align: top !important;
     color: #000 !important;
@@ -900,32 +908,32 @@ body.viewing-app #view-landing-page {
    * TUJUAN SURAT
    * ============================================================ */
   .print-tujuan-box {
-    font-size: 10.5pt !important;
-    line-height: 1.35 !important;
-    margin-bottom: 5pt !important;
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4pt !important;
     color: #000 !important;
   }
 
   .mb-6 {
-    margin-bottom: 5pt !important;
+    margin-bottom: 4pt !important;
   }
 
   /* ============================================================
    * ISI REDAKSI SURAT
    * ============================================================ */
   #print-isi-surat {
-    font-size: 11pt !important;
-    line-height: 1.38 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.32 !important;
     text-align: justify !important;
     color: #000 !important;
     font-family: 'Times New Roman', Times, serif !important;
   }
 
   #print-isi-surat p {
-    margin-bottom: 4.5pt !important;
+    margin-bottom: 3.5pt !important;
     margin-top: 0 !important;
-    line-height: 1.38 !important;
-    text-indent: 1cm !important;
+    line-height: 1.32 !important;
+    text-indent: 0.8cm !important;
   }
 
   #print-isi-surat p:first-child,
@@ -937,44 +945,43 @@ body.viewing-app #view-landing-page {
     margin-top: 0 !important;
   }
 
-  /* Tabel detail kegiatan di dalam isi surat */
+  /* Tabel detail agenda di dalam surat */
   #print-isi-surat table {
-    margin: 3pt 0 4pt 1cm !important;
+    margin: 2.5pt 0 3pt 0.8cm !important;
     border-collapse: collapse !important;
     width: auto !important;
-    line-height: 1.3 !important;
+    line-height: 1.25 !important;
   }
 
   #print-isi-surat table td {
-    font-size: 10.5pt !important;
-    padding: 1pt 5pt 1pt 0 !important;
+    font-size: 10pt !important;
+    padding: 0.8pt 4pt 0.8pt 0 !important;
     vertical-align: top !important;
     color: #000 !important;
   }
 
   #print-isi-surat table td:first-child {
-    min-width: 85pt !important;
-    max-width: 85pt !important;
+    min-width: 80pt !important;
+    max-width: 80pt !important;
     white-space: nowrap !important;
   }
 
   #print-isi-surat table td:nth-child(2) {
-    padding: 1pt 5pt !important;
+    padding: 0.8pt 4pt !important;
     white-space: nowrap !important;
   }
 
   #print-isi-surat ol,
   #print-isi-surat ul {
-    margin: 2pt 0 4pt 1cm !important;
-    padding-left: 12pt !important;
-    line-height: 1.35 !important;
+    margin: 2pt 0 2pt 0.8cm !important;
+    padding-left: 10pt !important;
+    line-height: 1.3 !important;
   }
 
   #print-isi-surat li {
-    margin-bottom: 2pt !important;
+    margin-bottom: 1.5pt !important;
   }
 
-  /* Penutup & salam penutup */
   #print-isi-surat strong,
   #print-isi-surat b {
     font-weight: bold !important;
@@ -986,21 +993,23 @@ body.viewing-app #view-landing-page {
   }
 
   /* ============================================================
-   * BLOK TANDA TANGAN & STEMPEL
+   * BLOK TANDA TANGAN & STEMPEL BASAH
    * ============================================================ */
   .print-ttd-container {
-    margin-top: 8pt !important;
+    margin-top: 6pt !important;
     padding-top: 0 !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
   }
 
   #print-ttd-heading {
     text-align: center !important;
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
     font-weight: bold !important;
-    line-height: 1.25 !important;
-    margin-bottom: 2pt !important;
+    line-height: 1.2 !important;
+    margin-bottom: 1pt !important;
     color: #000 !important;
     letter-spacing: 0.02em !important;
   }
@@ -1010,7 +1019,7 @@ body.viewing-app #view-landing-page {
     grid-template-columns: 1fr 1fr !important;
     gap: 0 !important;
     text-align: center !important;
-    margin-top: 2pt !important;
+    margin-top: 1pt !important;
   }
 
   .print-col-ttd {
@@ -1019,22 +1028,22 @@ body.viewing-app #view-landing-page {
     align-items: center !important;
     justify-content: flex-start !important;
     gap: 0 !important;
-    padding: 0 6pt !important;
+    padding: 0 4pt !important;
   }
 
   #print-ttd1-jabatan,
   #print-ttd2-jabatan {
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
     font-weight: bold !important;
-    line-height: 1.25 !important;
-    margin-bottom: 1pt !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
     color: #000 !important;
   }
 
-  /* Area tanda tangan + stempel: tinggi ±17-18mm leluasa */
+  /* Ruang tanda tangan + stempel: tinggi 42pt (±15mm) pas & leluasa */
   .print-col-ttd .relative.w-full.h-24,
   .h-24 {
-    height: 48pt !important;
+    height: 42pt !important;
     width: 100% !important;
     position: relative !important;
     display: flex !important;
@@ -1043,11 +1052,11 @@ body.viewing-app #view-landing-page {
     margin: 0 !important;
   }
 
-  /* Gambar tanda tangan */
+  /* Gambar tanda tangan digital */
   #print-img-ttd-sekretaris,
   #print-img-ttd-ketua {
-    width: 95pt !important;
-    height: 48pt !important;
+    width: 90pt !important;
+    height: 42pt !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -1064,20 +1073,20 @@ body.viewing-app #view-landing-page {
     opacity: 1 !important;
     width: 100% !important;
     height: 100% !important;
-    max-width: 95pt !important;
-    max-height: 48pt !important;
+    max-width: 90pt !important;
+    max-height: 42pt !important;
     object-fit: contain !important;
   }
 
-  /* Stempel basah: posisi menempel sisi kiri TTD kanan secara proporsional */
+  /* Stempel basah: posisi menempel proporsional di atas TTD kanan */
   #print-img-stempel {
     position: absolute !important;
-    right: 54% !important;
+    right: 52% !important;
     left: auto !important;
-    top: -2pt !important;
-    width: 54pt !important;
-    height: 54pt !important;
-    opacity: 0.88 !important;
+    top: -4pt !important;
+    width: 50pt !important;
+    height: 50pt !important;
+    opacity: 0.9 !important;
     z-index: 2 !important;
     transform: rotate(-10deg) !important;
     display: flex !important;
@@ -1091,18 +1100,18 @@ body.viewing-app #view-landing-page {
     opacity: 1 !important;
     width: 100% !important;
     height: 100% !important;
-    max-width: 54pt !important;
-    max-height: 54pt !important;
+    max-width: 50pt !important;
+    max-height: 50pt !important;
     object-fit: contain !important;
   }
 
   #print-ttd1-nama,
   #print-ttd2-nama {
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
     font-weight: bold !important;
     text-decoration: underline !important;
     text-transform: uppercase !important;
-    line-height: 1.25 !important;
+    line-height: 1.2 !important;
     margin-top: 1pt !important;
     color: #000 !important;
     letter-spacing: 0.02em !important;
@@ -1110,21 +1119,20 @@ body.viewing-app #view-landing-page {
 
   #print-ttd1-nia,
   #print-ttd2-nia {
-    font-size: 8.5pt !important;
+    font-size: 8pt !important;
     font-family: 'Courier New', monospace !important;
-    line-height: 1.2 !important;
-    margin-top: 0.5pt !important;
+    line-height: 1.15 !important;
+    margin-top: 0 !important;
     color: #374151 !important;
   }
 
   /* ============================================================
-   * SINGLE-PAGE strict (non-SK): terkunci pas 1 lembar A4 utuh
-   * Menjamin tidak ada tumpahan ke halaman 2
+   * SINGLE-PAGE: utuh tanpa terpotong dan tanpa halaman kedua
    * ============================================================ */
   body.mode-print-single-page {
-    height: 100% !important;
-    max-height: 100vh !important;
-    overflow: hidden !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
 
   body.mode-print-single-page .surat-paper,
@@ -1137,8 +1145,9 @@ body.viewing-app #view-landing-page {
     break-after: avoid !important;
     break-before: avoid !important;
     min-height: 0 !important;
-    max-height: 270mm !important;
-    overflow: hidden !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow: visible !important;
   }
 
   /* ============================================================
