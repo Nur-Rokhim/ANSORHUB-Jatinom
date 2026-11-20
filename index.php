@@ -1462,24 +1462,40 @@ require_once __DIR__ . '/config.php';
 
             <!-- Card Penandatangan Surat -->
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
-              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b pb-2">
-                <i class="fa-solid fa-signature text-ansor"></i>
-                Penandatangan Surat
-              </h4>
+              <div class="flex items-center justify-between border-b pb-2">
+                <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                  <i class="fa-solid fa-signature text-ansor"></i>
+                  <span>Penandatangan Surat</span>
+                </h4>
+                <button type="button" id="btn-sync-pejabat-ttd" class="text-[10.5px] text-ansor font-semibold hover:underline flex items-center gap-1" title="Tarik nama & jabatan otomatis dari Struktur Organisasi">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+                  <span>Sinkron Struktur</span>
+                </button>
+              </div>
 
               <div class="space-y-3 text-xs">
                 <div>
-                  <label id="label-penandatangan-pihak1" class="text-[11px] font-medium text-slate-500">Pihak 1 (Kiri - Sekretaris):</label>
-                  <input type="text" id="setting-ttd1-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="AHMAD NUR SHOLIHIN">
-                  <input type="text" id="setting-ttd1-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Sekretaris">
-                  <input type="text" id="setting-ttd1-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.002">
+                  <div class="flex items-center justify-between mb-1">
+                    <label id="label-penandatangan-pihak1" class="text-[11px] font-semibold text-slate-600">Pihak 1 (Kiri - Ketua):</label>
+                    <select id="select-pejabat-ttd1" class="text-[10px] bg-white border border-slate-200 rounded px-1.5 py-0.5 text-ansor-dark font-medium focus:ring-1 focus:ring-ansor max-w-[150px] truncate" title="Pilih dari Struktur Organisasi">
+                      <option value="">-- Pilih Pejabat --</option>
+                    </select>
+                  </div>
+                  <input type="text" id="setting-ttd1-nama" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="MUHAMMAD ZAINAL ARIFIN" placeholder="Nama Lengkap Pejabat">
+                  <input type="text" id="setting-ttd1-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Ketua Pimpinan Ranting" placeholder="Jabatan Resmi">
+                  <input type="text" id="setting-ttd1-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.001" placeholder="NIA / NIK">
                 </div>
 
                 <div class="border-t pt-2">
-                  <label id="label-penandatangan-pihak2" class="text-[11px] font-medium text-slate-500">Pihak 2 (Kanan - Ketua):</label>
-                  <input type="text" id="setting-ttd2-nama" class="w-full mt-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="MUHAMMAD ZAINAL ARIFIN">
-                  <input type="text" id="setting-ttd2-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Ketua Pimpinan Ranting">
-                  <input type="text" id="setting-ttd2-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.001">
+                  <div class="flex items-center justify-between mb-1">
+                    <label id="label-penandatangan-pihak2" class="text-[11px] font-semibold text-slate-600">Pihak 2 (Kanan - Sekretaris):</label>
+                    <select id="select-pejabat-ttd2" class="text-[10px] bg-white border border-slate-200 rounded px-1.5 py-0.5 text-ansor-dark font-medium focus:ring-1 focus:ring-ansor max-w-[150px] truncate" title="Pilih dari Struktur Organisasi">
+                      <option value="">-- Pilih Pejabat --</option>
+                    </select>
+                  </div>
+                  <input type="text" id="setting-ttd2-nama" class="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-lg font-semibold" value="AHMAD NUR SHOLIHIN" placeholder="Nama Lengkap Pejabat">
+                  <input type="text" id="setting-ttd2-jabatan" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-600" value="Sekretaris" placeholder="Jabatan Resmi">
+                  <input type="text" id="setting-ttd2-nia" class="w-full mt-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded text-[11px] text-slate-500 font-mono" value="NIA: 11.07.02.002" placeholder="NIA / NIK">
                 </div>
 
                 <div class="pt-2 border-t flex items-center justify-between">

@@ -1007,6 +1007,166 @@ document.addEventListener("DOMContentLoaded", () => {
     if (display) display.textContent = nomor;
   }
 
+  // --- SINKRONISASI PEJABAT PENANDATANGAN DARI STRUKTUR ORGANISASI ---
+  function getPejabatFromStruktur(lembagaType, roleType) {
+    const list = state.pengurusList && state.pengurusList.length > 0 ? state.pengurusList : AnsorStore.getPengurus();
+    if (!list || list.length === 0) return null;
+
+    const norm = (str) => (str || "").toLowerCase().trim();
+
+    if (lembagaType === "banser") {
+      const banserList = list.filter((p) => norm(p.lembaga).includes("banser"));
+      if (roleType === "kasat" || roleType === "pimpinan") {
+        return (
+          banserList.find((p) => norm(p.jabatan).includes("kasat") || norm(p.jabatan).includes("kepala satuan") || norm(p.jabatan).includes("komandan")) ||
+          banserList[0] ||
+          null
+        );
+      } else {
+        return (
+          banserList.find((p) => norm(p.jabatan).includes("kasetma") || norm(p.jabatan).includes("sekretar")) ||
+          banserList[1] ||
+          null
+        );
+      }
+    } else {
+      const ansorList = list.filter((p) => !norm(p.lembaga).includes("banser"));
+      if (roleType === "ketua" || roleType === "pimpinan") {
+        return (
+          ansorList.find((p) => {
+            const j = norm(p.jabatan);
+            return j.includes("ketua") && !j.includes("wakil");
+          }) ||
+          ansorList.find((p) => norm(p.jabatan).includes("ketua")) ||
+          ansorList[0] ||
+          null
+        );
+      } else {
+        return (
+          ansorList.find((p) => {
+            const j = norm(p.jabatan);
+            return j.includes("sekretar") && !j.includes("wakil");
+          }) ||
+          ansorList.find((p) => norm(p.jabatan).includes("sekretar")) ||
+          ansorList[1] ||
+          null
+        );
+      }
+    }
+  }
+
+  function syncSignaturesWithStruktur(force = false) {
+    const isBanser = state.activeSubSurat === "banser";
+    const ttd1Nama = document.getElementById("setting-ttd1-nama");
+    const ttd1Jab = document.getElementById("setting-ttd1-jabatan");
+    const ttd1Nia = document.getElementById("setting-ttd1-nia");
+    const ttd2Nama = document.getElementById("setting-ttd2-nama");
+    const ttd2Jab = document.getElementById("setting-ttd2-jabatan");
+    const ttd2Nia = document.getElementById("setting-ttd2-nia");
+
+    if (isBanser) {
+      const kasat = getPejabatFromStruktur("banser", "kasat");
+      const kasetma = getPejabatFromStruktur("banser", "kasetma");
+
+      const defaultKasatNama = kasat?.nama || state.settings.kasatkorkelNama || "SUBHAN MUBAROK";
+      const defaultKasatJab = kasat?.jabatan || "Kepala Satkorkel (Kasatkorkel)";
+      const defaultKasatNia = kasat?.nia ? (kasat.nia.startsWith("NIA") ? kasat.nia : "NIA: " + kasat.nia) : ("NIA: " + (state.settings.kasatkorkelNia || "11.07.02.003"));
+
+      const defaultKasetmaNama = kasetma?.nama || state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO";
+      const defaultKasetmaJab = kasetma?.jabatan || "Kepala Sekretariat Markas (Kasetma)";
+      const defaultKasetmaNia = kasetma?.nia ? (kasetma.nia.startsWith("NIA") ? kasetma.nia : "NIA: " + kasetma.nia) : ("NIA: " + (state.settings.kasetmaNia || "11.07.02.005"));
+
+      if (ttd1Nama && (force || !ttd1Nama.value || ttd1Nama.value === "SUBHAN MUBAROK" || ttd1Nama.value === "MUHAMMAD ZAINAL ARIFIN" || ttd1Nama.value === "AHMAD NUR SHOLIHIN")) {
+        ttd1Nama.value = defaultKasatNama;
+        if (ttd1Jab) ttd1Jab.value = defaultKasatJab;
+        if (ttd1Nia) ttd1Nia.value = defaultKasatNia;
+      }
+      if (ttd2Nama && (force || !ttd2Nama.value || ttd2Nama.value === "BAMBANG TRI SUTRISNO" || ttd2Nama.value === "AHMAD NUR SHOLIHIN" || ttd2Nama.value === "MUHAMMAD ZAINAL ARIFIN")) {
+        ttd2Nama.value = defaultKasetmaNama;
+        if (ttd2Jab) ttd2Jab.value = defaultKasetmaJab;
+        if (ttd2Nia) ttd2Nia.value = defaultKasetmaNia;
+      }
+    } else {
+      const ketua = getPejabatFromStruktur("ansor", "ketua");
+      const sekretaris = getPejabatFromStruktur("ansor", "sekretaris");
+
+      const defaultKetuaNama = ketua?.nama || state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN";
+      const defaultKetuaJab = ketua?.jabatan || "Ketua Pimpinan Ranting";
+      const defaultKetuaNia = ketua?.nia ? (ketua.nia.startsWith("NIA") ? ketua.nia : "NIA: " + ketua.nia) : ("NIA: " + (state.settings.ketuaNia || "11.07.02.001"));
+
+      const defaultSekNama = sekretaris?.nama || state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN";
+      const defaultSekJab = sekretaris?.jabatan || "Sekretaris";
+      const defaultSekNia = sekretaris?.nia ? (sekretaris.nia.startsWith("NIA") ? sekretaris.nia : "NIA: " + sekretaris.nia) : ("NIA: " + (state.settings.sekretarisNia || "11.07.02.002"));
+
+      if (ttd1Nama && (force || !ttd1Nama.value || ttd1Nama.value === "MUHAMMAD ZAINAL ARIFIN" || ttd1Nama.value === "AHMAD NUR SHOLIHIN" || ttd1Nama.value === "SUBHAN MUBAROK")) {
+        ttd1Nama.value = defaultKetuaNama;
+        if (ttd1Jab) ttd1Jab.value = defaultKetuaJab;
+        if (ttd1Nia) ttd1Nia.value = defaultKetuaNia;
+      }
+      if (ttd2Nama && (force || !ttd2Nama.value || ttd2Nama.value === "AHMAD NUR SHOLIHIN" || ttd2Nama.value === "MUHAMMAD ZAINAL ARIFIN" || ttd2Nama.value === "BAMBANG TRI SUTRISNO")) {
+        ttd2Nama.value = defaultSekNama;
+        if (ttd2Jab) ttd2Jab.value = defaultSekJab;
+        if (ttd2Nia) ttd2Nia.value = defaultSekNia;
+      }
+    }
+  }
+
+  function renderPejabatDropdowns() {
+    const list = state.pengurusList && state.pengurusList.length > 0 ? state.pengurusList : AnsorStore.getPengurus();
+    const sel1 = document.getElementById("select-pejabat-ttd1");
+    const sel2 = document.getElementById("select-pejabat-ttd2");
+    if (!sel1 || !sel2) return;
+
+    const isBanser = state.activeSubSurat === "banser";
+    const filtered = (list || []).filter((p) => {
+      const l = (p.lembaga || "").toLowerCase();
+      return isBanser ? l.includes("banser") : !l.includes("banser");
+    });
+
+    const buildOptions = () => {
+      let html = `<option value="">-- Pilih dari Struktur --</option>`;
+      filtered.forEach((p) => {
+        html += `<option value="${p.id}">${p.nama} (${p.jabatan})</option>`;
+      });
+      return html;
+    };
+
+    sel1.innerHTML = buildOptions();
+    sel2.innerHTML = buildOptions();
+
+    sel1.onchange = () => {
+      const id = parseInt(sel1.value);
+      const p = (list || []).find((x) => x.id === id);
+      if (p) {
+        const ttd1Nama = document.getElementById("setting-ttd1-nama");
+        const ttd1Jab = document.getElementById("setting-ttd1-jabatan");
+        const ttd1Nia = document.getElementById("setting-ttd1-nia");
+        if (ttd1Nama) ttd1Nama.value = p.nama;
+        if (ttd1Jab) ttd1Jab.value = p.jabatan;
+        if (ttd1Nia) ttd1Nia.value = p.nia ? (p.nia.startsWith("NIA") ? p.nia : "NIA: " + p.nia) : "NIA: -";
+      }
+    };
+
+    sel2.onchange = () => {
+      const id = parseInt(sel2.value);
+      const p = (list || []).find((x) => x.id === id);
+      if (p) {
+        const ttd2Nama = document.getElementById("setting-ttd2-nama");
+        const ttd2Jab = document.getElementById("setting-ttd2-jabatan");
+        const ttd2Nia = document.getElementById("setting-ttd2-nia");
+        if (ttd2Nama) ttd2Nama.value = p.nama;
+        if (ttd2Jab) ttd2Jab.value = p.jabatan;
+        if (ttd2Nia) ttd2Nia.value = p.nia ? (p.nia.startsWith("NIA") ? p.nia : "NIA: " + p.nia) : "NIA: -";
+      }
+    };
+  }
+
+  document.getElementById("btn-sync-pejabat-ttd")?.addEventListener("click", () => {
+    syncSignaturesWithStruktur(true);
+    renderPejabatDropdowns();
+    alert("Pejabat penandatangan E-Surat berhasil disinkronkan dari Struktur Organisasi!");
+  });
+
   // --- SUB-MENU E-SURAT: ANSOR VS BANSER ---
   state.activeSubSurat = "ansor";
 
@@ -1026,12 +1186,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const labelPihak1 = document.getElementById("label-penandatangan-pihak1");
     const labelPihak2 = document.getElementById("label-penandatangan-pihak2");
-    const ttd1Nama = document.getElementById("setting-ttd1-nama");
-    const ttd1Jab = document.getElementById("setting-ttd1-jabatan");
-    const ttd1Nia = document.getElementById("setting-ttd1-nia");
-    const ttd2Nama = document.getElementById("setting-ttd2-nama");
-    const ttd2Jab = document.getElementById("setting-ttd2-jabatan");
-    const ttd2Nia = document.getElementById("setting-ttd2-nia");
 
     if (subType === "banser") {
       // Styling Subtabs
@@ -1055,14 +1209,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Penandatangan Banser (Kasatkorkel di kiri, Kasetma di kanan)
       if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Kasatkorkel):";
-      if (ttd1Nama) ttd1Nama.value = state.settings.kasatkorkelNama || "SUBHAN MUBAROK";
-      if (ttd1Jab) ttd1Jab.value = "Kepala Satkorkel (Kasatkorkel)";
-      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.kasatkorkelNia || "11.07.02.003");
-
       if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Kasetma):";
-      if (ttd2Nama) ttd2Nama.value = state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO";
-      if (ttd2Jab) ttd2Jab.value = "Kepala Sekretariat Markas (Kasetma)";
-      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.kasetmaNia || "11.07.02.005");
+      syncSignaturesWithStruktur(true);
+      renderPejabatDropdowns();
 
       renderTemplateButtons();
       applyTemplate("SPH"); // Default Banser: SPH
@@ -1109,14 +1258,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Penandatangan Ansor (Ketua di kiri, Sekretaris di kanan)
       if (labelPihak1) labelPihak1.textContent = "Pihak 1 (Kiri - Ketua):";
-      if (ttd1Nama) ttd1Nama.value = state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN";
-      if (ttd1Jab) ttd1Jab.value = "Ketua Pimpinan Ranting";
-      if (ttd1Nia) ttd1Nia.value = "NIA: " + (state.settings.ketuaNia || "11.07.02.001");
-
       if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Sekretaris):";
-      if (ttd2Nama) ttd2Nama.value = state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN";
-      if (ttd2Jab) ttd2Jab.value = "Sekretaris";
-      if (ttd2Nia) ttd2Nia.value = "NIA: " + (state.settings.sekretarisNia || "11.07.02.002");
+      syncSignaturesWithStruktur(true);
+      renderPejabatDropdowns();
 
       renderTemplateButtons();
       applyTemplate("SU"); // Default Ansor: SU
@@ -1515,13 +1659,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const isiHTML = document.getElementById("input-isi-surat")?.value || document.getElementById("editor-isi-surat")?.innerHTML || "";
     
     const isBanserMode = state.activeSubSurat === "banser";
-    const defaultTtd1Nama = isBanserMode ? (state.settings.kasatkorkelNama || "SUBHAN MUBAROK") : (state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN");
-    const defaultTtd1Jabatan = isBanserMode ? "Kepala Satkorkel (Kasatkorkel)" : "Ketua Pimpinan Ranting";
-    const defaultTtd1Nia = "NIA: " + (isBanserMode ? (state.settings.kasatkorkelNia || "11.07.02.003") : (state.settings.ketuaNia || "11.07.02.001"));
+    const ketuaObj = getPejabatFromStruktur("ansor", "ketua");
+    const sekretarisObj = getPejabatFromStruktur("ansor", "sekretaris");
+    const kasatObj = getPejabatFromStruktur("banser", "kasat");
+    const kasetmaObj = getPejabatFromStruktur("banser", "kasetma");
 
-    const defaultTtd2Nama = isBanserMode ? (state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO") : (state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN");
-    const defaultTtd2Jabatan = isBanserMode ? "Kepala Sekretariat Markas (Kasetma)" : "Sekretaris";
-    const defaultTtd2Nia = "NIA: " + (isBanserMode ? (state.settings.kasetmaNia || "11.07.02.005") : (state.settings.sekretarisNia || "11.07.02.002"));
+    const defaultTtd1Nama = isBanserMode ? (kasatObj?.nama || state.settings.kasatkorkelNama || "SUBHAN MUBAROK") : (ketuaObj?.nama || state.settings.ketuaNama || "MUHAMMAD ZAINAL ARIFIN");
+    const defaultTtd1Jabatan = isBanserMode ? (kasatObj?.jabatan || "Kepala Satkorkel (Kasatkorkel)") : (ketuaObj?.jabatan || "Ketua Pimpinan Ranting");
+    const defaultTtd1Nia = isBanserMode ? (kasatObj?.nia ? (kasatObj.nia.startsWith("NIA") ? kasatObj.nia : "NIA: " + kasatObj.nia) : ("NIA: " + (state.settings.kasatkorkelNia || "11.07.02.003"))) : (ketuaObj?.nia ? (ketuaObj.nia.startsWith("NIA") ? ketuaObj.nia : "NIA: " + ketuaObj.nia) : ("NIA: " + (state.settings.ketuaNia || "11.07.02.001")));
+
+    const defaultTtd2Nama = isBanserMode ? (kasetmaObj?.nama || state.settings.kasetmaNama || "BAMBANG TRI SUTRISNO") : (sekretarisObj?.nama || state.settings.sekretarisNama || "AHMAD NUR SHOLIHIN");
+    const defaultTtd2Jabatan = isBanserMode ? (kasetmaObj?.jabatan || "Kepala Sekretariat Markas (Kasetma)") : (sekretarisObj?.jabatan || "Sekretaris");
+    const defaultTtd2Nia = isBanserMode ? (kasetmaObj?.nia ? (kasetmaObj.nia.startsWith("NIA") ? kasetmaObj.nia : "NIA: " + kasetmaObj.nia) : ("NIA: " + (state.settings.kasetmaNia || "11.07.02.005"))) : (sekretarisObj?.nia ? (sekretarisObj.nia.startsWith("NIA") ? sekretarisObj.nia : "NIA: " + sekretarisObj.nia) : ("NIA: " + (state.settings.sekretarisNia || "11.07.02.002")));
 
     const ttd1Nama = document.getElementById("setting-ttd1-nama")?.value || defaultTtd1Nama;
     const ttd1Jabatan = document.getElementById("setting-ttd1-jabatan")?.value || defaultTtd1Jabatan;
@@ -3437,6 +3586,9 @@ _Wassalamu'alaikum Wr. Wb._
           AnsorStore.savePengurus(state.pengurusList);
           renderPengurusTable();
           renderLandingStats();
+          renderLandingPengurus(landingActivePengurusBanom);
+          syncSignaturesWithStruktur(true);
+          renderPejabatDropdowns();
           fetch("api.php?action=delete_pengurus", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -3509,6 +3661,10 @@ _Wassalamu'alaikum Wr. Wb._
     AnsorStore.savePengurus(state.pengurusList);
     renderPengurusTable();
     renderLandingStats();
+    if (typeof syncSignaturesWithStruktur === "function") {
+      syncSignaturesWithStruktur(true);
+      renderPejabatDropdowns();
+    }
     if (savedItem) {
       fetch("api.php?action=save_pengurus", {
         method: "POST",
@@ -4419,6 +4575,12 @@ _Wassalamu'alaikum Wr. Wb._
 
   initLandingPage();
 
+  // Inisialisasi awal sinkronisasi pejabat tanda tangan dari struktur organisasi
+  if (typeof syncSignaturesWithStruktur === "function") {
+    syncSignaturesWithStruktur(false);
+    renderPejabatDropdowns();
+  }
+
   // Inisialisasi Tampilan: Cek Sesi Aktif Pengurus vs Landing Page Publik
   const isSessionActive = sessionStorage.getItem("sahabat_session_active") === "true";
   const hasValidUser = state.currentUser && state.currentUser.pin;
@@ -4452,6 +4614,8 @@ _Wassalamu'alaikum Wr. Wb._
             renderLandingStats();
             renderLandingPengurus(landingActivePengurusBanom);
             if (typeof renderPengurusTable === "function") renderPengurusTable();
+            if (typeof syncSignaturesWithStruktur === "function") syncSignaturesWithStruktur(false);
+            if (typeof renderPejabatDropdowns === "function") renderPejabatDropdowns();
           }
         }
       } catch (errSync) {
