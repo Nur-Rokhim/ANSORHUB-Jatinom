@@ -229,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (gSiber) gSiber.innerHTML = getLogoHTML("siber");
 
     renderSignaturesPreview();
-    renderUploadLabelsByStruktur();
   }
 
   function renderSignaturesPreview() {
@@ -262,64 +261,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bStempelMds = document.getElementById("box-preview-stempel-mds");
     if (bStempelMds) bStempelMds.innerHTML = getSignatureOrStampHTML("stempelMds", "stempelRijalul");
-  }
-
-  // --- LABEL UPLOAD TTD: SINKRONKAN NAMA DARI STRUKTUR ORGANISASI ---
-  function renderUploadLabelsByStruktur() {
-    const list = (state.pengurusList && state.pengurusList.length > 0) ? state.pengurusList : AnsorStore.getPengurus();
-    const norm = (s) => (s || "").toLowerCase().trim();
-
-    // Helper untuk singkat nama: "MUHAMMAD ZAINAL ARIFIN" → "M. Zainal Arifin"
-    function singkatNama(nama) {
-      if (!nama) return "";
-      const parts = nama.trim().split(/\s+/);
-      if (parts.length <= 2) return nama;
-      return parts[0].charAt(0).toUpperCase() + ". " + parts.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
-    }
-
-    // Ansor: Ketua
-    const ketuaAnsor = list.find(p => !norm(p.lembaga).includes("banser") && !norm(p.lembaga).includes("rijalul") &&
-      norm(p.jabatan).includes("ketua") && !norm(p.jabatan).includes("wakil")) || list.find(p => !norm(p.lembaga).includes("banser") && !norm(p.lembaga).includes("rijalul") && norm(p.jabatan).includes("ketua"));
-    const lKetua = document.getElementById("label-upload-ttd-ketua");
-    if (lKetua) {
-      const namaKetua = ketuaAnsor?.nama || state.settings?.ketuaNama || "MUHAMMAD ZAINAL ARIFIN";
-      lKetua.textContent = "Tanda Tangan Ketua (" + singkatNama(namaKetua) + "):";
-    }
-
-    // Ansor: Sekretaris
-    const sekAnsor = list.find(p => !norm(p.lembaga).includes("banser") && !norm(p.lembaga).includes("rijalul") &&
-      norm(p.jabatan).includes("sekretar") && !norm(p.jabatan).includes("wakil")) || list.find(p => !norm(p.lembaga).includes("banser") && !norm(p.lembaga).includes("rijalul") && norm(p.jabatan).includes("sekretar"));
-    const lSek = document.getElementById("label-upload-ttd-sekretaris");
-    if (lSek) {
-      const namaSek = sekAnsor?.nama || state.settings?.sekretarisNama || "AHMAD NUR SHOLIHIN";
-      lSek.textContent = "Tanda Tangan Sekretaris (" + singkatNama(namaSek) + "):";
-    }
-
-    // Banser: Kasatkorkel
-    const kasat = list.find(p => norm(p.lembaga).includes("banser") &&
-      (norm(p.jabatan).includes("kasat") || norm(p.jabatan).includes("kepala satuan") || norm(p.jabatan).includes("komandan"))) || list.find(p => norm(p.lembaga).includes("banser"));
-    const lKasat = document.getElementById("label-upload-ttd-kasatkorkel");
-    if (lKasat) {
-      const namaKasat = kasat?.nama || state.settings?.kasatkorkelNama || "SUBHAN MUBAROK";
-      lKasat.textContent = "Tanda Tangan Kasatkorkel (" + singkatNama(namaKasat) + "):";
-    }
-
-    // Banser: Kasetma
-    const banserList = list.filter(p => norm(p.lembaga).includes("banser"));
-    const kasetma = banserList.find(p => norm(p.jabatan).includes("kasetma") || norm(p.jabatan).includes("sekretar")) || banserList[1];
-    const lKasetma = document.getElementById("label-upload-ttd-kasetma");
-    if (lKasetma) {
-      const namaKasetma = kasetma?.nama || state.settings?.kasetmaNama || "BAMBANG TRI SUTRISNO";
-      lKasetma.textContent = "Tanda Tangan Kasetma (" + singkatNama(namaKasetma) + "):";
-    }
-
-    // MDS / Rijalul Ansor: Ketua
-    const ketuaMds = list.find(p => norm(p.lembaga).includes("rijalul") && (norm(p.jabatan).includes("ketua") || norm(p.jabatan).includes("pimpinan")));
-    const lKetuaMds = document.getElementById("label-upload-ttd-ketua-mds");
-    if (lKetuaMds) {
-      const namaKetuaMds = ketuaMds?.nama || state.settings?.ketuaMdsNama || "GUS M. FAHMI ILHAM";
-      lKetuaMds.textContent = "Tanda Tangan Ketua MDS (" + singkatNama(namaKetuaMds) + "):";
-    }
   }
 
   // --- KOP SURAT LOGO SWITCHER ---
@@ -1223,7 +1164,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-sync-pejabat-ttd")?.addEventListener("click", () => {
     syncSignaturesWithStruktur(true);
     renderPejabatDropdowns();
-    renderUploadLabelsByStruktur();
     alert("Pejabat penandatangan E-Surat berhasil disinkronkan dari Struktur Organisasi!");
   });
 
@@ -3649,7 +3589,6 @@ _Wassalamu'alaikum Wr. Wb._
           renderLandingPengurus(landingActivePengurusBanom);
           syncSignaturesWithStruktur(true);
           renderPejabatDropdowns();
-          renderUploadLabelsByStruktur();
           fetch("api.php?action=delete_pengurus", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -3725,7 +3664,6 @@ _Wassalamu'alaikum Wr. Wb._
     if (typeof syncSignaturesWithStruktur === "function") {
       syncSignaturesWithStruktur(true);
       renderPejabatDropdowns();
-      renderUploadLabelsByStruktur();
     }
     if (savedItem) {
       fetch("api.php?action=save_pengurus", {
@@ -4641,7 +4579,6 @@ _Wassalamu'alaikum Wr. Wb._
   if (typeof syncSignaturesWithStruktur === "function") {
     syncSignaturesWithStruktur(false);
     renderPejabatDropdowns();
-    renderUploadLabelsByStruktur();
   }
 
   // Inisialisasi Tampilan: Cek Sesi Aktif Pengurus vs Landing Page Publik
@@ -4679,7 +4616,6 @@ _Wassalamu'alaikum Wr. Wb._
             if (typeof renderPengurusTable === "function") renderPengurusTable();
             if (typeof syncSignaturesWithStruktur === "function") syncSignaturesWithStruktur(false);
             if (typeof renderPejabatDropdowns === "function") renderPejabatDropdowns();
-            if (typeof renderUploadLabelsByStruktur === "function") renderUploadLabelsByStruktur();
           }
         }
       } catch (errSync) {
