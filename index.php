@@ -2508,7 +2508,7 @@ require_once __DIR__ . '/config.php';
 
               <!-- TTD Ketua -->
               <div class="space-y-1.5">
-                <label class="font-bold text-slate-700 block">Tanda Tangan Ketua (M. Zainal Arifin):</label>
+                <label id="label-upload-ttd-ketua" class="font-bold text-slate-700 block">Tanda Tangan Ketua:</label>
                 <div class="h-16 bg-white rounded-xl border border-dashed border-emerald-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-ketua">
                   <!-- Injected via JS -->
                 </div>
@@ -2517,7 +2517,7 @@ require_once __DIR__ . '/config.php';
 
               <!-- TTD Sekretaris -->
               <div class="space-y-1.5">
-                <label class="font-bold text-slate-700 block">Tanda Tangan Sekretaris (Ahmad Nur Sholihin):</label>
+                <label id="label-upload-ttd-sekretaris" class="font-bold text-slate-700 block">Tanda Tangan Sekretaris:</label>
                 <div class="h-16 bg-white rounded-xl border border-dashed border-emerald-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-sekretaris">
                   <!-- Injected via JS -->
                 </div>
@@ -2548,7 +2548,7 @@ require_once __DIR__ . '/config.php';
 
               <!-- TTD Kasatkorkel -->
               <div class="space-y-1.5">
-                <label class="font-bold text-slate-700 block">Tanda Tangan Kasatkorkel (Subhan M.):</label>
+                <label id="label-upload-ttd-kasatkorkel" class="font-bold text-slate-700 block">Tanda Tangan Kasatkorkel:</label>
                 <div class="h-16 bg-white rounded-xl border border-dashed border-red-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-kasatkorkel">
                   <!-- Injected via JS -->
                 </div>
@@ -2557,7 +2557,7 @@ require_once __DIR__ . '/config.php';
 
               <!-- TTD Kasetma -->
               <div class="space-y-1.5">
-                <label class="font-bold text-slate-700 block">Tanda Tangan Kasetma (Bambang T.S.):</label>
+                <label id="label-upload-ttd-kasetma" class="font-bold text-slate-700 block">Tanda Tangan Kasetma:</label>
                 <div class="h-16 bg-white rounded-xl border border-dashed border-red-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-kasetma">
                   <!-- Injected via JS -->
                 </div>
@@ -2592,7 +2592,7 @@ require_once __DIR__ . '/config.php';
 
               <!-- TTD Ketua MDS -->
               <div class="space-y-1.5">
-                <label class="font-bold text-slate-700 block">Tanda Tangan Ketua MDS (Gus Fahmi):</label>
+                <label id="label-upload-ttd-ketua-mds" class="font-bold text-slate-700 block">Tanda Tangan Ketua MDS:</label>
                 <div class="h-16 bg-white rounded-xl border border-dashed border-blue-300 p-1 flex items-center justify-center relative overflow-hidden" id="box-preview-ttd-mds">
                   <!-- Injected via JS -->
                 </div>
