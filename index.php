@@ -1382,7 +1382,24 @@ require_once __DIR__ . '/config.php';
                 </div>
 
                 <div>
-                  <label class="block text-xs font-medium text-slate-600 mb-1">Editor Redaksi Surat (HTML Support):</label>
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1.5">
+                    <label class="block text-xs font-semibold text-slate-700">Editor Redaksi Surat (HTML Support):</label>
+                    <div class="flex items-center flex-wrap gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200 text-slate-700 text-xs">
+                      <button type="button" id="btn-fmt-bold" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded font-bold transition" title="Tebal (<b>...</b>)"><b>B</b></button>
+                      <button type="button" id="btn-fmt-italic" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded italic transition" title="Miring (<i>...</i>)"><i>I</i></button>
+                      <button type="button" id="btn-fmt-underline" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded underline transition" title="Garis Bawah (<u>...</u>)"><u>U</u></button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" id="btn-fmt-left" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded transition" title="Rata Kiri"><i class="fa-solid fa-align-left"></i></button>
+                      <button type="button" id="btn-fmt-center" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded transition" title="Rata Tengah"><i class="fa-solid fa-align-center"></i></button>
+                      <button type="button" id="btn-fmt-right" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded transition" title="Rata Kanan"><i class="fa-solid fa-align-right"></i></button>
+                      <button type="button" id="btn-fmt-justify" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded transition" title="Rata Justify"><i class="fa-solid fa-align-justify"></i></button>
+                      <span class="text-slate-300">|</span>
+                      <button type="button" id="btn-fmt-table" class="px-2 py-0.5 hover:bg-white hover:shadow-xs rounded flex items-center gap-1 transition" title="Sisipkan Tabel Rincian Agenda">
+                        <i class="fa-solid fa-table"></i>
+                        <span class="text-[10px]">Tabel</span>
+                      </button>
+                    </div>
+                  </div>
                   <textarea id="input-isi-surat" rows="9" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-serif leading-relaxed focus:ring-2 focus:ring-ansor focus:bg-white"><p>Assalamu'alaikum Warahmatullahi Wabarakatuh</p>
 <p>Salam silaturrahim teriring do'a kami sampaikan, semoga Sahabat senantiasa dalam limpahan taufiq dan hidayah Allah SWT serta sukses dalam menjalankan aktifitas keseharian.</p>
 <p>Dengan hormat, bersama surat ini kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam kegiatan:</p>

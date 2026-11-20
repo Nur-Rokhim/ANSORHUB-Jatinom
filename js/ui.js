@@ -1304,14 +1304,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getDynamicValues() {
+    const varHari = document.getElementById("var-hari-tanggal")?.value?.trim();
+    const varWkt = document.getElementById("var-waktu")?.value?.trim();
+    const varTmp = document.getElementById("var-tempat")?.value?.trim();
+
     return {
       nomorLengkap: getGeneratedNomorSurat(),
-      hariTanggal: document.getElementById("dyn-hari-tgl")?.value || "Sabtu Malam Ahad Pon, 14 November 2026",
-      waktu: document.getElementById("dyn-waktu")?.value || "19.30 WIB (Ba'da Isya) s.d Selesai",
-      tempat: document.getElementById("dyn-tempat")?.value || "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom",
-      acara: document.getElementById("dyn-acara")?.value || "Pembacaan Maulid Diba', Yasin Tahlil, & Pleno",
+      hariTanggal: varHari || document.getElementById("dyn-hari-tgl")?.value || "Sabtu Malam Ahad Pon, 14 November 2026",
+      waktu: varWkt || document.getElementById("dyn-waktu")?.value || "19.30 WIB (Ba'da Isya) s.d Selesai",
+      tempat: varTmp || document.getElementById("dyn-tempat")?.value || "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom",
+      acara: document.getElementById("dyn-acara")?.value || document.getElementById("input-perihal")?.value || "Rutinan MDS Rijalul Ansor & Koordinasi Ranting",
       korlap: document.getElementById("dyn-korlap")?.value || "Subhan Mubarok (Kasatkorkel BANSER Jatinom)",
-      kegiatan: document.getElementById("dyn-kegiatan")?.value || "Kegiatan Organisasi PR GP Ansor Jatinom",
+      kegiatan: document.getElementById("dyn-kegiatan")?.value || document.getElementById("input-perihal")?.value || "Kegiatan Organisasi PR GP Ansor Jatinom",
       tentang: document.getElementById("dyn-tentang")?.value,
       tanggalRapat: document.getElementById("dyn-tgl-rapat")?.value,
       namaPenerima: document.getElementById("dyn-nama-penerima")?.value,
@@ -1324,6 +1328,79 @@ document.addEventListener("DOMContentLoaded", () => {
       kaderisasiTujuan: document.getElementById("dyn-tujuan-kaderisasi")?.value
     };
   }
+
+  function updateVariablesInEditor() {
+    const inputIsi = document.getElementById("input-isi-surat");
+    if (!inputIsi) return;
+    const varHari = document.getElementById("var-hari-tanggal")?.value?.trim();
+    const varWkt = document.getElementById("var-waktu")?.value?.trim();
+    const varTmp = document.getElementById("var-tempat")?.value?.trim();
+
+    let val = inputIsi.value;
+    if (varHari) {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?Hari.*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+        const isBold = /<strong>|<b>/i.test(p2);
+        return `${p1}${isBold ? `<strong>${varHari}</strong>` : varHari}${p3}`;
+      });
+    }
+    if (varWkt) {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?(?:Waktu|Pukul).*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+        const isBold = /<strong>|<b>/i.test(p2);
+        return `${p1}${isBold ? `<strong>${varWkt}</strong>` : varWkt}${p3}`;
+      });
+    }
+    if (varTmp) {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?Tempat.*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+        const isBold = /<strong>|<b>/i.test(p2);
+        return `${p1}${isBold ? `<strong>${varTmp}</strong>` : varTmp}${p3}`;
+      });
+    }
+    inputIsi.value = val;
+  }
+
+  ["var-hari-tanggal", "var-waktu", "var-tempat"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("input", updateVariablesInEditor);
+      el.addEventListener("change", updateVariablesInEditor);
+    }
+  });
+
+  // Helper Sisipkan Tag HTML ke Posisi Kursor di Editor
+  function insertTagIntoEditor(openTag, closeTag = "") {
+    const textarea = document.getElementById("input-isi-surat");
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end);
+    const replacement = openTag + selectedText + closeTag;
+    textarea.value = text.substring(0, start) + replacement + text.substring(end);
+    textarea.focus();
+    const newCursor = selectedText ? (start + replacement.length) : (start + openTag.length);
+    textarea.setSelectionRange(newCursor, newCursor);
+  }
+
+  document.getElementById("btn-fmt-bold")?.addEventListener("click", () => insertTagIntoEditor("<b>", "</b>"));
+  document.getElementById("btn-fmt-italic")?.addEventListener("click", () => insertTagIntoEditor("<i>", "</i>"));
+  document.getElementById("btn-fmt-underline")?.addEventListener("click", () => insertTagIntoEditor("<u>", "</u>"));
+  document.getElementById("btn-fmt-left")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: left;">', '</p>'));
+  document.getElementById("btn-fmt-center")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: center;">', '</p>'));
+  document.getElementById("btn-fmt-right")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: right;">', '</p>'));
+  document.getElementById("btn-fmt-justify")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: justify;">', '</p>'));
+  document.getElementById("btn-fmt-table")?.addEventListener("click", () => {
+    const varHari = document.getElementById("var-hari-tanggal")?.value?.trim() || "Sabtu Malam Ahad Pon, 14 November 2026";
+    const varWkt = document.getElementById("var-waktu")?.value?.trim() || "19.30 WIB s.d Selesai";
+    const varTmp = document.getElementById("var-tempat")?.value?.trim() || "Musholla Baitur Muttaqin Jatinom";
+    const tplTable = `
+<table style="width: 100%; margin: 10px 0 10px 20px; border-collapse: collapse;">
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Hari / Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${varHari}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pukul</strong></td><td style="vertical-align: top;">:</td><td>${varWkt}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${varTmp}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Acara</strong></td><td style="vertical-align: top;">:</td><td>Rutinan dan Koordinasi Ranting</td></tr>
+</table>`;
+    insertTagIntoEditor(tplTable);
+  });
 
   function renderEditorBody() {
     const isBanser = state.activeSubSurat === "banser";
@@ -1350,6 +1427,76 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-scroll-arsip")?.addEventListener("click", () => {
     document.getElementById("section-arsip")?.scrollIntoView({ behavior: "smooth" });
   });
+
+  // --- PEMROSESAN HTML SUPPORT REDAKSI SURAT KE PRATINJAU & CETAK ---
+  function formatIsiSuratForPrint(raw) {
+    if (!raw) return "";
+    let content = raw.trim();
+
+    // Cek apakah input berisi tag HTML struktural block (p, div, table, ul, ol, h1-h6, hr, blockquote)
+    const hasBlockTags = /<\/?(p|div|table|ul|ol|h[1-6]|blockquote|pre|hr)\b/i.test(content);
+
+    if (!hasBlockTags) {
+      // User menginput teks murni / plain text dengan enter
+      // Pecah paragraf berdasarkan baris kosong ganda (enter 2x)
+      const paras = content.split(/\n\s*\n+/);
+      content = paras
+        .map((pText) => {
+          const trimmed = pText.trim();
+          if (!trimmed) return "";
+          // Ganti enter tunggal dalam satu paragraf menjadi <br>
+          const withBr = trimmed.replace(/\n/g, "<br>");
+          return `<p>${withBr}</p>`;
+        })
+        .filter(Boolean)
+        .join("\n");
+    }
+
+    // Buat parsing DOM sementara untuk menerapkan aturan penulisan dinas persuratan
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = content;
+
+    // Periksa setiap elemen paragraf <p> dan <div>
+    wrapper.querySelectorAll("p, div").forEach((el) => {
+      const txt = el.textContent.trim().toLowerCase();
+      const styleAttr = el.getAttribute("style") || "";
+      const alignAttr = el.getAttribute("align") || "";
+      const hasCustomAlign = /text-align\s*:/i.test(styleAttr) || alignAttr !== "" || el.classList.contains("text-center") || el.classList.contains("text-right") || el.classList.contains("text-left") || el.classList.contains("text-justify");
+      const hasCustomIndent = /text-indent\s*:/i.test(styleAttr) || el.classList.contains("no-indent") || el.classList.contains("indent-0");
+
+      const isSalamOrMotto =
+        txt.startsWith("assalamu'alaikum") ||
+        txt.startsWith("assalamualaikum") ||
+        txt.startsWith("wassalamu'alaikum") ||
+        txt.startsWith("wassalamualaikum") ||
+        txt.startsWith("wallahul muwaffiq") ||
+        txt.startsWith("salam silaturrahim") ||
+        txt.startsWith("bismillahirrahmanirrahim");
+
+      if (isSalamOrMotto) {
+        el.classList.add("salam-text");
+        el.classList.remove("paragraf-isi");
+      } else if (!hasCustomAlign && !hasCustomIndent) {
+        // Hanya tambahkan indentasi alinea 1.0 cm jika tag adalah <p> murni tanpa custom align/indent
+        if (el.tagName.toLowerCase() === "p") {
+          el.classList.add("paragraf-isi");
+        }
+      }
+    });
+
+    // Otomatis tandai kolom titik dua ':' pada tabel rincian agar sejajar
+    wrapper.querySelectorAll("table tr").forEach((tr) => {
+      const tds = tr.querySelectorAll("td");
+      if (tds.length >= 2) {
+        const secondTd = tds[1];
+        if (secondTd.textContent.trim() === ":") {
+          secondTd.classList.add("colon-td");
+        }
+      }
+    });
+
+    return wrapper.innerHTML;
+  }
 
   // --- PREVIEW & CETAK SURAT (PDF) DENGAN STEMPEL & TANDA TANGAN ---
   const modalPreview = document.getElementById("modal-preview-surat");
@@ -1408,28 +1555,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const elPrintIsi = document.getElementById("print-isi-surat");
     if (elPrintIsi) {
-      elPrintIsi.innerHTML = isiHTML;
-      // Format Standar Penulisan Persuratan:
-      // Salam pembuka, salam penutup, dan motto rata kiri (tanpa indent)
-      // Paragraf alinea isi baru diberi indentasi 1.0 cm
-      elPrintIsi.querySelectorAll("p").forEach((p) => {
-        const txt = p.textContent.trim().toLowerCase();
-        if (
-          txt.startsWith("assalamu'alaikum") ||
-          txt.startsWith("assalamualaikum") ||
-          txt.startsWith("wassalamu'alaikum") ||
-          txt.startsWith("wassalamualaikum") ||
-          txt.startsWith("wallahul muwaffiq") ||
-          txt.startsWith("salam silaturrahim") ||
-          txt.startsWith("bismillahirrahmanirrahim")
-        ) {
-          p.classList.add("salam-text");
-          p.classList.remove("paragraf-isi");
-        } else {
-          p.classList.add("paragraf-isi");
-          p.classList.remove("salam-text");
-        }
-      });
+      elPrintIsi.innerHTML = formatIsiSuratForPrint(isiHTML);
     }
 
     const elPrintAlamat = document.getElementById("print-kop-alamat");

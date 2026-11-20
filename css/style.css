@@ -467,7 +467,18 @@ body.viewing-app #view-landing-page {
   box-sizing: border-box;
 }
 
-/* Standar Penulisan Persuratan Resmi (Pratinjau Layar & Cetak) */
+/* Standar Penulisan Persuratan Resmi (Pratinjau Layar & Cetak HTML Support) */
+#print-isi-surat {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 11pt;
+  line-height: 1.35;
+  color: #000;
+}
+#print-isi-surat p {
+  margin-top: 0;
+  margin-bottom: 4.5pt;
+  line-height: 1.35;
+}
 #print-isi-surat p.paragraf-isi {
   text-indent: 1.0cm;
   text-align: justify;
@@ -477,9 +488,67 @@ body.viewing-app #view-landing-page {
   text-indent: 0;
   text-align: left;
 }
+#print-isi-surat .text-center,
+#print-isi-surat p[align="center"],
+#print-isi-surat div[align="center"] {
+  text-align: center;
+  text-indent: 0;
+}
+#print-isi-surat .text-right,
+#print-isi-surat p[align="right"],
+#print-isi-surat div[align="right"] {
+  text-align: right;
+  text-indent: 0;
+}
+#print-isi-surat .text-left,
+#print-isi-surat p[align="left"],
+#print-isi-surat div[align="left"] {
+  text-align: left;
+}
+#print-isi-surat .text-justify,
+#print-isi-surat p[align="justify"],
+#print-isi-surat div[align="justify"] {
+  text-align: justify;
+}
 #print-isi-surat table {
-  margin: 6px 0 8px 1.0cm;
+  margin-top: 3.5pt;
+  margin-bottom: 4.5pt;
   border-collapse: collapse;
+  line-height: 1.25;
+}
+#print-isi-surat table.tabulasi-surat,
+#print-isi-surat table:not([class]):not([style*="margin"]) {
+  margin-left: 1.0cm;
+}
+#print-isi-surat table td,
+#print-isi-surat table th {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 10.5pt;
+  padding: 1pt 5pt 1pt 0;
+  vertical-align: top;
+  color: #000;
+  line-height: 1.25;
+}
+#print-isi-surat table td.colon-td {
+  width: 12pt;
+  padding: 1pt 4pt;
+  text-align: center;
+  white-space: nowrap;
+}
+#print-isi-surat table[border],
+#print-isi-surat table.table-bordered,
+#print-isi-surat table.border {
+  border: 1px solid #000;
+  width: 100%;
+}
+#print-isi-surat table[border] td,
+#print-isi-surat table[border] th,
+#print-isi-surat table.table-bordered td,
+#print-isi-surat table.table-bordered th,
+#print-isi-surat table.border td,
+#print-isi-surat table.border th {
+  border: 1px solid #000;
+  padding: 3pt 6pt;
 }
 
 /* Sub Tab Switcher (Ansor vs Banser) */
@@ -1028,38 +1097,66 @@ body.viewing-app #view-landing-page {
   }
 
   /* ============================================================
-   * ISI REDAKSI SURAT (STANDAR INDENTS AND SPACING PERSURATAN)
+   * ISI REDAKSI SURAT (STANDAR INDENTS AND SPACING & HTML SUPPORT)
    * - First line indent standar 1.0 cm untuk alinea baru
    * - Salam pembuka/penutup rata kiri (text-indent: 0)
+   * - Mendukung kustomisasi HTML (align center/right/justify, inline style, dll)
    * - Line spacing 1.35, paragraph spacing after 4pt-5pt
-   * - Text align: Justify (rata kiri-kanan rapi)
    * - Orphans & Widows control: 3 baris
    * ============================================================ */
   #print-isi-surat {
     font-size: 11pt !important;
     line-height: 1.35 !important;
-    text-align: justify !important;
     color: #000 !important;
     font-family: 'Times New Roman', Times, serif !important;
     orphans: 3 !important;
     widows: 3 !important;
   }
 
-  /* Paragraf alinea baru: first-line indent 1.0 cm */
+  /* Paragraf alinea baru standar */
   #print-isi-surat p {
     margin-top: 0 !important;
     margin-bottom: 4.5pt !important;
     line-height: 1.35 !important;
-    text-indent: 1.0cm !important;
-    text-align: justify !important;
   }
 
-  /* Pengecualian: Salam pembuka, salam penutup, dan teks no-indent rata kiri tanpa lekuk */
+  #print-isi-surat p.paragraf-isi {
+    text-indent: 1.0cm;
+    text-align: justify;
+  }
+
+  /* Salam pembuka, salam penutup, dan teks no-indent rata kiri tanpa lekuk */
   #print-isi-surat p.salam-text,
-  #print-isi-surat p.no-indent,
-  #print-isi-surat p:first-child {
+  #print-isi-surat p.no-indent {
     text-indent: 0 !important;
     text-align: left !important;
+  }
+
+  /* Dukungan perataan teks HTML (align center / right / left / justify) */
+  #print-isi-surat .text-center,
+  #print-isi-surat p[align="center"],
+  #print-isi-surat div[align="center"] {
+    text-align: center !important;
+    text-indent: 0 !important;
+  }
+
+  #print-isi-surat .text-right,
+  #print-isi-surat p[align="right"],
+  #print-isi-surat div[align="right"] {
+    text-align: right !important;
+    text-indent: 0 !important;
+  }
+
+  #print-isi-surat .text-left,
+  #print-isi-surat p[align="left"],
+  #print-isi-surat div[align="left"] {
+    text-align: left !important;
+  }
+
+  #print-isi-surat .text-justify,
+  #print-isi-surat p[align="justify"],
+  #print-isi-surat div[align="justify"] {
+    text-align: justify !important;
   }
 
   #print-isi-surat > * + * {
@@ -1067,23 +1164,25 @@ body.viewing-app #view-landing-page {
   }
 
   /* ============================================================
-   * TABEL RINCIAN AGENDA / TABULASI SURAT RESMI
-   * - Menjorok masuk 1.0 cm dari margin kiri (hanging tabulasi)
-   * - Line spacing rapat (1.25), kolom titik dua sejajar rapi
-   * - page-break-inside: avoid (tidak terpecah antar halaman)
+   * TABEL SURAT RESMI (Dukungan Penuh HTML & Tabulasi Rapi)
    * ============================================================ */
-  #print-isi-surat table,
-  #print-isi-surat table[style] {
-    margin: 3.5pt 0 4.5pt 1.0cm !important;
+  #print-isi-surat table {
+    margin-top: 3.5pt !important;
+    margin-bottom: 4.5pt !important;
     border-collapse: collapse !important;
-    width: auto !important;
     line-height: 1.25 !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
+  /* Khusus tabel agenda tanpa margin kustom diberi indent 1.0 cm */
+  #print-isi-surat table.tabulasi-surat,
+  #print-isi-surat table:not([class]):not([style*="margin"]) {
+    margin-left: 1.0cm !important;
+  }
+
   #print-isi-surat table td,
-  #print-isi-surat table[style] td {
+  #print-isi-surat table th {
     font-family: 'Times New Roman', Times, serif !important;
     font-size: 10.5pt !important;
     padding: 1pt 5pt 1pt 0 !important;
@@ -1092,20 +1191,30 @@ body.viewing-app #view-landing-page {
     line-height: 1.25 !important;
   }
 
-  #print-isi-surat table td:first-child,
-  #print-isi-surat table[style] td:first-child {
-    width: auto !important;
-    min-width: 85pt !important;
-    max-width: 95pt !important;
-    white-space: nowrap !important;
-  }
-
-  #print-isi-surat table td:nth-child(2),
-  #print-isi-surat table[style] td:nth-child(2) {
+  /* Kolom titik dua ':' sejajar rapi */
+  #print-isi-surat table td.colon-td {
     width: 12pt !important;
     padding: 1pt 4pt !important;
     white-space: nowrap !important;
     text-align: center !important;
+  }
+
+  /* Dukungan tabel bergaris (border) */
+  #print-isi-surat table[border],
+  #print-isi-surat table.table-bordered,
+  #print-isi-surat table.border {
+    border: 1px solid #000 !important;
+    width: 100% !important;
+  }
+
+  #print-isi-surat table[border] td,
+  #print-isi-surat table[border] th,
+  #print-isi-surat table.table-bordered td,
+  #print-isi-surat table.table-bordered th,
+  #print-isi-surat table.border td,
+  #print-isi-surat table.border th {
+    border: 1px solid #000 !important;
+    padding: 3pt 6pt !important;
   }
 
   /* Daftar butir berurutan (ol / ul) */
@@ -1131,6 +1240,10 @@ body.viewing-app #view-landing-page {
   #print-isi-surat em,
   #print-isi-surat i {
     font-style: italic !important;
+  }
+
+  #print-isi-surat u {
+    text-decoration: underline !important;
   }
 
   /* ============================================================
