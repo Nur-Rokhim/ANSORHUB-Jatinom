@@ -656,20 +656,20 @@ const TEMPLATES_BANSER_MAP = {
     generateBody: (d) => `
 <div style="text-align: center; margin-bottom: 8px;">
   <strong style="font-size: 11pt; letter-spacing: 0.5px;">SURAT TUGAS PENGAMANAN</strong><br>
-  <span style="font-size: 9pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-XII-11-07-02/ST-01/XI/2026"}</span>
+  <span style="font-size: 9pt; font-family: monospace;">Nomor: ${d.nomorLengkap || "001/SKK-ST/XI/2026"}</span>
 </div>
 <p>Kepala Satuan Koordinasi Kelompok (SATKORKEL) Barisan Ansor Serbaguna (BANSER) Desa Jatinom dengan ini MENUGASKAN kepada nama-nama personel Banser:</p>
 <div style="margin: 4px 0 6px 15px; line-height: 1.15;">
   ${d.daftarPetugas || `
-  1. <strong>Subhan Mubarok</strong> (Kasatkorkel / Koordinator Lapangan)<br>
-  2. <strong>Bambang Tri Sutrisno</strong> (Kasetma / Unit Dalmas)<br>
+  1. <strong>${d.kasatNama || "Subhan Mubarok"}</strong> (Kasatkorkel / Koordinator Lapangan)<br>
+  2. <strong>${d.kasetmaNama || "Bambang Tri Sutrisno"}</strong> (Kasetma / Unit Dalmas)<br>
   3. <strong>Rizky Dwi Kurniawan</strong> (Unit Provos) & <strong>M. Nur Huda</strong> (Unit Balantas)<br>
   4. <em>Beserta Anggota Regu Piket Satkorkel Jatinom</em>
   `}
 </div>
 <p>Untuk melaksanakan tugas pengamanan, pengawalan para Masyayikh, serta ketertiban pada:</p>
 <table style="width: 100%; margin: 4px 0 6px 15px; border-collapse: collapse;">
-  <tr><td style="width: 130px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.kegiatan || "Pengajian Akbar & Peringatan Maulid Nabi"}</strong></td></tr>
+  <tr><td style="width: 130px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${d.kegiatan || d.acara || "Pengajian Akbar & Peringatan Maulid Nabi"}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td>${d.hariTanggal || "Ahad Pon, 15 November 2026"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Waktu / Jam</strong></td><td style="vertical-align: top;">:</td><td>${d.waktu || "19.00 WIB s.d Selesai"}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Lokasi Tugas</strong></td><td style="vertical-align: top;">:</td><td>${d.tempat || "Halaman Masjid Baitur Muttaqin Desa Jatinom"}</td></tr>

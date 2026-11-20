@@ -1213,6 +1213,28 @@ document.addEventListener("DOMContentLoaded", () => {
       syncSignaturesWithStruktur(true);
       renderPejabatDropdowns();
 
+      // Sinkronkan variabel kegiatan dan tujuan khusus Banser
+      const varHariB = document.getElementById("var-hari-tanggal");
+      const varWktB = document.getElementById("var-waktu");
+      const varTmpB = document.getElementById("var-tempat");
+      const inputTujuanB = document.getElementById("input-tujuan");
+      if (varHariB && (!varHariB.value || varHariB.value.includes("Ahad Pon") || varHariB.value.includes("Sabtu Malam"))) {
+        varHariB.placeholder = "Jum'at Kliwon, 20 November 2026";
+        varHariB.value = "Jum'at Kliwon, 20 November 2026";
+      }
+      if (varWktB && (!varWktB.value || varWktB.value.includes("Ba'da Isya"))) {
+        varWktB.placeholder = "19.30 WIB s.d Selesai";
+        varWktB.value = "19.30 WIB s.d Selesai";
+      }
+      if (varTmpB && (!varTmpB.value || varTmpB.value.includes("Musholla") || varTmpB.value.includes("Krajan"))) {
+        varTmpB.placeholder = "Markas Satkorkel BANSER Jatinom";
+        varTmpB.value = "Markas Satkorkel BANSER Jatinom";
+      }
+      if (inputTujuanB && (!inputTujuanB.value || inputTujuanB.value.includes("GP Ansor") || inputTujuanB.value.includes("PR GP Ansor"))) {
+        inputTujuanB.placeholder = "Yth. Seluruh Personel & Jajaran Satkorkel BANSER Jatinom\nDi - Tempat";
+        inputTujuanB.value = "Yth. Seluruh Personel & Jajaran Satkorkel BANSER Jatinom\nDi - Tempat";
+      }
+
       renderTemplateButtons();
       applyTemplate("SPH"); // Default Banser: SPH
 
@@ -1261,6 +1283,28 @@ document.addEventListener("DOMContentLoaded", () => {
       if (labelPihak2) labelPihak2.textContent = "Pihak 2 (Kanan - Sekretaris):";
       syncSignaturesWithStruktur(true);
       renderPejabatDropdowns();
+
+      // Sinkronkan variabel kegiatan dan tujuan khusus Ansor
+      const varHariA = document.getElementById("var-hari-tanggal");
+      const varWktA = document.getElementById("var-waktu");
+      const varTmpA = document.getElementById("var-tempat");
+      const inputTujuanA = document.getElementById("input-tujuan");
+      if (varHariA && (varHariA.value.includes("Jum'at Kliwon") || !varHariA.value)) {
+        varHariA.placeholder = "Sabtu Malam Ahad Pon, 14 November 2026";
+        varHariA.value = "Sabtu Malam Ahad Pon, 14 November 2026";
+      }
+      if (varWktA && (!varWktA.value || varWktA.value === "19.30 WIB s.d Selesai")) {
+        varWktA.placeholder = "19.30 WIB (Ba'da Isya) s.d Selesai";
+        varWktA.value = "19.30 WIB (Ba'da Isya) s.d Selesai";
+      }
+      if (varTmpA && (varTmpA.value.includes("Markas Satkorkel") || !varTmpA.value)) {
+        varTmpA.placeholder = "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom";
+        varTmpA.value = "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom";
+      }
+      if (inputTujuanA && (inputTujuanA.value.includes("BANSER") || !inputTujuanA.value)) {
+        inputTujuanA.placeholder = "Yth. Seluruh Sahabat Pengurus & Anggota PR GP Ansor Jatinom\nDi - Jatinom";
+        inputTujuanA.value = "Yth. Seluruh Sahabat Pengurus & Anggota PR GP Ansor Jatinom\nDi - Jatinom";
+      }
 
       renderTemplateButtons();
       applyTemplate("SU"); // Default Ansor: SU
@@ -1448,29 +1492,59 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function getDynamicValues() {
+    const isBanser = state.activeSubSurat === "banser";
     const varHari = document.getElementById("var-hari-tanggal")?.value?.trim();
     const varWkt = document.getElementById("var-waktu")?.value?.trim();
     const varTmp = document.getElementById("var-tempat")?.value?.trim();
+    const perihal = document.getElementById("input-perihal")?.value?.trim();
 
-    return {
-      nomorLengkap: getGeneratedNomorSurat(),
-      hariTanggal: varHari || document.getElementById("dyn-hari-tgl")?.value || "Sabtu Malam Ahad Pon, 14 November 2026",
-      waktu: varWkt || document.getElementById("dyn-waktu")?.value || "19.30 WIB (Ba'da Isya) s.d Selesai",
-      tempat: varTmp || document.getElementById("dyn-tempat")?.value || "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom",
-      acara: document.getElementById("dyn-acara")?.value || document.getElementById("input-perihal")?.value || "Rutinan MDS Rijalul Ansor & Koordinasi Ranting",
-      korlap: document.getElementById("dyn-korlap")?.value || "Subhan Mubarok (Kasatkorkel BANSER Jatinom)",
-      kegiatan: document.getElementById("dyn-kegiatan")?.value || document.getElementById("input-perihal")?.value || "Kegiatan Organisasi PR GP Ansor Jatinom",
-      tentang: document.getElementById("dyn-tentang")?.value,
-      tanggalRapat: document.getElementById("dyn-tgl-rapat")?.value,
-      namaPenerima: document.getElementById("dyn-nama-penerima")?.value,
-      jabatanPenerima: document.getElementById("dyn-jabatan-penerima")?.value,
-      keperluanTugas: document.getElementById("dyn-keperluan")?.value,
-      pimpinanRapat: document.getElementById("dyn-pimpinan")?.value,
-      kehadiran: document.getElementById("dyn-kehadiran")?.value,
-      namaKader: document.getElementById("dyn-nama-kader")?.value,
-      ttlKader: document.getElementById("dyn-ttl")?.value,
-      kaderisasiTujuan: document.getElementById("dyn-tujuan-kaderisasi")?.value
-    };
+    const kasat = getPejabatFromStruktur("banser", "kasat");
+    const kasetma = getPejabatFromStruktur("banser", "kasetma");
+    const ketua = getPejabatFromStruktur("ansor", "ketua");
+    const sek = getPejabatFromStruktur("ansor", "sekretaris");
+
+    const kasatNama = kasat?.nama || state.settings?.kasatkorkelNama || "Subhan Mubarok";
+    const kasetmaNama = kasetma?.nama || state.settings?.kasetmaNama || "Bambang Tri Sutrisno";
+    const ketuaNama = ketua?.nama || state.settings?.ketuaNama || "Muhammad Zainal Arifin";
+    const sekNama = sek?.nama || state.settings?.sekretarisNama || "Ahmad Nur Sholihin";
+
+    if (isBanser) {
+      return {
+        nomorLengkap: getGeneratedNomorSurat(),
+        hariTanggal: varHari || "Jum'at Kliwon, 20 November 2026",
+        waktu: varWkt || "19.30 WIB s.d Selesai",
+        tempat: varTmp || "Markas Satkorkel BANSER Jatinom",
+        acara: perihal || "Perintah Harian dan Undangan Kesiapsiagaan Personel Satkorkel BANSER",
+        korlap: `${kasatNama} (Kasatkorkel BANSER Jatinom)`,
+        kegiatan: perihal || "Apel Kesetiaan & Koordinasi Pengamanan",
+        kasatNama: kasatNama,
+        kasetmaNama: kasetmaNama,
+        pimpinanRapat: `Kasatkorkel BANSER Jatinom (${kasatNama})`,
+        kehadiran: "15 Personel Satkorkel BANSER Jatinom",
+        namaKader: "Sahabat Banser Terkait",
+        nikKader: kasat?.nia || "11.07.02.003",
+        ttlKader: "Blitar, 10 Mei 1998",
+        alamatKader: "Desa Jatinom, Kec. Kanigoro",
+        daftarPetugas: null
+      };
+    } else {
+      return {
+        nomorLengkap: getGeneratedNomorSurat(),
+        hariTanggal: varHari || "Sabtu Malam Ahad Pon, 14 November 2026",
+        waktu: varWkt || "19.30 WIB (Ba'da Isya) s.d Selesai",
+        tempat: varTmp || "Musholla Baitur Muttaqin RT 02 / RW 01 Krajan Jatinom",
+        acara: perihal || "Rutinan MDS Rijalul Ansor & Silaturrahim Ranting",
+        korlap: `${kasatNama} (Kasatkorkel BANSER Jatinom)`,
+        kegiatan: perihal || "Kegiatan Organisasi PR GP Ansor Jatinom",
+        pimpinanRapat: `Ketua PR GP Ansor Jatinom (${ketuaNama})`,
+        namaPenerima: sekNama,
+        jabatanPenerima: "Sekretaris PR GP Ansor Jatinom",
+        kehadiran: "18 Orang Pengurus & Kasatkorkel",
+        namaKader: "Sahabat Rizky Dwi Kurniawan",
+        ttlKader: "Blitar, 25 Desember 2000",
+        kaderisasiTujuan: "Pelatihan Kepemimpinan Dasar (PKD) / Diklatsar Banser"
+      };
+    }
   }
 
   function updateVariablesInEditor() {
@@ -1479,6 +1553,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const varHari = document.getElementById("var-hari-tanggal")?.value?.trim();
     const varWkt = document.getElementById("var-waktu")?.value?.trim();
     const varTmp = document.getElementById("var-tempat")?.value?.trim();
+    const varPerihal = document.getElementById("input-perihal")?.value?.trim();
 
     let val = inputIsi.value;
     if (varHari) {
@@ -1486,23 +1561,31 @@ document.addEventListener("DOMContentLoaded", () => {
         const isBold = /<strong>|<b>/i.test(p2);
         return `${p1}${isBold ? `<strong>${varHari}</strong>` : varHari}${p3}`;
       });
+      val = val.replace(/(Pada hari ini\s*<strong>)(.*?)(<\/strong>)/is, `$1${varHari}$3`);
     }
     if (varWkt) {
-      val = val.replace(/(<tr>\s*<td[^>]*>.*?(?:Waktu|Pukul).*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?(?:Waktu|Pukul|Jam).*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
         const isBold = /<strong>|<b>/i.test(p2);
         return `${p1}${isBold ? `<strong>${varWkt}</strong>` : varWkt}${p3}`;
       });
     }
     if (varTmp) {
-      val = val.replace(/(<tr>\s*<td[^>]*>.*?Tempat.*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?(?:Tempat|Lokasi|Titik Kumpul).*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
         const isBold = /<strong>|<b>/i.test(p2);
         return `${p1}${isBold ? `<strong>${varTmp}</strong>` : varTmp}${p3}`;
+      });
+      val = val.replace(/(bertempat di\s*<strong>)(.*?)(<\/strong>)/is, `$1${varTmp}$3`);
+    }
+    if (varPerihal) {
+      val = val.replace(/(<tr>\s*<td[^>]*>.*?(?:Nama Kegiatan|Acara|Agenda|Agenda Tugas|Nama Agenda).*?<\/td>\s*<td[^>]*>.*?<\/td>\s*<td[^>]*>)(.*?)(<\/td>\s*<\/tr>)/is, (m, p1, p2, p3) => {
+        const isBold = /<strong>|<b>/i.test(p2);
+        return `${p1}${isBold ? `<strong>${varPerihal}</strong>` : varPerihal}${p3}`;
       });
     }
     inputIsi.value = val;
   }
 
-  ["var-hari-tanggal", "var-waktu", "var-tempat"].forEach((id) => {
+  ["var-hari-tanggal", "var-waktu", "var-tempat", "input-perihal"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) {
       el.addEventListener("input", updateVariablesInEditor);
@@ -1533,15 +1616,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-fmt-right")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: right;">', '</p>'));
   document.getElementById("btn-fmt-justify")?.addEventListener("click", () => insertTagIntoEditor('<p style="text-align: justify;">', '</p>'));
   document.getElementById("btn-fmt-table")?.addEventListener("click", () => {
-    const varHari = document.getElementById("var-hari-tanggal")?.value?.trim() || "Sabtu Malam Ahad Pon, 14 November 2026";
+    const isBanser = state.activeSubSurat === "banser";
+    const varHari = document.getElementById("var-hari-tanggal")?.value?.trim() || (isBanser ? "Jum'at Kliwon, 20 November 2026" : "Sabtu Malam Ahad Pon, 14 November 2026");
     const varWkt = document.getElementById("var-waktu")?.value?.trim() || "19.30 WIB s.d Selesai";
-    const varTmp = document.getElementById("var-tempat")?.value?.trim() || "Musholla Baitur Muttaqin Jatinom";
-    const tplTable = `
+    const varTmp = document.getElementById("var-tempat")?.value?.trim() || (isBanser ? "Markas Satkorkel BANSER Jatinom" : "Musholla Baitur Muttaqin Jatinom");
+    const varAcara = document.getElementById("input-perihal")?.value?.trim() || (isBanser ? "Apel Kesetiaan & Koordinasi Pengamanan" : "Rutinan dan Koordinasi Ranting");
+
+    const tplTable = isBanser ? `
+<table style="width: 100%; margin: 6px 0 8px 15px; border-collapse: collapse;">
+  <tr><td style="width: 130px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${varAcara}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari, Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>${varHari}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Waktu / Jam</strong></td><td style="vertical-align: top;">:</td><td>${varWkt}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Lokasi Tugas</strong></td><td style="vertical-align: top;">:</td><td>${varTmp}</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Pakaian Dinas</strong></td><td style="vertical-align: top;">:</td><td>Seragam PDL / PDH Banser Lengkap + Baret</td></tr>
+</table>` : `
 <table style="width: 100%; margin: 10px 0 10px 20px; border-collapse: collapse;">
-  <tr><td style="width: 140px; vertical-align: top;"><strong>Hari / Tanggal</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${varHari}</strong></td></tr>
+  <tr><td style="width: 140px; vertical-align: top;"><strong>Nama Kegiatan</strong></td><td style="width: 15px; vertical-align: top;">:</td><td><strong>${varAcara}</strong></td></tr>
+  <tr><td style="vertical-align: top;"><strong>Hari / Tanggal</strong></td><td style="vertical-align: top;">:</td><td><strong>${varHari}</strong></td></tr>
   <tr><td style="vertical-align: top;"><strong>Pukul</strong></td><td style="vertical-align: top;">:</td><td>${varWkt}</td></tr>
   <tr><td style="vertical-align: top;"><strong>Tempat</strong></td><td style="vertical-align: top;">:</td><td>${varTmp}</td></tr>
-  <tr><td style="vertical-align: top;"><strong>Acara</strong></td><td style="vertical-align: top;">:</td><td>Rutinan dan Koordinasi Ranting</td></tr>
+  <tr><td style="vertical-align: top;"><strong>Acara</strong></td><td style="vertical-align: top;">:</td><td>${varAcara}</td></tr>
 </table>`;
     insertTagIntoEditor(tplTable);
   });
@@ -1615,7 +1709,9 @@ document.addEventListener("DOMContentLoaded", () => {
         txt.startsWith("wassalamualaikum") ||
         txt.startsWith("wallahul muwaffiq") ||
         txt.startsWith("salam silaturrahim") ||
-        txt.startsWith("bismillahirrahmanirrahim");
+        txt.startsWith("bismillahirrahmanirrahim") ||
+        txt.startsWith("satu komando") ||
+        txt.startsWith("banser maju");
 
       if (isSalamOrMotto) {
         el.classList.add("salam-text");
@@ -1654,11 +1750,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const tglMasehiInput = document.getElementById("input-tgl-surat")?.value || inputTglMasehi?.value;
     const tglMasehi = tglMasehiInput ? getIndonesianDate(new Date(tglMasehiInput)) : getIndonesianDate(new Date());
     const tglHijri = document.getElementById("input-tgl-hijriah")?.value || document.getElementById("input-tgl-hijriyah")?.value || "14 Jumadil Ula 1448 H";
-    const tujuan = document.getElementById("input-tujuan")?.value || "Seluruh Sahabat Pengurus & Anggota";
+    const isBanserMode = state.activeSubSurat === "banser";
+    const defaultTujuan = isBanserMode ? "Seluruh Personel & Jajaran Satkorkel BANSER Jatinom" : "Seluruh Sahabat Pengurus & Anggota PR GP Ansor Jatinom";
+    const tujuan = document.getElementById("input-tujuan")?.value || defaultTujuan;
     
     const isiHTML = document.getElementById("input-isi-surat")?.value || document.getElementById("editor-isi-surat")?.innerHTML || "";
-    
-    const isBanserMode = state.activeSubSurat === "banser";
     const ketuaObj = getPejabatFromStruktur("ansor", "ketua");
     const sekretarisObj = getPejabatFromStruktur("ansor", "sekretaris");
     const kasatObj = getPejabatFromStruktur("banser", "kasat");
@@ -1857,9 +1953,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow = "hidden";
     document.body.classList.add("printing-surat");
 
+    // Format Surat Khusus Banser (ST, SPR, SP, SKA, NOT, STF, BA): Judul dokumen di tengah, sembunyikan meta header & tujuan
+    const elHeaderMeta = document.querySelector(".print-header-meta");
+    const elTujuanBox = document.querySelector(".print-tujuan-box");
+    const isSuratKhusus = isBanser && ["ST", "SPR", "SP", "SKA", "NOT", "STF", "BA"].includes(currentTpl);
+    if (isSuratKhusus) {
+      if (elHeaderMeta) elHeaderMeta.classList.add("hidden");
+      if (elTujuanBox) elTujuanBox.classList.add("hidden");
+    } else {
+      if (elHeaderMeta) elHeaderMeta.classList.remove("hidden");
+      if (elTujuanBox) elTujuanBox.classList.remove("hidden");
+    }
+
     // Mode Cetak: Atur kelas single-page A4 vs multi-page SK
     const printArea = document.getElementById("print-area-surat");
-    const currentTpl = (state.currentTemplate || "").toUpperCase();
     if (printArea) {
       if (currentTpl === "SK" && !isBanser) {
         // Surat Keputusan (SK) Ansor: Multi-page / dinamis disesuaikan dengan isinya
@@ -1881,6 +1988,10 @@ document.addEventListener("DOMContentLoaded", () => {
     modalPreview?.classList.add("hidden");
     document.body.style.overflow = "";
     document.body.classList.remove("printing-surat", "mode-print-single-page", "mode-print-multi-page");
+    const elHeaderMeta = document.querySelector(".print-header-meta");
+    const elTujuanBox = document.querySelector(".print-tujuan-box");
+    if (elHeaderMeta) elHeaderMeta.classList.remove("hidden");
+    if (elTujuanBox) elTujuanBox.classList.remove("hidden");
   }
 
   function applyPrintModeClasses() {
