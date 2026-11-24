@@ -295,12 +295,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Simpan pilihan yang sedang terpilih bila ada
     const currentVal = selectEl.value;
-    selectEl.innerHTML = `<option value="" disabled selected>-- Pilih Akun Pengurus --</option>`;
+    selectEl.innerHTML = `<option value="" disabled selected>-- Pilih Akun / Role Pengguna --</option>`;
 
     state.usersList.forEach((u) => {
       const opt = document.createElement("option");
       opt.value = u.username;
-      opt.textContent = `${u.role} — ${u.nama}`;
+      opt.textContent = `${u.role} (@${u.username})`;
       opt.setAttribute("data-role", u.role);
       opt.setAttribute("data-nama", u.nama);
       opt.setAttribute("data-akses", u.akses || "");
@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const akses = selectedOpt.getAttribute("data-akses");
         
         if (descBox) descBox.classList.remove("hidden");
-        if (roleText) roleText.textContent = `${nama} (${akses || "Akses Pengurus"})`;
+        if (roleText) roleText.textContent = `${nama} (${akses || "Akses Pengguna"})`;
         if (badgeText) badgeText.textContent = role;
       } else {
         if (descBox) descBox.classList.add("hidden");
@@ -338,14 +338,72 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function applyRoleRestrictions() {
+    const isAnggota = Boolean(state.currentUser && state.currentUser.role === "Anggota");
+
+    // Daftar tab terlarang untuk Anggota: E-Surat, Agenda, Keuangan, LPJ, Profil, Pengaturan, Dashboard
+    const restrictedTabs = ["tab-surat", "tab-agenda", "tab-keuangan", "tab-lpj", "tab-profil", "tab-pengaturan", "tab-dashboard"];
+
+    // Sidebar navigation items
+    document.querySelectorAll("#sidebar-nav [data-tab]").forEach((item) => {
+      const tab = item.getAttribute("data-tab");
+      if (isAnggota) {
+        if (restrictedTabs.includes(tab)) {
+          item.classList.add("hidden");
+        } else {
+          item.classList.remove("hidden");
+        }
+      } else {
+        item.classList.remove("hidden");
+      }
+    });
+
+    // Parent wrapper untuk submenu E-Surat
+    const suratWrapper = document.getElementById("sidebar-sub-surat-group")?.closest(".space-y-1");
+    if (suratWrapper) {
+      if (isAnggota) suratWrapper.classList.add("hidden");
+      else suratWrapper.classList.remove("hidden");
+    }
+
+    // Tombol Backup & Logo di sidebar bawah
+    const btnBackup = document.getElementById("sidebar-btn-backup");
+    const btnLogo = document.getElementById("sidebar-btn-upload-logo");
+    if (btnBackup) {
+      if (isAnggota) btnBackup.classList.add("hidden");
+      else btnBackup.classList.remove("hidden");
+    }
+    if (btnLogo) {
+      if (isAnggota) btnLogo.classList.add("hidden");
+      else btnLogo.classList.remove("hidden");
+    }
+
+    // Tab Warta: Sembunyikan tombol Tulis Warta untuk Anggota (Anggota HANYA MELIHAT)
+    const btnTulisWarta = document.getElementById("btn-buka-form-berita");
+    const containerFormBerita = document.getElementById("container-form-berita");
+    if (btnTulisWarta) {
+      if (isAnggota) {
+        btnTulisWarta.classList.add("hidden");
+        if (containerFormBerita) containerFormBerita.classList.add("hidden");
+      } else {
+        btnTulisWarta.classList.remove("hidden");
+      }
+    }
+
+    // Jika akun Anggota sedang berada di tab yang tidak diizinkan, otomatis alihkan ke E-Kader
+    if (isAnggota && state.activeTab !== "tab-kader" && state.activeTab !== "tab-warta") {
+      switchTab("tab-kader");
+    }
+  }
+
   function applyLoginSession(user) {
     state.currentUser = user;
     AnsorStore.setCurrentUser(user);
     sessionStorage.setItem("sahabat_session_active", "true");
     updateHeaderUserBadge();
+    applyRoleRestrictions();
     modalLoginPortal.classList.add("hidden");
     switchToAppMode();
-    addNotification("Sesi Masuk Berhasil", `Anda masuk sebagai ${user.role} (${user.nama}).`, "info");
+    addNotification("Sesi Masuk Berhasil", `Anda masuk sebagai ${user.role}.`, "info");
     if (typeof renderKeuangan === "function") renderKeuangan();
   }
 
@@ -360,6 +418,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sNama = document.getElementById("sidebar-user-nama");
     if (sRole) sRole.textContent = u.role;
     if (sNama) sNama.textContent = u.nama;
+
+    applyRoleRestrictions();
   }
 
   // Tombol buka login modal dari header & sidebar (Ganti Akun)
@@ -574,6 +634,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function switchTab(tabId) {
+    if (state.currentUser && state.currentUser.role === "Anggota") {
+      if (tabId !== "tab-kader" && tabId !== "tab-warta") {
+        alert("Akses Terbatas: Akun Anggota hanya memiliki akses untuk mengisi E-Kader dan melihat Warta Ansor.");
+        tabId = "tab-kader";
+      }
+    }
+
     state.activeTab = tabId;
 
     // Update Judul Halaman di Top Header
@@ -879,7 +946,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
           
-          <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-1.5 ${state.currentUser && state.currentUser.role === 'Anggota' ? 'hidden' : ''}">
             <button data-id="${b.id}" class="btn-edit-berita px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg text-xs font-semibold" title="Edit Warta">
               <i class="fa-solid fa-pen text-[10px]"></i>
             </button>
@@ -2316,10 +2383,11 @@ document.addEventListener("DOMContentLoaded", () => {
           </a>
         </td>
         <td class="py-2.5 px-3 text-center">
-          <div class="flex items-center justify-center gap-1.5">
+          <div class="flex items-center justify-center gap-1.5 ${state.currentUser && state.currentUser.role === 'Anggota' ? 'hidden' : ''}">
             <button data-id="${k.id}" class="btn-edit-kader px-2 py-1 bg-amber-100 text-amber-700 rounded hover:bg-amber-200 text-[11px] font-semibold" title="Edit Data"><i class="fa-solid fa-pen"></i></button>
             <button data-id="${k.id}" class="btn-hapus-kader px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200 text-[11px] font-semibold" title="Hapus"><i class="fa-solid fa-trash-can"></i></button>
           </div>
+          ${state.currentUser && state.currentUser.role === 'Anggota' ? '<span class="text-[10px] text-slate-400 font-medium">Terdaftar</span>' : ''}
         </td>
       `;
       tbody.appendChild(tr);
@@ -3803,11 +3871,16 @@ _Wassalamu'alaikum Wr. Wb._
 
   document.getElementById("search-pengurus")?.addEventListener("input", renderPengurusTable);
 
-  // --- TAB 6: PENGATURAN (6 USER ROLES & IDENTITAS) ---
+  // --- TAB 6: PENGATURAN (USER ROLES & IDENTITAS) ---
   function renderUserCards() {
     const container = document.getElementById("container-user-cards");
     if (!container) return;
     container.innerHTML = "";
+
+    const headerTitle = document.getElementById("judul-daftar-akun");
+    if (headerTitle) {
+      headerTitle.textContent = `Daftar ${state.usersList.length} Akun Pengguna Terdaftar:`;
+    }
 
     const isSuperAdmin = Boolean(state.currentUser && state.currentUser.role === "Super Admin");
 
@@ -3868,7 +3941,7 @@ _Wassalamu'alaikum Wr. Wb._
         if (!found) return;
 
         if (state.currentUser && state.currentUser.id === found.id) {
-          alert(`Anda saat ini sudah aktif masuk sebagai: ${found.role} (${found.nama})`);
+          alert(`Anda saat ini sudah aktif masuk sebagai: ${found.role}`);
           return;
         }
 
@@ -3889,7 +3962,7 @@ _Wassalamu'alaikum Wr. Wb._
         const found = state.usersList.find((x) => x.id === id);
         if (!found) return;
 
-        const newPin = prompt(`[Khusus Super Admin]\nMasukkan PIN / Kata Sandi baru untuk akun ${found.role} (${found.nama}):`, found.pin);
+        const newPin = prompt(`[Khusus Super Admin]\nMasukkan PIN / Kata Sandi baru untuk akun ${found.role}:`, found.pin);
         if (newPin && newPin.trim()) {
           found.pin = newPin.trim();
           AnsorStore.saveUsers(state.usersList);
@@ -3910,7 +3983,7 @@ _Wassalamu'alaikum Wr. Wb._
           }
 
           renderUserCards();
-          alert(`Kata Sandi / PIN untuk akun ${found.role} (${found.nama}) berhasil diperbarui oleh Super Admin!`);
+          alert(`Kata Sandi / PIN untuk akun ${found.role} berhasil diperbarui oleh Super Admin!`);
         }
       });
     });
@@ -4697,6 +4770,7 @@ _Wassalamu'alaikum Wr. Wb._
   const hasValidUser = state.currentUser && state.currentUser.pin;
   if (isSessionActive && hasValidUser) {
     switchToAppMode();
+    applyRoleRestrictions();
   } else {
     sessionStorage.removeItem("sahabat_session_active");
     switchToLandingMode();

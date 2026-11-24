@@ -715,7 +715,7 @@ require_once __DIR__ . '/config.php';
           </div>
           <div class="min-w-0 text-left">
             <div id="sidebar-user-role" class="text-xs font-black text-gold truncate">Super Admin</div>
-            <div id="sidebar-user-nama" class="text-[10.5px] text-emerald-100 truncate">M. Zainal Arifin</div>
+            <div id="sidebar-user-nama" class="text-[10.5px] text-emerald-100 truncate">Super Admin Ranting</div>
           </div>
         </div>
       </div>
@@ -903,7 +903,7 @@ require_once __DIR__ . '/config.php';
             </div>
             <div class="text-left text-[11px] leading-tight">
               <div id="header-user-role" class="font-extrabold text-gold">Super Admin</div>
-              <div id="header-user-nama" class="text-emerald-100 max-w-[110px] sm:max-w-[140px] truncate">M. Zainal Arifin</div>
+              <div id="header-user-nama" class="text-emerald-100 max-w-[110px] sm:max-w-[140px] truncate">Super Admin Ranting</div>
             </div>
           </div>
 
@@ -2776,7 +2776,7 @@ require_once __DIR__ . '/config.php';
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
               <i class="fa-solid fa-users text-ansor"></i>
-              <span>Daftar 6 Akun Pengurus Ranting Terdaftar:</span>
+              <span id="judul-daftar-akun">Daftar Akun Pengurus & Anggota Terdaftar:</span>
             </h3>
             <div class="flex items-center gap-2">
               <span class="text-[11px] text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 font-medium">

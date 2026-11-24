@@ -27,7 +27,7 @@ const INITIAL_USERS = [
   {
     id: "USR-02",
     username: "ketua",
-    nama: "Muhammad Zainal Arifin",
+    nama: "Ketua GP Ansor",
     role: "Ketua Ansor",
     pin: "1234",
     email: "ketua.jatinom@ansor.id",
@@ -38,7 +38,7 @@ const INITIAL_USERS = [
   {
     id: "USR-03",
     username: "sekretaris",
-    nama: "Ahmad Nur Sholihin",
+    nama: "Sekretaris GP Ansor",
     role: "Sekretaris Ansor",
     pin: "1234",
     email: "sekretaris.jatinom@ansor.id",
@@ -49,7 +49,7 @@ const INITIAL_USERS = [
   {
     id: "USR-04",
     username: "kasatkorkel",
-    nama: "Subhan Mubarok",
+    nama: "Kasatkorkel BANSER",
     role: "Kasatkorkel",
     pin: "1234",
     email: "banser.jatinom@ansor.id",
@@ -60,7 +60,7 @@ const INITIAL_USERS = [
   {
     id: "USR-05",
     username: "kasetma",
-    nama: "Bambang Tri Sutrisno",
+    nama: "Kasetma BANSER",
     role: "Kasetma",
     pin: "1234",
     email: "kasetma.jatinom@ansor.id",
@@ -71,7 +71,7 @@ const INITIAL_USERS = [
   {
     id: "USR-06",
     username: "ketua_mds",
-    nama: "Gus M. Fahmi Ilham",
+    nama: "Ketua MDS Rijalul Ansor",
     role: "Ketua MDS Rijalul Ansor",
     pin: "1234",
     email: "rijalul.jatinom@ansor.id",
@@ -82,7 +82,7 @@ const INITIAL_USERS = [
   {
     id: "USR-07",
     username: "bendahara",
-    nama: "Abdul Wahid",
+    nama: "Bendahara GP Ansor",
     role: "Bendahara Ansor",
     pin: "1234",
     email: "bendahara.jatinom@ansor.id",
@@ -93,13 +93,24 @@ const INITIAL_USERS = [
   {
     id: "USR-08",
     username: "siber",
-    nama: "Fajar Sidiq",
+    nama: "Ketua Siber GP Ansor",
     role: "Ketua Siber Ansor",
     pin: "1234",
     email: "siber.jatinom@ansor.id",
     akses: "Kelola Warta Ansor, Media Publikasi & IT",
     status: "Aktif",
     badgeColor: "bg-cyan-100 text-cyan-800 border-cyan-200"
+  },
+  {
+    id: "USR-09",
+    username: "anggota",
+    nama: "Anggota / Kader Ranting",
+    role: "Anggota",
+    pin: "1234",
+    email: "anggota.jatinom@ansor.id",
+    akses: "Mengisi E-Kader & Melihat Warta Ansor",
+    status: "Aktif",
+    badgeColor: "bg-slate-100 text-slate-800 border-slate-300"
   }
 ];
 
@@ -326,12 +337,27 @@ class AnsorStore {
     try {
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        // Merge missing users (e.g. kasetma, bendahara) into stored users
+        let changed = false;
+        // Merge missing users (e.g. kasetma, bendahara, anggota) dan normalisasi nama tanpa nama personal
         INITIAL_USERS.forEach((iu) => {
-          if (!parsed.some((u) => u.username === iu.username)) {
+          const existing = parsed.find((u) => u.username === iu.username);
+          if (!existing) {
             parsed.push(iu);
+            changed = true;
+          } else {
+            // Normalisasi agar nama akun selalu sesuai peran generik (bukan nama orang)
+            if (existing.nama !== iu.nama || existing.role !== iu.role || existing.akses !== iu.akses) {
+              existing.nama = iu.nama;
+              existing.role = iu.role;
+              existing.akses = iu.akses;
+              existing.badgeColor = iu.badgeColor;
+              changed = true;
+            }
           }
         });
+        if (changed) {
+          localStorage.setItem("sahabat_users", JSON.stringify(parsed));
+        }
         return parsed;
       }
       return INITIAL_USERS;
@@ -345,7 +371,20 @@ class AnsorStore {
 
   static getCurrentUser() {
     const data = localStorage.getItem("sahabat_current_user");
-    return data ? JSON.parse(data) : INITIAL_USERS[0]; // Default Super Admin
+    if (!data) return INITIAL_USERS[0];
+    try {
+      const cur = JSON.parse(data);
+      const matched = INITIAL_USERS.find((u) => u.username === cur.username);
+      if (matched && cur.nama !== matched.nama) {
+        cur.nama = matched.nama;
+        cur.role = matched.role;
+        cur.akses = matched.akses;
+        localStorage.setItem("sahabat_current_user", JSON.stringify(cur));
+      }
+      return cur;
+    } catch (e) {
+      return INITIAL_USERS[0];
+    }
   }
   static setCurrentUser(user) {
     localStorage.setItem("sahabat_current_user", JSON.stringify(user));

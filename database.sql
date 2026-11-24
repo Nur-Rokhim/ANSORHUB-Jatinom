@@ -20,15 +20,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed 6 Roles User Resmi
+-- Seed 9 Roles User Resmi (Tanpa Nama Pribadi & Termasuk User Anggota)
 INSERT INTO `users` (`user_id`, `username`, `nama`, `role`, `pin`, `email`, `akses`, `status`) VALUES
 ('USR-01', 'superadmin', 'Super Admin Ranting', 'Super Admin', '1934', 'admin.jatinom@ansor.id', 'Akses Penuh Semua Menu & Pengaturan', 'Aktif'),
-('USR-02', 'ketua', 'Muhammad Zainal Arifin', 'Ketua Ansor', '1234', 'ketua.jatinom@ansor.id', 'Pengesahan Surat, E-Kader, Agenda & Profil', 'Aktif'),
-('USR-03', 'sekretaris', 'Ahmad Nur Sholihin', 'Sekretaris', '1234', 'sekretaris.jatinom@ansor.id', 'Manajemen E-Surat, E-Kader & Notulensi', 'Aktif'),
-('USR-04', 'kasatkorkel', 'Subhan Mubarok', 'Kasatkorkel', '1234', 'banser.jatinom@ansor.id', 'Kaderisasi Banser, Surat Tugas PAM & Apel', 'Aktif'),
-('USR-05', 'mds', 'Gus M. Fahmi Ilham', 'Ketua MDS Rijalul Ansor', '1234', 'rijalul.jatinom@ansor.id', 'Jadwal Rutinan Selapanan, Diba\'an & Tahlil', 'Aktif'),
-('USR-06', 'siber', 'Fajar Sidiq', 'Ketua Siber Ansor', '1234', 'siber.jatinom@ansor.id', 'Kelola Warta Ansor, Media Publikasi & IT', 'Aktif')
-ON DUPLICATE KEY UPDATE `nama` = VALUES(`nama`);
+('USR-02', 'ketua', 'Ketua GP Ansor', 'Ketua Ansor', '1234', 'ketua.jatinom@ansor.id', 'Pengesahan Surat, E-Kader, Agenda & Profil', 'Aktif'),
+('USR-03', 'sekretaris', 'Sekretaris GP Ansor', 'Sekretaris Ansor', '1234', 'sekretaris.jatinom@ansor.id', 'Manajemen E-Surat, E-Kader & Notulensi', 'Aktif'),
+('USR-04', 'kasatkorkel', 'Kasatkorkel BANSER', 'Kasatkorkel', '1234', 'banser.jatinom@ansor.id', 'Kaderisasi Banser, Surat Tugas PAM & Apel', 'Aktif'),
+('USR-05', 'kasetma', 'Kasetma BANSER', 'Kasetma', '1234', 'kasetma.jatinom@ansor.id', 'Administrasi Markas Banser & Logistik Personel', 'Aktif'),
+('USR-06', 'ketua_mds', 'Ketua MDS Rijalul Ansor', 'Ketua MDS Rijalul Ansor', '1234', 'rijalul.jatinom@ansor.id', 'Jadwal Rutinan Selapanan, Diba\'an & Tahlil', 'Aktif'),
+('USR-07', 'bendahara', 'Bendahara GP Ansor', 'Bendahara Ansor', '1234', 'bendahara.jatinom@ansor.id', 'Manajemen Keuangan, Kas Ranting & Pembukuan', 'Aktif'),
+('USR-08', 'siber', 'Ketua Siber GP Ansor', 'Ketua Siber Ansor', '1234', 'siber.jatinom@ansor.id', 'Kelola Warta Ansor, Media Publikasi & IT', 'Aktif'),
+('USR-09', 'anggota', 'Anggota / Kader Ranting', 'Anggota', '1234', 'anggota.jatinom@ansor.id', 'Mengisi E-Kader & Melihat Warta Ansor', 'Aktif')
+ON DUPLICATE KEY UPDATE `nama` = VALUES(`nama`), `role` = VALUES(`role`), `akses` = VALUES(`akses`);
 
 -- 2. Tabel Struktur Nama-Nama Pengurus Ranting - Siap Diisi Mulai dari Nol
 CREATE TABLE IF NOT EXISTS `pengurus` (
